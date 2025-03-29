@@ -1,0 +1,652 @@
+#,Observer,Date,Session,Time,Segment,Period,Location,Focal,Age,Sex,Progeny,FirstDepCaller,FocalDepCalls,ResDepCalls,DepResNum,RecResNum,AllFamilyRes,Success ,DurationSec,GroupSize,DepartureCallsUsed
+1,Dina,15/09/2021,1,16:56,A,Evening,Gamepark,Krummel,2,Female,No,Julian,0,5,1,2,Yes,Yes,14,3,Yes
+2,Dina,15/09/2021,1,17:56,A,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,74,35,4,6,Yes,Yes,98,14,Yes
+3,Dina,15/09/2021,1,18:03,B,Evening,Gamepark,Rocket,4,Female,No,None,0,0,0,3,Yes,Yes,118,30,No
+4,Dina,15/09/2021,1,18:05,B,Evening,Gamepark,Romy,4,Female,No,None,0,0,0,1,Yes,Yes,9,3,No
+5,Dina,15/09/2021,1,18:07,C,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,54,11,2,4,No,Yes,86,10,Yes
+6,Dina,15/09/2021,1,18:10,C,Evening,Gamepark,Baycox,16,Male,No,Kleine Hexe,1,1,1,0,No,Yes,2,2,Yes
+7,Dina,15/09/2021,1,18:18,E,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,36,4,1,3,Yes,Yes,67,4,Yes
+8,Dina,15/09/2021,1,18:19,E,Evening,Gamepark,Leia,13,Female,Yes,Leia,2,10,3,3,No,Yes,25,2,Yes
+9,Dina,15/09/2021,1,18:20,E,Evening,Gamepark,Birne,7,Male,No,Rili,0,2,1,3,Yes,Yes,19,3,Yes
+10,Dina,16/09/2021,2,10:36,B,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,26,2,1,6,Yes,Yes,35,12,Yes
+11,Dina,16/09/2021,2,10:38,B,Morning,Old KLF,Leia,13,Female,Yes,Leia,41,62,3,9,Yes,Yes,49,10,Yes
+12,Dina,16/09/2021,2,10:39,B,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,17,2,1,3,Yes,Yes,12,4,Yes
+13,Dina,16/09/2021,2,10:40,B,Morning,Old KLF,Lupin,10,Female,No,None,0,0,0,1,Yes,Yes,12,2,No
+14,Dina,16/09/2021,2,10:52,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,21,32,2,4,Yes,Yes,115,10,Yes
+15,Dina,18/09/2021,2,11:07,A,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,24,0,0,7,Yes,Yes,41,4,Yes
+16,Dina,18/09/2021,2,11:09,A,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,41,19,2,6,Yes,Yes,79,4,Yes
+17,Dina,18/09/2021,2,11:11,B,Morning,Old KLF,Baycox,16,Male,No,Baycox,11,0,0,1,Yes,Yes,10,2,Yes
+18,Dina,19/09/2021,2,10:00,A,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,4,0,0,1,Yes,No,180,0,Yes
+19,Dina,19/09/2021,2,10:06,B,Morning,Old KLF,Bon Jovi,12,Female,No,None,0,0,0,0,No,No,180,0,No
+20,Dina,19/09/2021,2,10:07,B,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,5,0,0,1,Yes,Yes,13,2,Yes
+21,Dina,19/09/2021,2,10:14,D,Morning,Old KLF,Ballantine,13,Male,Yes,Ballantine,58,63,2,6,Yes,Yes,170,9,Yes
+22,Dina,19/09/2021,2,10:18,E,Morning,Old KLF,Bernard,14,Male,No,Lukka,0,15,2,3,Yes,Yes,58,8,Yes
+23,Dina,19/09/2021,2,10:19,E,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,19,10,3,8,Yes,Yes,72,6,Yes
+24,Dina,19/09/2021,3,18:16,A,Evening,Gamepark,Fritz,13,Male,Yes,Kendo,11,0,0,1,No,No,31,0,Yes
+25,Dina,19/09/2021,3,18:19,A,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,9,1,0,No,No,15,0,Yes
+26,Dina,19/09/2021,3,18:20,A,Evening,Gamepark,Fritz,13,Male,Yes,Idgie,33,19,5,4,Yes,Yes,24,4,Yes
+27,Dina,19/09/2021,3,18:22,A,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,10,2,1,2,No,Yes,22,4,Yes
+28,Dina,19/09/2021,3,18:25,B,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,20,2,0,No,Yes,34,9,Yes
+29,Dina,19/09/2021,3,18:27,B,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,67,24,3,3,No,Yes,71,13,Yes
+30,Dina,19/09/2021,3,18:40,D,Evening,Gamepark,Jurek,8,Male,No,Jurek,16,8,2,5,Yes,Yes,35,10,Yes
+31,Dina,19/09/2021,3,18:42,D,Evening,Gamepark,Belmont,15,Male,No,Belmont,11,15,2,1,Yes,No,62,0,Yes
+32,Dina,19/09/2021,3,18:46,E,Evening,Gamepark,Belmont,15,Male,No,Belmont,36,26,2,1,Yes,Yes,72,3,Yes
+33,Dina,19/09/2021,3,18:49,E,Evening,Gamepark,Bacardi,13,Male,No,Bacardi,26,10,1,0,Yes,Yes,73,2,Yes
+34,Dina,23/09/2021,4,09:59,A,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,38,0,0,3,Yes,Yes,67,4,Yes
+35,Dina,23/09/2021,4,10:03,B,Morning,Old KLF,L'amour,6,Male,Yes,L'amour,62,0,0,0,No,No,168,0,Yes
+36,Dina,23/09/2021,4,10:08,C,Morning,Old KLF,Bernard,14,Male,No,Bernard,5,3,1,0,Yes,Yes,44,3,Yes
+37,Dina,23/09/2021,4,10:10,D,Morning,Old KLF,Belmont,15,Male,No,Belmont,12,5,2,3,Yes,Yes,6,11,Yes
+38,Dina,23/09/2021,4,10:14,E,Morning,Old KLF,Leia,13,Female,Yes,Leia,18,12,1,2,No,Yes,22,17,Yes
+39,Dina,23/09/2021,4,10:15,E,Morning,Old KLF,Kolibri,11,Male,No,Kolibri,5,0,0,1,Yes,Yes,11,3,Yes
+40,Dina,23/09/2021,5,17:33,A,Evening,Gamepark,Birne,7,Male,No,Birne,22,0,0,0,No,No,33,0,Yes
+41,Dina,23/09/2021,5,17:36,A,Evening,Gamepark,Krummel,2,Female,No,Krummel,21,51,2,2,Yes,Yes,80,3,Yes
+42,Dina,23/09/2021,5,17:49,A,Evening,Gamepark,Birne,7,Male,No,Birne,32,22,2,1,Yes,Yes,39,1,Yes
+43,Dina,24/09/2021,6,09:58,A,Morning,Old KLF,Bon Jovi,12,Female,No,None,0,0,0,1,Yes,No,1200,0,No
+44,Dina,24/09/2021,6,10:15,C,Morning,Old KLF,Buchenflug,8,Male,No,None,0,0,0,2,No,Yes,73,3,No
+45,Dina,24/09/2021,6,10:17,C,Morning,Old KLF,Kiki,2,Male,No,None,0,0,0,2,Yes,Yes,23,4,No
+46,Dina,24/09/2021,6,10:18,D,Morning,Old KLF,Leia,13,Female,Yes,Leia,8,0,0,2,No,No,64,0,Yes
+47,Dina,24/09/2021,6,10:24,E,Morning,Old KLF,L'amour,6,Male,Yes,L'amour,35,7,3,2,Yes,Yes,180,27,Yes
+48,Dina,24/09/2021,6,10:25,E,Morning,Old KLF,Leia,13,Female,Yes,Leia,29,0,0,4,No,No,180,0,Yes
+49,Dina,24/09/2021,6,10:29,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,5,10,2,1,Yes,Yes,50,3,Yes
+50,Dina,24/09/2021,6,10:30,E,Morning,Old KLF,Dagobert,5,Male,No,Belmont,8,4,1,1,Yes,Yes,7,22,Yes
+51,Dina,24/09/2021,7,17:30,A,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,3,0,0,0,No,No,24,0,Yes
+52,Dina,24/09/2021,7,17:45,C,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,68,1,1,3,Yes,Yes,98,6,Yes
+53,Dina,24/09/2021,7,17:49,D,Evening,Gamepark,Romy,4,Female,No,None,0,0,0,1,Yes,Yes,50,2,No
+54,Dina,24/09/2021,7,17:50,D,Evening,Gamepark,Lauffuss,8,Female,No,None,0,0,0,8,Yes,Yes,83,21,No
+55,Dina,24/09/2021,7,17:53,E,Evening,Gamepark,Lukka,14,Female,No,Lukka,0,0,0,1,Yes,Yes,43,2,Yes
+56,Dina,24/09/2021,7,17:58,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,23,8,1,4,Yes,Yes,20,5,Yes
+57,Dina,26/09/2021,8,10:08,A,Morning,Old KLF,Ericsson,2,Male,No,None,0,0,0,1,Yes,Yes,60,2,No
+58,Dina,26/09/2021,8,10:24,B,Morning,Old KLF,Barbados,18,Female,Yes,Barbados,5,5,2,6,Yes,Yes,75,7,Yes
+59,Dina,26/09/2021,8,10:25,B,Morning,Old KLF,Leia,13,Female,Yes,Leia,77,46,3,7,Yes,Yes,105,7,Yes
+60,Dina,26/09/2021,8,10:28,B,Morning,Old KLF,Fritz,13,Male,Yes,Fritz,36,18,3,3,Yes,Yes,112,7,Yes
+61,Dina,26/09/2021,8,10:33,C,Morning,Old KLF,Babaco,7,Male,Yes,None,0,0,0,3,Yes,Yes,22,6,No
+62,Dina,26/09/2021,8,10:36,C,Morning,Old KLF,Pasha,1,Male,No,Pasha,10,9,3,1,Yes,Yes,24,7,Yes
+63,Dina,26/09/2021,8,10:37,C,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,3,0,0,2,No,No,34,0,Yes
+64,Ben,26/09/2021,8,10:39,D,Morning,Old KLF,Burglar,10,Male,No,Burglar,2,3,1,0,No,No,43,0,Yes
+65,Dina,26/09/2021,8,10:42,D,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,8,1,1,2,No,No,18,0,Yes
+66,Dina,26/09/2021,8,10:44,D,Morning,Old KLF,Bruce Springsteen,12,Male,No,Bruce Springsteen,25,0,0,10,Yes,Yes,31,19,Yes
+67,Dina,26/09/2021,8,10:45,D,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,8,1,1,2,No,Yes,15,4,Yes
+68,Dina,26/09/2021,8,10:46,D,Morning,Old KLF,Allegra,22,Male,No,Allegra,17,12,2,7,Yes,Yes,44,13,Yes
+69,Dina,26/09/2021,8,10:48,D,Morning,Old KLF,Bayou,15,Male,No,Bayou,7,4,1,5,Yes,Yes,34,10,Yes
+70,Dina,26/09/2021,8,10:49,E,Morning,Old KLF,Kolibri,11,Male,No,Kolibri,5,5,3,3,Yes,Yes,63,7,Yes
+71,Dina,26/09/2021,8,10:51,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,35,1,1,2,Yes,No,6,0,Yes
+72,Dina,26/09/2021,8,10:54,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,51,11,1,1,Yes,No,69,0,Yes
+73,Dina,26/09/2021,8,10:56,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,2,2,1,1,Yes,No,60,0,Yes
+74,Dina,26/09/2021,8,10:58,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,3,2,1,1,Yes,No,35,0,Yes
+75,Dina,26/09/2021,8,10:59,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,14,0,0,1,Yes,Yes,8,2,Yes
+76,Dina,26/09/2021,9,17:15,A,Evening,Gamepark,Bruce Springsteen,12,Male,No,Bruce Springsteen,8,0,0,2,Yes,No,34,0,Yes
+77,Dina,26/09/2021,9,17:18,A,Evening,Gamepark,Bruce Springsteen,12,Male,No,Bruce Springsteen,15,0,0,8,Yes,No,120,0,Yes
+78,Dina,26/09/2021,9,17:20,B,Evening,Gamepark,Fritz,13,Male,Yes,Paso,24,31,4,8,Yes,Yes,60,8,Yes
+79,Dina,26/09/2021,9,17:22,B,Evening,Gamepark,Lavander,7,Female,No,Die Lisa,2,1,1,5,Yes,Yes,32,26,Yes
+80,Dina,26/09/2021,9,17:32,E,Evening,Gamepark,Kolibri,11,Male,No,Leonidas,10,7,1,4,Yes,Yes,44,6,Yes
+81,Dina,26/09/2021,9,17:35,E,Evening,Gamepark,Jurek,8,Male,No,Jurek,56,15,2,2,Yes,Yes,55,3,Yes
+82,Dina,27/09/2021,10,17:28,A,Evening,Gamepark,Demant,7,Male,No,None,0,0,0,2,Yes,Yes,6,4,No
+83,Dina,27/09/2021,10,17:29,A,Evening,Gamepark,Ericsson,2,Male,No,None,0,0,0,2,Yes,Yes,10,3,No
+84,Dina,27/09/2021,10,17:33,A,Evening,Gamepark,Macchia,4,Female,No,Janosch,0,23,1,3,Yes,Yes,98,2,Yes
+85,Dina,27/09/2021,10,17:34,A,Evening,Gamepark,Janosch,5,Male,No,Janosch,5,0,0,2,Yes,Yes,15,3,Yes
+86,Dina,27/09/2021,10,17:36,B,Evening,Gamepark,Rubezahl,5,Female,No,Joe,7,34,2,4,Yes,Yes,104,6,Yes
+87,Dina,27/09/2021,10,17:38,B,Evening,Gamepark,Demant,7,Male,No,Demant,22,1,3,5,Yes,Yes,40,6,Yes
+88,Dina,27/09/2021,10,17:41,C,Evening,Gamepark,Leia,13,Female,Yes,Leia,75,23,3,5,No,Yes,113,7,Yes
+89,Dina,27/09/2021,10,17:50,D,Evening,Gamepark,Rili,4,Male,No,Rili,7,0,0,1,Yes,No,43,0,Yes
+90,Dina,27/09/2021,10,17:51,E,Evening,Gamepark,Janosch,5,Male,No,Janosch,5,0,0,3,Yes,Yes,14,11,Yes
+91,Dina,27/09/2021,10,17:46,D,Evening,Gamepark,Baycox,16,Male,No,Baycox,8,5,1,2,Yes,Yes,20,2,Yes
+92,Dina,27/09/2021,10,17:47,D,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,42,0,0,3,Yes,Yes,86,4,Yes
+93,Dina,27/09/2021,10,17:49,D,Evening,Gamepark,Kendo,10,Female,Yes,Kendo,17,31,3,0,No,No,24,0,Yes
+94,Dina,27/09/2021,10,17:51,E,Evening,Gamepark,Lukka,14,Female,No,Lukka,11,0,0,3,Yes,Yes,22,6,Yes
+95,Dina,27/09/2021,10,17:52,E,Evening,Gamepark,Paso,11,Male,Yes,Paso,10,10,3,1,No,Yes,20,12,Yes
+96,Dina,27/09/2021,10,17:53,E,Evening,Gamepark,Trevor,8,Female,No,None,0,0,0,1,Yes,Yes,5,2,No
+97,Dina,27/09/2021,10,17:53,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,15,19,2,2,Yes,No,65,0,Yes
+98,Dina,27/09/2021,10,17:54,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,44,4,1,4,Yes,Yes,37,8,Yes
+99,Dina,27/09/2021,10,17:55,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,36,19,2,5,Yes,Yes,65,4,Yes
+100,Dina,27/09/2021,10,17:56,E,Evening,Gamepark,Belmont,15,Male,No,Belmont,23,6,1,1,Yes,Yes,36,2,Yes
+101,Dina,28/09/2021,11,10:45,A,Morning,Old KLF,Krummel,2,Female,No,Idgie,0,0,0,3,Yes,Yes,136,5,Yes
+102,Dina,28/09/2021,11,10:58,B,Morning,Old KLF,Leia,13,Female,Yes,Leia,25,18,4,10,No,Yes,47,8,Yes
+103,Ben,28/09/2021,11,11:05,C,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,20,13,6,2,No,Yes,12,9,Yes
+104,Dina,28/09/2021,11,11:09,D,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,17,5,1,3,Yes,Yes,10,4,Yes
+105,Dina,28/09/2021,11,11:11,D,Morning,Old KLF,Bruce Springsteen,12,Male,No,Bruce Springsteen,8,0,0,5,Yes,Yes,15,15,Yes
+106,Dina,28/09/2021,11,11:12,E,Morning,Old KLF,Lindy Hop,11,Male,No,Lindy Hop,5,2,1,1,Yes,Yes,5,13,Yes
+107,Dina,28/09/2021,11,11:14,E,Morning,Old KLF,Jurek,8,Male,No,Jurek,10,2,1,7,Yes,Yes,53,16,Yes
+108,Ben,28/09/2021,11,11:15,E,Morning,Old KLF,Lukka,14,Female,No,Lukka,5,2,1,2,No,Yes,25,11,Yes
+109,Dina,28/09/2021,11,11:17,E,Morning,Old KLF,Allegra,22,Male,No,Allegra,27,9,1,3,Yes,Yes,19,4,Yes
+110,Dina,28/09/2021,11,11:18,E,Morning,Old KLF,Demant,7,Male,No,Demant,5,0,0,2,Yes,Yes,8,4,Yes
+111,Dina,30/09/2021,12,10:12,A,Morning,Old KLF,Fritz,13,Male,Yes,Fritz,63,111,3,4,No,No,108,0,Yes
+112,Dina,30/09/2021,12,10:13,A,Morning,Old KLF,Leia,13,Female,Yes,Leia,33,62,4,9,Yes,Yes,45,11,Yes
+113,Dina,30/09/2021,12,10:14,A,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,3,0,0,3,Yes,No,30,0,Yes
+114,Dina,30/09/2021,12,10:15,A,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,11,5,2,7,Yes,Yes,12,4,Yes
+115,Dina,30/09/2021,12,10:16,B,Morning,Old KLF,Barbados,18,Female,Yes,Barbados,9,12,3,6,Yes,Yes,44,22,Yes
+116,Dina,30/09/2021,12,10:18,C,Morning,Old KLF,Rubezahl,5,Female,No,Joe,6,5,1,1,Yes,Yes,67,6,Yes
+117,Dina,30/09/2021,12,10:19,C,Morning,Old KLF,Unknown,NA,Male,No,None,0,0,0,2,NA,Yes,95,3,No
+118,Dina,30/09/2021,12,10:20,D,Morning,Old KLF,Jurek,8,Male,No,Bernard,0,5,1,8,Yes,Yes,16,27,Yes
+119,Dina,30/09/2021,12,10:21,D,Morning,Old KLF,Sherlock,6,Male,No,None,0,9,1,1,Yes,Yes,33,6,Yes
+120,Dina,30/09/2021,12,10:22,D,Morning,Old KLF,Unknown,NA,Female,Yes,NA,0,8,1,12,NA,Yes,6,15,Yes
+121,Dina,30/09/2021,12,10:22,D,Morning,Old KLF,Unknown,NA,Female,No,None,0,0,0,13,NA,Yes,4,14,No
+122,Dina,30/09/2021,12,10:22,D,Morning,Old KLF,Bernard,14,Male,No,Lukka,0,26,2,7,Yes,Yes,44,16,Yes
+123,Dina,30/09/2021,12,10:24,E,Morning,Old KLF,Baycox,16,Male,No,Baycox,2,0,0,2,No,Yes,47,5,Yes
+124,Dina,30/09/2021,12,10:25,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,39,1,1,1,Yes,Yes,122,2,Yes
+125,Dina,30/09/2021,13,17:25,A,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,5,0,0,1,No,No,40,0,Yes
+126,Dina,30/09/2021,13,17:26,A,Evening,Gamepark,Romy,4,Female,No,Idgie,0,1,1,8,Yes,Yes,43,8,Yes
+127,Dina,30/09/2021,13,17:29,B,Evening,Gamepark,Unknown,NA,Female,No,NA,0,6,1,2,NA,Yes,10,2,Yes
+128,Dina,30/09/2021,13,17:30,B,Evening,Gamepark,Unknown,NA,Female,Yes,NA,0,8,2,12,NA,Yes,10,12,Yes
+129,Dina,30/09/2021,13,17:29,B,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,41,46,3,3,Yes,No,85,0,Yes
+130,Dina,30/09/2021,13,17:31,B,Evening,Gamepark,Unknown,NA,Male,No,Idgie,13,4,2,2,NA,Yes,85,2,Yes
+131,Dina,30/09/2021,13,17:32,B,Evening,Gamepark,Unknown,NA,Male,Yes,Idgie,0,12,2,10,NA,Yes,85,13,Yes
+132,Dina,30/09/2021,13,17:31,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,23,12,1,3,No,Yes,45,11,Yes
+133,Dina,30/09/2021,13,17:34,C,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,7,0,0,6,Yes,Yes,16,7,Yes
+134,Dina,30/09/2021,13,17:35,C,Evening,Gamepark,Unknown,NA,Female,Yes,None,0,0,0,8,NA,Yes,10,18,No
+135,Dina,30/09/2021,13,17:37,D,Evening,Gamepark,Ericsson,2,Male,No,None,0,0,0,6,Yes,Yes,9,5,No
+136,Dina,30/09/2021,13,17:37,D,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,7,13,2,3,Yes,Yes,28,9,Yes
+137,Dina,30/09/2021,13,17:39,E,Evening,Gamepark,Baycox,16,Male,No,Baycox,9,54,3,5,No,Yes,65,14,Yes
+138,Dina,30/09/2021,13,17:41,E,Evening,Gamepark,Triton,5,Female,Yes,Triton,5,19,2,0,No,Yes,60,3,Yes
+139,Dina,30/09/2021,13,17:42,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,45,10,1,1,Yes,Yes,52,2,Yes
+140,Dina,01/10/2021,14,09:32,A,Morning,Old KLF,Lupin,10,Female,No,None,0,0,0,3,Yes,Yes,34,2,No
+141,Dina,01/10/2021,14,09:34,A,Morning,Old KLF,Bon Jovi,12,Female,No,None,0,0,0,3,No,No,369,0,No
+142,Dina,01/10/2021,14,09:58,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,16,10,1,1,No,No,37,0,Yes
+143,Dina,01/10/2021,14,10:02,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,100,14,3,4,No,Yes,150,5,Yes
+144,Dina,01/10/2021,14,10:04,C,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,10,3,2,6,Yes,Yes,83,7,Yes
+145,Dina,01/10/2021,14,10:06,D,Morning,Old KLF,Fritz,13,Male,Yes,Fritz,6,16,3,4,Yes,Yes,33,14,Yes
+146,Dina,01/10/2021,14,10:08,D,Morning,Old KLF,Unknown,NA,Female,No,NA,0,0,3,2,NA,Yes,30,3,Yes
+147,Ben,01/10/2021,14,10:08,D,Morning,Old KLF,Tumnus,5,Female,No,Tumnus,1,0,0,2,No,Yes,20,5,Yes
+148,Dina,01/10/2021,14,10:09,D,Morning,Old KLF,Leia,13,Female,Yes,Leia,14,7,1,5,Yes,Yes,11,7,Yes
+149,Dina,01/10/2021,14,10:10,D,Morning,Old KLF,Allegra,22,Male,No,Allegra,17,6,2,5,Yes,Yes,22,5,Yes
+150,Dina,01/10/2021,14,10:11,D,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,19,3,2,9,No,Yes,17,16,Yes
+151,Dina,01/10/2021,14,10:11,D,Morning,Old KLF,Allegra,22,Male,No,Allegra,12,0,0,1,Yes,Yes,13,4,Yes
+152,Dina,01/10/2021,14,10:12,D,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,8,2,1,3,Yes,Yes,68,4,Yes
+153,Dina,01/10/2021,14,10:13,D,Morning,Old KLF,Romy,4,Female,No,Romy,3,5,1,3,Yes,Yes,18,4,Yes
+154,Dina,01/10/2021,14,10:13,D,Morning,Old KLF,Birne,7,Male,No,None,0,0,0,4,Yes,No,30,0,No
+155,Dina,01/10/2021,14,10:15,D,Morning,Old KLF,Bianka,14,Male,No,Bianka,17,10,1,0,Yes,No,40,0,Yes
+156,Dina,01/10/2021,14,10:17,E,Morning,Old KLF,Dagobert,5,Male,No,Dagobert,12,2,1,1,Yes,No,21,0,Yes
+157,Dina,01/10/2021,14,10:17,E,Morning,Old KLF,Unknown,NA,Male,No,None,0,0,0,2,NA,Yes,21,2,No
+158,Dina,01/10/2021,14,10:19,E,Morning,Old KLF,Dagobert,5,Male,No,Dagobert,7,7,1,1,Yes,Yes,10,7,Yes
+159,Dina,01/10/2021,14,10:20,E,Morning,Old KLF,Bruce Springsteen,12,Male,No,Bruce Springsteen,18,0,0,3,Yes,Yes,20,5,Yes
+160,Dina,01/10/2021,14,10:21,E,Morning,Old KLF,Bianka,14,Male,No,Bianka,78,25,2,2,Yes,Yes,150,2,Yes
+161,Dina,01/10/2021,14,10:23,E,Morning,Old KLF,Besenstiel,5,Male,No,Besenstiel,8,6,1,4,Yes,Yes,134,7,Yes
+162,Dina,01/10/2021,14,10:25,E,Morning,Old KLF,Demant,7,Male,No,Demant,9,9,1,3,Yes,Yes,17,4,Yes
+163,Dina,01/10/2021,14,10:25,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,5,0,0,0,No,No,20,0,Yes
+164,Dina,01/10/2021,14,10:26,E,Morning,Old KLF,Burglar,10,Male,No,Burglar,81,10,1,2,Yes,Yes,149,2,Yes
+165,Dina,01/10/2021,14,10:27,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,44,8,1,1,Yes,Yes,135,3,Yes
+166,Dina,01/10/2021,15,17:39,A,Evening,Gamepark,Pudding,4,Female,Yes,None,0,0,0,0,No,No,63,0,No
+167,Dina,01/10/2021,15,17:40,A,Evening,Gamepark,Unknown,NA,Female,No,None,0,0,0,1,NA,Yes,30,2,No
+168,Dina,01/10/2021,15,17:45,A,Evening,Gamepark,Natalie,3,Female,No,Joe,0,8,1,2,No,Yes,33,4,Yes
+169,Dina,01/10/2021,15,17:43,A,Evening,Gamepark,EinStein,6,Female,No,None,0,6,1,0,No,Yes,190,1,Yes
+170,Dina,01/10/2021,15,17:48,B,Evening,Gamepark,Lindy Hop,11,Male,No,None,0,0,0,3,Yes,No,39,0,No
+171,Dina,01/10/2021,15,17:50,B,Evening,Gamepark,Romy,4,Female,No,None,0,0,0,3,Yes,Yes,18,2,No
+172,Dina,01/10/2021,15,17:50,B,Evening,Gamepark,Unknown,NA,Male,No,None,0,0,0,2,NA,Yes,20,2,No
+173,Dina,01/10/2021,15,17:51,C,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,90,116,4,10,Yes,Yes,249,13,Yes
+174,Dina,01/10/2021,15,17:53,C,Evening,Gamepark,Disney,6,Female,No,Babaco,0,13,3,1,No,Yes,12,1,Yes
+175,Dina,01/10/2021,15,17:54,C,Evening,Gamepark,Unknown,NA,Female,Yes,NA,0,15,3,2,No,Yes,191,9,Yes
+176,Dina,01/10/2021,15,17:55,C,Evening,Gamepark,Unknown,NA,Female,Yes,NA,40,16,3,9,NA,Yes,42,7,Yes
+177,Dina,01/10/2021,15,17:58,D,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,15,5,1,1,No,No,65,0,Yes
+178,Dina,01/10/2021,15,18:00,D,Evening,Gamepark,Leia,13,Female,Yes,Leia,23,25,2,1,No,No,40,0,Yes
+179,Dina,01/10/2021,15,18:00,D,Evening,Gamepark,Unknown,NA,Female,No,NA,0,0,0,2,NA,Yes,20,3,No
+180,Dina,01/10/2021,15,18:01,D,Evening,Gamepark,Idgie,17,Male,Yes,Triton,15,67,6,1,No,Yes,30,16,Yes
+181,Dina,01/10/2021,15,18:03,E,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,34,27,3,7,Yes,Yes,69,25,Yes
+182,Dina,01/10/2021,15,18:05,E,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,20,13,2,4,Yes,Yes,22,4,Yes
+183,Dina,01/10/2021,15,18:06,E,Evening,Gamepark,Belmont,15,Male,No,Belmont,17,6,1,2,Yes,Yes,41,7,Yes
+184,Dina,01/10/2021,15,18:07,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,61,27,3,5,Yes,Yes,42,8,Yes
+185,Dina,02/10/2021,16,10:16,A,Morning,Old KLF,Unknown,NA,Female,No,NA,0,0,2,2,NA,Yes,15,2,No
+186,Dina,02/10/2021,16,10:18,A,Morning,Old KLF,Joe,9,Male,No,Joe,40,25,5,2,Yes,Yes,390,10,Yes
+187,Dina,02/10/2021,16,10:21,A,Morning,Old KLF,Leia,13,Female,Yes,Leia,5,0,0,6,Yes,No,6,0,Yes
+188,Dina,02/10/2021,16,10:22,B,Morning,Old KLF,Beaker Parker,1,Male,No,Jafar,0,25,3,3,Yes,No,61,0,Yes
+189,Dina,02/10/2021,16,10:27,C,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,51,27,2,3,Yes,Yes,92,4,Yes
+190,Dina,02/10/2021,16,10:29,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,5,6,1,3,No,Yes,6,5,Yes
+191,Dina,02/10/2021,16,10:29,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,27,16,4,4,No,No,79,0,Yes
+192,Dina,02/10/2021,16,10:31,D,Morning,Old KLF,Beaker Parker,1,Male,No,Jafar,0,20,1,2,Yes,Yes,10,4,Yes
+193,Dina,02/10/2021,16,10:24,C,Morning,Old KLF,Eisbrecher,2,Male,No,None,0,0,0,1,Yes,No,85,0,No
+194,Dina,02/10/2021,16,10:30,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,15,60,3,5,No,Yes,60,7,Yes
+195,Dina,02/10/2021,16,10:31,D,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,9,1,1,6,No,Yes,18,4,Yes
+196,Dina,02/10/2021,16,10:31,D,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,11,9,1,6,No,Yes,24,7,Yes
+197,Dina,02/10/2021,16,10:32,D,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,35,0,0,5,Yes,Yes,61,9,Yes
+198,Dina,02/10/2021,16,10:33,D,Morning,Old KLF,Oberlix,2,Male,No,Belmont,0,2,2,7,Yes,Yes,37,21,Yes
+199,Dina,02/10/2021,16,10:34,D,Morning,Old KLF,Jurek,8,Male,No,Jurek,38,27,3,1,Yes,Yes,61,2,Yes
+200,Dina,02/10/2021,16,10:36,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,15,18,3,4,No,Yes,52,18,Yes
+201,Dina,02/10/2021,16,10:37,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,12,37,4,1,No,Yes,30,5,Yes
+202,Dina,02/10/2021,16,10:38,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,21,25,3,2,Yes,Yes,39,4,Yes
+203,Dina,02/10/2021,16,10:39,E,Morning,Old KLF,Giovanni,3,Male,No,Giovanni,3,0,0,0,No,Yes,25,1,Yes
+204,Dina,02/10/2021,16,10:40,E,Morning,Old KLF,Demant,7,Male,No,Demant,47,0,0,3,Yes,Yes,92,7,Yes
+205,Dina,03/10/2021,17,10:20,A,Morning,Old KLF,Joe,9,Male,No,Joe,17,0,0,1,Yes,Yes,24,2,Yes
+206,Dina,03/10/2021,17,10:22,A,Morning,Old KLF,Lupin,10,Female,No,Ballantine,0,17,2,1,No,No,165,0,Yes
+207,Dina,03/10/2021,17,10:25,A,Morning,Old KLF,Lupin,10,Female,No,Idgie,0,6,1,3,Yes,Yes,45,9,Yes
+208,Dina,03/10/2021,17,10:26,A,Morning,Old KLF,Ballantine,13,Male,Yes,Ballantine,15,44,1,4,No,Yes,42,15,Yes
+209,Dina,03/10/2021,17,10:27,B,Morning,Old KLF,L'amour,6,Male,Yes,L'amour,27,12,2,2,Yes,Yes,30,6,Yes
+210,Dina,03/10/2021,17,10:28,B,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,6,0,0,8,Yes,Yes,60,6,Yes
+211,Dina,03/10/2021,17,10:29,B,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,26,2,1,6,Yes,Yes,43,6,Yes
+212,Dina,03/10/2021,17,10:34,C,Morning,Old KLF,Lindy Hop,11,Male,No,Lindy Hop,11,0,0,1,Yes,Yes,24,3,Yes
+213,Dina,03/10/2021,17,10:34,C,Morning,Old KLF,Luna,14,Female,No,Bayou,0,13,1,4,Yes,Yes,71,4,Yes
+214,Dina,03/10/2021,17,10:38,C,Morning,Old KLF,Balmenach,7,Male,No,None,0,0,0,1,Yes,Yes,48,2,No
+215,Dina,03/10/2021,17,10:39,C,Morning,Old KLF,Jurek,8,Male,No,Jurek,22,8,1,2,Yes,Yes,19,2,Yes
+216,Dina,03/10/2021,17,10:39,C,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,22,0,0,3,Yes,Yes,60,7,Yes
+217,Dina,03/10/2021,17,10:42,D,Morning,Old KLF,Janosch,5,Male,No,Janosch,41,18,2,6,Yes,Yes,94,9,Yes
+218,Dina,03/10/2021,17,10:44,D,Morning,Old KLF,Rili,4,Male,No,Dagobert,2,5,2,6,Yes,Yes,24,5,Yes
+219,Dina,03/10/2021,17,10:45,D,Morning,Old KLF,Allegra,22,Male,No,Allegra,23,0,0,1,Yes,Yes,14,3,Yes
+220,Dina,03/10/2021,17,10:46,D,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,6,3,1,0,No,No,54,0,Yes
+221,Dina,03/10/2021,17,10:47,E,Morning,Old KLF,Trevor,8,Female,No,Bacardi,0,31,3,5,No,Yes,86,5,Yes
+222,Dina,03/10/2021,17,10:49,E,Morning,Old KLF,Kolibri,11,Male,No,Bacardi,5,0,1,2,Yes,Yes,25,2,Yes
+223,Dina,03/10/2021,17,10:50,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,23,6,2,5,Yes,Yes,25,24,Yes
+224,Dina,03/10/2021,17,10:52,E,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,39,12,2,2,Yes,Yes,20,4,Yes
+225,Dina,04/10/2021,18,17:23,A,Evening,Gamepark,Oberlix,2,Male,No,Oberlix,2,0,0,2,Yes,Yes,42,5,Yes
+226,Dina,04/10/2021,18,17:25,A,Evening,Gamepark,Lauffuss,8,Female,No,Demant,0,6,1,2,Yes,Yes,360,4,Yes
+227,Dina,04/10/2021,18,17:43,C,Evening,Gamepark,Unknown,NA,Male,No,None,0,0,0,1,NA,Yes,76,2,No
+228,Dina,04/10/2021,18,17:43,C,Evening,Gamepark,Lumpy,5,Male,No,None,0,0,0,0,No,Yes,4,1,No
+229,Dina,04/10/2021,18,17:44,C,Evening,Gamepark,Hedwig,7,Male,No,None,0,0,0,0,No,Yes,25,1,No
+230,Dina,04/10/2021,18,17:44,C,Evening,Gamepark,Unknown,NA,Male,No,None,0,0,0,3,NA,Yes,10,5,No
+231,Dina,04/10/2021,18,17:44,C,Evening,Gamepark,Lupin,10,Female,No,Janosch,0,4,1,4,Yes,Yes,10,10,Yes
+232,Dina,04/10/2021,18,17:45,C,Evening,Gamepark,Longshanks,15,Female,No,None,0,0,0,3,Yes,No,49,0,No
+233,Dina,04/10/2021,18,17:46,D,Evening,Gamepark,Unknown,NA,Male,Yes,NA,19,0,0,6,NA,Yes,30,9,Yes
+234,Dina,04/10/2021,18,17:47,D,Evening,Gamepark,Besenstiel,5,Male,No,None,0,0,0,2,Yes,Yes,5,21,No
+235,Dina,04/10/2021,18,17:51,D,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,8,15,4,3,Yes,No,30,0,Yes
+236,Dina,04/10/2021,18,17:51,D,Evening,Gamepark,Dimitri,4,Male,No,Belmont,0,4,2,2,No,Yes,8,3,Yes
+237,Dina,04/10/2021,18,17:51,D,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,9,2,1,3,Yes,Yes,15,4,Yes
+238,Dina,04/10/2021,18,17:52,D,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,15,3,1,5,Yes,Yes,60,8,Yes
+239,Dina,04/10/2021,18,17:53,E,Evening,Gamepark,Ernst,5,Male,No,None,0,0,0,2,No,Yes,7,4,No
+240,Dina,04/10/2021,18,17:53,E,Evening,Gamepark,Unknown,NA,Female,No,None,0,0,0,3,NA,Yes,16,4,No
+241,Dina,04/10/2021,18,17:54,E,Evening,Gamepark,Paso,11,Male,Yes,Paso,5,12,2,3,Yes,Yes,8,4,Yes
+242,Dina,04/10/2021,18,17:54,E,Evening,Gamepark,Hera,4,Male,No,Jurek,0,4,1,4,Yes,Yes,5,6,Yes
+243,Dina,04/10/2021,18,17:55,E,Evening,Gamepark,Smoky,21,Male,No,None,0,0,0,0,No,Yes,10,1,No
+244,Dina,04/10/2021,18,17:59,E,Evening,Gamepark,Lukka,14,Female,No,Lukka,23,7,2,2,Yes,Yes,36,3,Yes
+245,Dina,09/10/2021,19,10:50,A,Morning,Old KLF,Karolina,3,Female,No,None,0,0,0,2,Yes,Yes,37,2,No
+246,Dina,09/10/2021,19,10:55,A,Morning,Old KLF,Bon Jovi,12,Female,No,None,0,0,0,1,Yes,Yes,82,2,No
+247,Dina,09/10/2021,19,11:00,B,Morning,Old KLF,Joe,9,Male,No,Joe,4,0,0,4,Yes,Yes,26,6,Yes
+248,Dina,09/10/2021,19,11:01,C,Morning,Old KLF,Oberlix,2,Male,No,Oberlix,7,0,0,1,Yes,Yes,21,3,Yes
+249,Dina,09/10/2021,19,11:01,C,Morning,Old KLF,Babaco,7,Male,Yes,Joshua,6,19,1,3,Yes,Yes,26,7,Yes
+250,Dina,09/10/2021,19,11:02,C,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,10,0,0,7,No,Yes,17,16,Yes
+251,Dina,09/10/2021,19,11:02,C,Morning,Old KLF,Bayou,15,Male,No,Bayou,7,3,1,1,Yes,Yes,9,3,Yes
+252,Dina,09/10/2021,19,11:03,C,Morning,Old KLF,Besenstiel,5,Male,No,None,0,0,0,2,Yes,Yes,7,3,No
+253,Dina,09/10/2021,19,11:04,C,Morning,Old KLF,Unknown,NA,Female,No,NA,0,32,2,5,NA,Yes,32,4,Yes
+254,Dina,09/10/2021,19,11:04,C,Morning,Old KLF,Unknown,NA,Female,No,NA,0,38,2,3,NA,Yes,68,4,Yes
+255,Dina,09/10/2021,19,11:04,C,Morning,Old KLF,Fritz,13,Male,Yes,Fritz,19,12,2,2,Yes,No,95,0,Yes
+256,Dina,09/10/2021,19,11:06,D,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,7,19,1,0,No,Yes,31,3,Yes
+257,Dina,09/10/2021,19,11:06,D,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,9,11,1,3,No,Yes,21,12,Yes
+258,Dina,09/10/2021,19,11:07,D,Morning,Old KLF,Lindy Hop,11,Male,No,None,0,0,0,1,Yes,Yes,19,6,No
+259,Dina,09/10/2021,19,11:08,D,Morning,Old KLF,Anthony,4,Female,No,None,0,0,0,2,Yes,Yes,84,2,No
+260,Dina,09/10/2021,19,11:08,D,Morning,Old KLF,Bernard,14,Male,No,Lukka,0,9,2,6,Yes,Yes,84,17,Yes
+261,Dina,09/10/2021,19,11:10,D,Morning,Old KLF,Severin,3,Male,No,None,0,0,0,1,No,Yes,9,2,No
+262,Dina,09/10/2021,19,11:12,E,Morning,Old KLF,Unknown,NA,Male,No,None,0,0,0,4,NA,Yes,50,4,No
+263,Dina,09/10/2021,19,11:12,E,Morning,Old KLF,Jumper,11,Male,No,None,0,0,0,5,Yes,Yes,80,13,No
+264,Dina,09/10/2021,19,11:12,E,Morning,Old KLF,Birne,7,Male,No,Birne,11,0,0,3,Yes,Yes,69,4,Yes
+265,Dina,09/10/2021,19,11:15,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,21,14,1,1,Yes,Yes,48,2,Yes
+266,Dina,10/10/2021,20,17:13,A,Evening,Gamepark,Baycox,16,Male,No,None,0,0,0,0,No,Yes,62,6,No
+267,Dina,10/10/2021,20,17:17,B,Evening,Gamepark,Lauffuss,8,Female,No,Demant,0,7,2,5,Yes,Yes,43,4,Yes
+268,Dina,10/10/2021,20,17:17,B,Evening,Gamepark,Koarl,3,Male,No,Koarl,15,5,1,2,No,Yes,26,8,Yes
+269,Dina,10/10/2021,20,17:19,C,Evening,Gamepark,Allegra,22,Male,No,Allegra,15,7,1,2,Yes,Yes,41,11,Yes
+270,Dina,10/10/2021,20,17:15,B,Evening,Gamepark,Hedwig,7,Male,No,Idgie,0,45,6,7,No,Yes,390,30,Yes
+271,Dina,10/10/2021,20,17:23,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,14,11,3,5,Yes,Yes,14,6,Yes
+272,Dina,10/10/2021,20,17:24,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,59,28,2,5,Yes,Yes,81,4,Yes
+273,Dina,10/10/2021,20,17:25,E,Evening,Gamepark,Longshanks,15,Female,No,Belmont,10,49,1,3,Yes,Yes,90,4,Yes
+274,Dina,11/10/2021,21,10:00,A,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,9,0,0,2,No,Yes,25,4,Yes
+275,Dina,11/10/2021,21,10:10,B,Morning,Old KLF,Bon Jovi,12,Female,No,None,0,0,0,1,Yes,Yes,71,2,No
+276,Dina,11/10/2021,21,10:12,B,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,14,0,0,1,Yes,Yes,23,2,Yes
+277,Dina,11/10/2021,21,10:14,C,Morning,Old KLF,L'amour,6,Male,Yes,L'amour,23,63,5,8,Yes,Yes,101,10,Yes
+278,Dina,11/10/2021,21,10:16,C,Morning,Old KLF,Batate,7,Female,No,Jurek,0,4,1,0,Yes,Yes,20,2,Yes
+279,Dina,11/10/2021,21,10:19,C,Morning,Old KLF,Kiki,2,Male,No,None,0,0,0,1,Yes,No,40,0,No
+280,Dina,11/10/2021,21,10:20,C,Morning,Old KLF,Semibear,1,Female,No,None,0,0,0,2,Yes,No,53,0,No
+281,Dina,11/10/2021,21,10:21,D,Morning,Old KLF,Besenstiel,5,Male,No,Besenstiel,11,0,0,1,Yes,Yes,20,3,Yes
+282,Dina,11/10/2021,21,10:24,D,Morning,Old KLF,Unknown,NA,Female,No,NA,0,0,0,2,NA,Yes,30,2,No
+283,Dina,11/10/2021,21,10:24,D,Morning,Old KLF,Barbados,18,Female,Yes,Joshua,0,14,1,7,Yes,Yes,35,16,Yes
+284,Dina,11/10/2021,21,10:25,D,Morning,Old KLF,Ballantine,13,Male,Yes,Ballantine,22,14,2,3,No,Yes,86,4,Yes
+285,Dina,11/10/2021,21,10:25,D,Morning,Old KLF,Ballantine,13,Male,Yes,Ballantine,32,29,3,5,No,Yes,118,7,Yes
+286,Dina,11/10/2021,21,10:25,D,Morning,Old KLF,Ballantine,13,Male,Yes,Ballantine,81,38,2,11,Yes,Yes,139,15,Yes
+287,Dina,11/10/2021,21,10:26,D,Morning,Old KLF,Beaker Parker,1,Male,No,Jafar,0,4,1,6,No,Yes,8,4,Yes
+288,Dina,11/10/2021,21,10:27,E,Morning,Old KLF,Bumblebee,5,Female,Yes,Jafar,0,10,1,3,No,Yes,8,8,Yes
+289,Dina,11/10/2021,21,10:27,E,Morning,Old KLF,Babaco,7,Male,Yes,Lukka,25,35,5,4,No,Yes,23,8,Yes
+290,Dina,11/10/2021,21,10:28,E,Morning,Old KLF,Bernard,14,Male,No,Bernard,10,23,3,2,Yes,Yes,33,10,Yes
+291,Dina,11/10/2021,21,10:30,E,Morning,Old KLF,Lavander,7,Female,No,Lavander,16,28,3,4,Yes,Yes,30,2,Yes
+292,Dina,11/10/2021,21,10:31,E,Morning,Old KLF,Bruce Springsteen,12,Male,No,Bruce Springsteen,4,0,0,2,Yes,Yes,3,4,Yes
+293,Dina,11/10/2021,21,10:31,E,Morning,Old KLF,Allegra,22,Male,No,Allegra,4,0,0,2,Yes,Yes,30,4,Yes
+294,Dina,11/10/2021,21,10:32,E,Morning,Old KLF,Demant,7,Male,No,None,0,0,0,2,Yes,Yes,16,3,No
+295,Dina,11/10/2021,21,10:32,E,Morning,Old KLF,Ernst,5,Male,No,None,0,0,0,1,Yes,Yes,7,2,No
+296,Dina,11/10/2021,21,10:32,E,Morning,Old KLF,Bianka,14,Male,No,None,0,0,0,4,Yes,Yes,86,3,No
+297,Dina,11/10/2021,21,10:33,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,44,102,3,4,Yes,Yes,76,7,Yes
+298,Dina,11/10/2021,22,17:30,A,Evening,Gamepark,Lupin,10,Female,No,Demant,0,11,3,5,Yes,Yes,120,17,Yes
+299,Dina,11/10/2021,22,17:33,A,Evening,Gamepark,Joe,9,Male,No,Fritz,7,21,4,5,No,Yes,4,14,Yes
+300,Dina,11/10/2021,22,17:34,B,Evening,Gamepark,Babaco,7,Male,Yes,Fritz,21,127,4,5,No,Yes,42,12,Yes
+301,Dina,11/10/2021,22,17:35,B,Evening,Gamepark,Disney,6,Female,No,Dorothea,5,33,3,3,Yes,Yes,27,4,Yes
+302,Dina,11/10/2021,22,17:38,C,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,10,2,1,1,No,No,30,0,Yes
+303,Dina,11/10/2021,22,17:39,C,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,25,10,2,3,No,Yes,42,3,Yes
+304,Dina,11/10/2021,22,17:41,D,Evening,Gamepark,Belmont,15,Male,No,Belmont,4,1,1,6,Yes,Yes,16,6,Yes
+305,Dina,11/10/2021,22,17:42,D,Evening,Gamepark,Bianka,14,Male,No,Bianka,52,23,1,0,Yes,No,161,0,Yes
+306,Dina,11/10/2021,22,14:46,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,105,28,1,0,Yes,Yes,120,2,Yes
+307,Dina,13/10/2021,23,11:17,A,Morning,Old KLF,Kendo,10,Female,Yes,Fritz,5,9,2,2,Yes,Yes,30,7,Yes
+308,Dina,13/10/2021,23,11:18,A,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,14,5,1,3,No,Yes,18,4,Yes
+309,Dina,13/10/2021,23,11:18,A,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,12,0,0,3,No,Yes,17,13,Yes
+310,Dina,13/10/2021,23,11:19,A,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,20,5,1,8,Yes,Yes,28,20,Yes
+311,Dina,13/10/2021,23,11:20,B,Morning,Old KLF,Barbados,18,Female,Yes,Barbados,14,4,1,4,No,Yes,27,16,Yes
+312,Dina,13/10/2021,23,11:21,B,Morning,Old KLF,Babaco,7,Male,Yes,Bruce Springsteen,0,5,1,7,No,Yes,3,11,Yes
+313,Dina,13/10/2021,23,11:21,B,Morning,Old KLF,Lindy Hop,11,Male,No,None,0,0,0,3,Yes,Yes,3,2,No
+314,Dina,13/10/2021,23,11:21,B,Morning,Old KLF,Jurek,8,Male,No,Bacardi,3,2,1,5,Yes,Yes,15,2,Yes
+315,Dina,13/10/2021,23,11:22,C,Morning,Old KLF,Bayou,15,Male,No,Birne,0,4,1,10,No,Yes,48,11,Yes
+316,Dina,13/10/2021,23,11:23,C,Morning,Old KLF,Janosch,5,Male,No,Janosch,15,31,2,5,Yes,Yes,63,13,Yes
+317,Dina,13/10/2021,23,11:27,E,Morning,Old KLF,Severin,3,Male,No,Severin,10,0,0,3,Yes,Yes,15,4,Yes
+318,Dina,13/10/2021,23,11:27,E,Morning,Old KLF,Kolibri,11,Male,No,Kolibri,0,0,0,0,No,Yes,27,2,Yes
+319,Dina,13/10/2021,24,17:43,A,Evening,Gamepark,Oberlix,2,Male,No,Fritz,0,10,1,5,Yes,Yes,91,2,Yes
+320,Dina,13/10/2021,24,17:43,A,Evening,Gamepark,Oberlix,2,Male,No,Fritz,0,8,1,3,Yes,Yes,21,2,Yes
+321,Dina,13/10/2021,24,17:45,A,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,3,2,1,2,No,No,60,0,Yes
+322,Dina,13/10/2021,24,17:46,A,Evening,Gamepark,Die Lisa,3,Female,No,Jafar,0,10,1,1,No,Yes,32,1,Yes
+323,Dina,13/10/2021,24,17:48,B,Evening,Gamepark,Unknown,NA,Female,No,NA,11,6,4,3,NA,Yes,20,7,Yes
+324,Dina,13/10/2021,24,17:48,B,Evening,Gamepark,Dimitri,4,Male,No,Jafar,2,11,3,6,No,Yes,10,3,Yes
+325,Dina,13/10/2021,24,17:49,B,Evening,Gamepark,Bumblebee,5,Female,Yes,None,0,0,0,2,No,Yes,3,10,No
+326,Dina,13/10/2021,24,17:49,B,Evening,Gamepark,Koarl,3,Male,No,Koarl,5,0,0,7,Yes,Yes,9,12,Yes
+327,Dina,13/10/2021,24,17:50,B,Evening,Gamepark,Ernst,5,Male,No,None,0,0,0,1,Yes,Yes,45,2,No
+328,Dina,13/10/2021,24,17:50,B,Evening,Gamepark,Romy,4,Female,No,Fritz,0,2,1,4,Yes,No,45,0,Yes
+329,Dina,13/10/2021,24,17:51,B,Evening,Gamepark,Lindy Hop,11,Male,No,Fritz,0,5,1,2,Yes,Yes,15,3,Yes
+330,Dina,13/10/2021,24,17:51,B,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,10,9,2,7,No,Yes,16,4,Yes
+331,Dina,13/10/2021,24,17:52,B,Evening,Gamepark,Fritz,13,Male,Yes,None,0,0,0,7,Yes,Yes,5,9,No
+332,Dina,13/10/2021,24,17:55,C,Evening,Gamepark,Bon Jovi,12,Female,No,Jurek,0,31,2,6,Yes,Yes,108,10,Yes
+333,Dina,13/10/2021,24,17:57,D,Evening,Gamepark,Leia,13,Female,Yes,Leia,20,10,1,7,No,Yes,47,14,Yes
+334,Dina,13/10/2021,24,17:58,D,Evening,Gamepark,Leia,13,Female,Yes,Leia,23,0,0,5,No,Yes,23,11,Yes
+335,Dina,13/10/2021,24,17:58,D,Evening,Gamepark,Leia,13,Female,Yes,Leia,7,3,1,5,No,Yes,15,9,Yes
+336,Dina,13/10/2021,24,17:59,D,Evening,Gamepark,Leia,13,Female,Yes,Leia,12,14,3,5,Yes,Yes,12,26,Yes
+337,Dina,13/10/2021,24,18:05,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,35,12,1,1,Yes,Yes,137,2,Yes
+338,Dina,15/10/2021,25,17:15,A,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,15,0,0,6,Yes,No,62,0,Yes
+339,Dina,15/10/2021,25,17:17,A,Evening,Gamepark,Pudding,4,Female,Yes,None,0,0,0,5,No,No,47,0,No
+340,Dina,15/10/2021,25,17:48,D,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,59,5,1,7,Yes,No,120,0,Yes
+341,Dina,15/10/2021,25,17:50,D,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,9,0,0,3,Yes,No,40,0,Yes
+342,Dina,15/10/2021,25,17:51,D,Evening,Gamepark,Edes,22,Male,No,None,0,0,0,6,No,Yes,14,3,No
+343,Dina,15/10/2021,25,17:51,D,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,15,5,1,7,Yes,Yes,11,11,Yes
+344,Dina,15/10/2021,25,17:56,D,Evening,Gamepark,Oberlix,2,Male,No,None,0,0,0,11,Yes,Yes,39,6,No
+345,Dina,15/10/2021,25,17:57,D,Evening,Gamepark,Dunja,5,Male,No,None,0,0,0,9,No,Yes,22,2,No
+346,Dina,15/10/2021,25,17:57,D,Evening,Gamepark,Oberlix,2,Male,No,Leia,0,5,0,7,Yes,No,60,0,Yes
+347,Dina,15/10/2021,25,18:03,E,Evening,Gamepark,Leia,13,Female,Yes,Leia,6,4,1,3,No,No,88,0,Yes
+348,Dina,15/10/2021,25,18:05,E,Evening,Gamepark,Einstein,6,Female,No,None,0,0,0,1,No,No,19,0,No
+349,Dina,15/10/2021,25,18:07,E,Evening,Gamepark,Einstein,6,Female,No,Leia,0,5,1,3,Yes,Yes,6,2,Yes
+350,Dina,15/10/2021,25,18:07,E,Evening,Gamepark,Leia,13,Female,Yes,Leia,208,59,2,8,Yes,Yes,237,7,Yes
+351,Dina,15/10/2021,25,18:10,E,Evening,Gamepark,Unknown,NA,Female,Yes,NA,23,13,2,20,NA,Yes,25,14,Yes
+352,Dina,15/10/2021,25,18:13,E,Evening,Gamepark,Semibear,1,Female,No,Bruce Springsteen,0,80,4,10,Yes,Yes,158,5,Yes
+353,Dina,15/10/2021,25,18:16,E,Evening,Gamepark,Unknown,NA,Female,Yes,NA,22,8,1,5,NA,Yes,28,9,Yes
+354,Dina,15/10/2021,25,18:17,E,Evening,Gamepark,Idgie,17,Male,Yes,Babaco,0,9,1,3,Yes,Yes,5,20,Yes
+355,Dina,15/10/2021,25,18:17,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,18,11,2,4,No,Yes,15,2,Yes
+356,Dina,15/10/2021,25,18:18,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,32,20,2,7,Yes,Yes,60,4,Yes
+357,Dina,15/10/2021,25,18:19,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,6,5,1,1,No,Yes,5,30,Yes
+358,Dina,15/10/2021,25,18:23,E,Evening,Gamepark,Paso,11,Male,Yes,Paso,26,70,3,2,Yes,Yes,24,6,Yes
+359,Dina,15/10/2021,25,18:24,E,Evening,Gamepark,Allegra,22,Male,No,Allegra,9,6,1,1,Yes,Yes,20,2,Yes
+360,Dina,16/10/2021,26,10:56,A,Morning,Old KLF,Ornella,3,Female,No,Koarl,0,3,1,2,Yes,No,72,0,Yes
+361,Dina,16/10/2021,27,16:41,A,Evening,Gamepark,Krummel,2,Female,No,None,0,0,0,1,Yes,Yes,45,2,Yes
+362,Dina,16/10/2021,27,16:43,A,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,76,40,2,3,Yes,Yes,108,6,Yes
+363,Dina,16/10/2021,27,16:47,B,Evening,Gamepark,Unknown,NA,Male,No,NA,0,0,0,8,NA,Yes,20,6,No
+364,Dina,16/10/2021,27,16:48,B,Evening,Gamepark,Pudding,4,Female,Yes,Pudding,4,9,1,2,Yes,Yes,173,24,Yes
+365,Dina,16/10/2021,27,16:51,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,30,26,2,6,Yes,Yes,25,13,Yes
+366,Dina,16/10/2021,27,16:58,D,Evening,Gamepark,Koarl,3,Male,No,Koarl,7,0,0,2,Yes,Yes,33,3,Yes
+367,Dina,16/10/2021,27,17:00,D,Evening,Gamepark,Bianka,14,Male,No,Bianka,8,18,2,1,Yes,Yes,32,4,Yes
+368,Dina,16/10/2021,27,17:02,E,Evening,Gamepark,Lavander,7,Female,No,None,0,0,0,2,Yes,Yes,123,1,No
+369,Dina,16/10/2021,27,17:05,E,Evening,Gamepark,Lavander,7,Female,No,None,0,0,0,1,Yes,Yes,48,2,No
+370,Dina,16/10/2021,27,17:05,E,Evening,Gamepark,Bon Jovi,12,Female,No,Edes,0,11,1,0,Yes,Yes,11,2,Yes
+371,Dina,17/10/2021,28,10:27,A,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,33,18,2,5,Yes,No,133,0,Yes
+372,Dina,17/10/2021,28,10:30,A,Morning,Old KLF,Bianka,14,Male,No,Bianka,12,26,2,4,Yes,Yes,23,9,Yes
+373,Dina,17/10/2021,28,10:33,B,Morning,Old KLF,Bayou,15,Male,No,L'amour,0,8,2,5,Yes,Yes,29,2,Yes
+374,Dina,17/10/2021,28,10:35,B,Morning,Old KLF,Bernard,14,Male,No,Leia,0,16,3,10,Yes,No,65,0,Yes
+375,Dina,17/10/2021,28,10:37,B,Morning,Old KLF,Leia,13,Female,Yes,Leia,18,5,2,8,Yes,Yes,49,12,Yes
+376,Dina,17/10/2021,28,10:38,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,27,9,2,10,Yes,Yes,42,14,Yes
+377,Dina,17/10/2021,28,10:39,C,Morning,Old KLF,Semibear,1,Female,No,None,0,0,0,2,Yes,Yes,19,7,No
+378,Dina,17/10/2021,28,10:41,C,Morning,Old KLF,Ernst,5,Male,No,Rili,3,4,1,3,Yes,Yes,25,2,Yes
+379,Dina,17/10/2021,28,10:42,D,Morning,Old KLF,Allegra,22,Male,No,Allegra,4,18,4,2,No,Yes,20,20,Yes
+380,Dina,17/10/2021,28,10:42,D,Morning,Old KLF,Baldrian,16,Male,No,Allegra,5,7,1,4,Yes,Yes,26,12,Yes
+381,Dina,17/10/2021,28,10:50,E,Morning,Old KLF,Burglar,10,Male,No,Burglar,17,0,0,0,No,No,75,0,Yes
+382,Dina,17/10/2021,28,10:51,E,Morning,Old KLF,Burglar,10,Male,No,Burglar,28,0,0,1,Yes,Yes,38,2,Yes
+383,Dina,17/10/2021,29,17:28,A,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,72,79,4,4,Yes,Yes,143,2,Yes
+384,Dina,17/10/2021,29,17:32,A,Evening,Gamepark,Fritz,13,Male,Yes,Paso,55,42,3,9,Yes,Yes,174,6,Yes
+385,Dina,17/10/2021,29,17:35,B,Evening,Gamepark,Janosch,5,Male,No,Janosch,26,28,2,4,Yes,No,62,0,Yes
+386,Dina,17/10/2021,29,17:35,B,Evening,Gamepark,Lupin,10,Female,No,Leia,0,47,5,10,No,Yes,44,5,Yes
+387,Dina,17/10/2021,29,17:36,B,Evening,Gamepark,Paso,11,Male,Yes,Paso,4,6,2,5,Yes,Yes,11,8,Yes
+388,Dina,17/10/2021,29,17:37,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,14,6,2,4,No,Yes,65,17,Yes
+389,Dina,17/10/2021,29,17:38,B,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,3,1,1,1,No,Yes,11,4,Yes
+390,Dina,17/10/2021,29,17:39,B,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,33,5,5,Yes,No,60,0,Yes
+391,Dina,17/10/2021,29,17:41,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,97,60,1,7,Yes,Yes,124,7,Yes
+392,Dina,17/10/2021,29,17:43,C,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,45,2,9,Yes,No,107,0,Yes
+393,Dina,17/10/2021,29,17:44,C,Evening,Gamepark,Semibear,1,Female,No,None,0,0,0,4,Yes,Yes,28,5,No
+394,Dina,17/10/2021,29,17:45,C,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,22,16,3,8,Yes,Yes,23,4,Yes
+395,Dina,17/10/2021,29,17:45,C,Evening,Gamepark,Bjorn,1,Female,No,Barbados,0,44,2,7,Yes,Yes,26,8,Yes
+396,Dina,17/10/2021,29,17:47,C,Evening,Gamepark,Pudding,4,Female,Yes,Idgie,0,5,2,2,No,Yes,15,3,Yes
+397,Dina,17/10/2021,29,17:49,D,Evening,Gamepark,Pudding,4,Female,Yes,Idgie,0,30,2,5,Yes,Yes,42,8,Yes
+398,Dina,17/10/2021,29,17:50,D,Evening,Gamepark,Unknown,NA,Female,No,None,0,0,0,5,NA,Yes,15,7,No
+399,Dina,17/10/2021,29,17:50,D,Evening,Gamepark,Bacardi,13,Male,No,Bacardi,7,4,1,2,Yes,Yes,147,9,Yes
+400,Dina,17/10/2021,29,17:52,D,Evening,Gamepark,Allegra,22,Male,No,Allegra,11,34,2,3,Yes,Yes,60,7,Yes
+401,Dina,17/10/2021,29,17:53,D,Evening,Gamepark,Allegra,22,Male,No,Allegra,23,9,2,2,No,Yes,22,32,Yes
+402,Dina,17/10/2021,29,17:54,D,Evening,Gamepark,Allegra,22,Male,No,Allegra,13,26,4,6,Yes,No,78,0,Yes
+403,Dina,17/10/2021,29,17:57,E,Evening,Gamepark,Allegra,22,Male,No,Allegra,7,39,2,3,No,No,73,0,Yes
+404,Dina,17/10/2021,29,17:58,E,Evening,Gamepark,Allegra,22,Male,No,Allegra,30,25,3,2,Yes,Yes,64,2,Yes
+405,Dina,17/10/2021,29,17:59,E,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,46,49,2,5,Yes,Yes,48,7,Yes
+406,Dina,17/10/2021,29,18:00,E,Evening,Gamepark,Smoky,21,Male,No,Bianka,0,55,2,3,No,Yes,51,5,Yes
+407,Dina,18/10/2021,30,10:50,A,Morning,Old KLF,Ornella,3,Female,No,None,0,0,0,2,Yes,Yes,75,3,No
+408,Dina,18/10/2021,30,10:52,A,Morning,Old KLF,Leia,13,Female,Yes,Leia,41,37,2,11,Yes,Yes,75,7,Yes
+409,Dina,18/10/2021,30,10:54,A,Morning,Old KLF,Joshua,19,Male,Yes,Barbados,19,20,1,8,Yes,Yes,27,9,Yes
+410,Dina,18/10/2021,30,10:56,A,Morning,Old KLF,Julian,19,Male,No,None,0,0,0,0,No,Yes,3,1,No
+411,Dina,18/10/2021,30,10:57,A,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,33,6,1,3,No,Yes,34,2,Yes
+412,Dina,18/10/2021,30,10:57,A,Morning,Old KLF,Unknown,NA,Male,No,None,0,0,0,2,NA,Yes,60,2,No
+413,Dina,18/10/2021,30,10:58,A,Morning,Old KLF,Triton,5,Female,Yes,Triton,5,7,1,2,No,Yes,6,7,Yes
+414,Dina,18/10/2021,30,10:59,A,Morning,Old KLF,Anthony,4,Female,No,Janosch,0,13,1,2,Yes,Yes,29,4,Yes
+415,Dina,18/10/2021,30,10:59,A,Morning,Old KLF,Hera,4,Male,No,Hera,4,10,1,6,Yes,Yes,17,8,Yes
+416,Dina,18/10/2021,30,11:00,B,Morning,Old KLF,Burglar,10,Male,No,Burglar,21,0,0,4,No,Yes,28,4,Yes
+417,Dina,18/10/2021,30,11:00,B,Morning,Old KLF,Rubezahl,5,Female,No,None,0,0,0,3,Yes,Yes,5,9,No
+418,Dina,18/10/2021,30,11:01,B,Morning,Old KLF,Trevor,8,Female,No,None,0,0,0,2,Yes,Yes,8,8,No
+419,Dina,18/10/2021,30,11:01,B,Morning,Old KLF,Jurek,8,Male,No,Jurek,9,2,1,1,Yes,Yes,5,2,Yes
+420,Dina,18/10/2021,30,11:02,B,Morning,Old KLF,Erdbeere,5,Male,No,Lukka,0,4,1,8,Yes,Yes,26,10,Yes
+421,Dina,18/10/2021,30,11:02,B,Morning,Old KLF,Diamante,7,Female,No,Allegra,0,3,1,3,Yes,No,72,0,Yes
+422,Dina,18/10/2021,30,11:22,D,Morning,Old KLF,Rili,4,Male,No,Rili,20,3,1,2,Yes,Yes,90,4,Yes
+423,Dina,18/10/2021,30,11:22,D,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,82,38,1,7,Yes,Yes,108,10,Yes
+424,Dina,18/10/2021,30,11:34,E,Morning,Old KLF,Ginny,16,Female,No,Ginny,8,62,4,4,Yes,Yes,114,3,Yes
+425,Dina,18/10/2021,31,16:52,A,Evening,Gamepark,Oberlix,2,Male,No,None,0,0,0,2,Yes,Yes,25,3,No
+426,Dina,18/10/2021,31,16:59,A,Evening,Gamepark,Lotta,8,Female,No,Idgie,0,3,1,1,Yes,Yes,7,2,Yes
+427,Dina,18/10/2021,31,17:01,A,Evening,Gamepark,Ernst,5,Male,No,L'amour,0,9,2,5,Yes,Yes,61,2,Yes
+428,Dina,18/10/2021,31,17:04,A,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,8,2,4,Yes,Yes,26,5,Yes
+429,Dina,18/10/2021,31,17:04,A,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,33,3,3,Yes,Yes,55,12,Yes
+430,Dina,18/10/2021,31,17:06,A,Evening,Gamepark,Unknown,NA,Female,No,NA,8,0,0,2,NA,Yes,24,2,No
+431,Dina,18/10/2021,31,17:11,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,29,24,4,6,No,No,85,0,Yes
+432,Dina,18/10/2021,31,17:12,B,Evening,Gamepark,Lukka,14,Female,No,Lukka,13,12,2,4,Yes,Yes,50,14,Yes
+433,Dina,18/10/2021,31,17:17,B,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,90,94,3,12,Yes,Yes,147,10,Yes
+434,Dina,18/10/2021,31,17:20,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,42,10,1,5,Yes,Yes,52,7,Yes
+435,Dina,18/10/2021,31,17:29,C,Evening,Gamepark,Krummel,2,Female,No,Janosch,0,4,1,3,Yes,Yes,55,4,Yes
+436,Dina,18/10/2021,31,17:30,C,Evening,Gamepark,Dagobert,5,Male,No,Dagobert,6,10,1,4,Yes,Yes,70,2,Yes
+437,Dina,18/10/2021,31,17:31,C,Evening,Gamepark,Janosch,5,Male,No,Janosch,7,0,0,1,Yes,Yes,6,2,Yes
+438,Dina,18/10/2021,31,17:31,C,Evening,Gamepark,Unknown,NA,Female,No,Leia,0,12,1,2,NA,Yes,10,8,Yes
+439,Dina,18/10/2021,31,17:31,C,Evening,Gamepark,Unknown,NA,Female,No,Leia,4,10,1,2,NA,Yes,8,8,Yes
+440,Dina,18/10/2021,31,17:31,C,Evening,Gamepark,Leia,13,Female,Yes,Leia,38,12,1,4,No,Yes,60,5,Yes
+441,Dina,18/10/2021,31,17:33,C,Evening,Gamepark,Bacardi,13,Male,No,Lukka,0,5,1,4,Yes,Yes,97,9,Yes
+442,Dina,18/10/2021,31,17:34,C,Evening,Gamepark,Eastwood,2,Male,No,None,0,0,0,5,Yes,Yes,16,20,No
+443,Dina,18/10/2021,31,17:35,C,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,17,7,1,3,Yes,Yes,20,7,Yes
+444,Dina,18/10/2021,31,17:35,C,Evening,Gamepark,Hedwig,7,Male,No,Bruce Springsteen,0,2,0,2,No,Yes,2,2,Yes
+445,Dina,18/10/2021,31,17:53,E,Evening,Gamepark,Unknown,NA,Male,No,NA,0,0,0,2,NA,Yes,10,2,No
+446,Dina,18/10/2021,31,17:54,E,Evening,Gamepark,Rili,4,Male,No,Rili,2,0,0,1,Yes,Yes,12,2,Yes
+447,Dina,18/10/2021,31,17:55,E,Evening,Gamepark,Severin,3,Male,No,Joshua,0,10,14,7,Yes,Yes,21,4,Yes
+448,Dina,18/10/2021,31,17:56,E,Evening,Gamepark,Trevor,8,Female,No,Joshua,0,4,1,3,Yes,Yes,5,2,Yes
+449,Dina,18/10/2021,31,17:56,E,Evening,Gamepark,Lando,13,Female,No,Joshua,0,3,1,1,Yes,Yes,4,4,Yes
+450,Dina,18/10/2021,31,17:56,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,8,7,1,2,No,No,45,0,Yes
+451,Dina,18/10/2021,31,17:59,E,Evening,Gamepark,Edes,22,Male,No,Edes,19,35,3,3,Yes,Yes,78,4,Yes
+452,Dina,18/10/2021,31,18:00,E,Evening,Gamepark,Pudding,4,Female,Yes,Joshua,0,39,5,3,No,Yes,12,9,Yes
+453,Dina,18/10/2021,31,18:01,E,Evening,Gamepark,Rocket,4,Female,No,Joshua,0,3,1,7,Yes,Yes,6,11,Yes
+454,Dina,18/10/2021,31,18:01,E,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,69,2,1,Yes,Yes,100,3,Yes
+455,Dina,18/10/2021,31,18:04,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,20,4,1,0,Yes,No,90,0,Yes
+456,Dina,18/10/2021,31,18:06,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,90,15,1,0,Yes,No,106,0,Yes
+457,Dina,18/10/2021,31,18:10,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,17,5,1,1,Yes,Yes,26,2,Yes
+458,Dina,19/10/2021,32,10:24,A,Morning,Old KLF,Bon Jovi,12,Female,No,Idgie,15,43,2,3,Yes,Yes,97,2,Yes
+459,Dina,19/10/2021,32,10:26,A,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,46,18,4,4,Yes,Yes,87,5,Yes
+460,Dina,19/10/2021,32,10:28,B,Morning,Old KLF,Idgie,17,Male,Yes,Idgie,24,15,6,3,Yes,Yes,81,4,Yes
+461,Dina,19/10/2021,32,10:30,C,Morning,Old KLF,Kendosson,1,Female,No,Fritz,0,49,5,2,Yes,Yes,27,1,Yes
+462,Dina,19/10/2021,32,10:30,C,Morning,Old KLF,Fritz,13,Male,Yes,Fritz,20,79,4,3,No,Yes,35,3,Yes
+463,Dina,19/10/2021,32,10:31,D,Morning,Old KLF,Bruce Springsteen,12,Male,No,Bruce Springsteen,23,21,3,1,Yes,Yes,30,5,Yes
+464,Dina,19/10/2021,32,10:32,D,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,9,24,3,6,No,Yes,38,3,Yes
+465,Dina,19/10/2021,32,10:33,E,Morning,Old KLF,Jurek,8,Male,No,Jurek,18,29,2,11,Yes,Yes,27,10,Yes
+466,Dina,19/10/2021,32,10:33,E,Morning,Old KLF,Joshua,19,Male,Yes,Joshua,28,28,2,9,Yes,Yes,38,10,Yes
+467,Dina,19/10/2021,33,16:51,A,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,7,0,0,2,No,Yes,22,6,Yes
+468,Dina,19/10/2021,33,16:51,A,Evening,Gamepark,Ericsson,2,Male,No,Jafar,0,63,3,9,Yes,Yes,76,6,Yes
+469,Dina,19/10/2021,33,16:55,A,Evening,Gamepark,Leia,13,Female,Yes,Leia,110,57,4,9,Yes,Yes,164,7,Yes
+470,Dina,19/10/2021,33,16:58,A,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,5,0,0,3,No,No,47,0,Yes
+471,Dina,19/10/2021,33,17:01,B,Evening,Gamepark,Macchia,4,Female,No,Barbados,0,2,1,7,Yes,Yes,93,2,Yes
+472,Dina,19/10/2021,33,17:02,B,Evening,Gamepark,Rosenrot,5,Female,No,Burglar,0,7,1,7,Yes,Yes,14,7,Yes
+473,Dina,19/10/2021,33,17:03,B,Evening,Gamepark,Bjorn,1,Female,No,Barbados,0,25,2,6,Yes,Yes,7,6,Yes
+474,Dina,19/10/2021,33,17:04,C,Evening,Gamepark,Ornella,3,Female,No,None,0,0,0,3,No,No,185,0,No
+475,Dina,19/10/2021,33,17:08,C,Evening,Gamepark,Romy,4,Female,No,Joshua,0,45,15,9,Yes,Yes,109,11,Yes
+476,Dina,19/10/2021,33,17:09,D,Evening,Gamepark,Unknown,NA,Female,No,NA,0,10,1,5,NA,Yes,21,4,Yes
+477,Dina,19/10/2021,33,17:11,D,Evening,Gamepark,Unknown,NA,Female,No,NA,0,23,1,5,NA,Yes,75,7,Yes
+478,Dina,19/10/2021,33,17:12,D,Evening,Gamepark,Unknown,NA,Female,No,NA,0,15,3,6,NA,Yes,13,9,Yes
+479,Dina,19/10/2021,33,17:12,D,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,32,37,3,9,Yes,Yes,30,8,Yes
+480,Dina,19/10/2021,33,17:13,D,Evening,Gamepark,Lotta,8,Female,No,Jafar,0,28,4,9,Yes,Yes,22,2,Yes
+481,Dina,19/10/2021,33,17:14,D,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,7,0,0,4,Yes,Yes,14,4,Yes
+482,Dina,19/10/2021,33,17:15,E,Evening,Gamepark,Baycox,16,Male,No,Babaco,3,10,1,3,Yes,Yes,36,4,Yes
+483,Dina,19/10/2021,33,17:15,E,Evening,Gamepark,Unknown,NA,Male,No,NA,0,6,1,9,NA,Yes,10,7,Yes
+484,Dina,19/10/2021,33,17:16,E,Evening,Gamepark,Natalie,3,Female,No,Janosch,0,5,1,6,Yes,Yes,13,10,Yes
+485,Dina,19/10/2021,33,17:16,E,Evening,Gamepark,Unknown,NA,Female,Yes,NA,0,5,1,19,NA,Yes,19,15,Yes
+486,Dina,19/10/2021,33,17:16,E,Evening,Gamepark,Jurek,8,Male,No,Jurek,9,5,1,6,Yes,Yes,15,7,Yes
+487,Dina,19/10/2021,33,17:17,E,Evening,Gamepark,Pudding,4,Female,Yes,L'amour,0,10,1,1,Yes,Yes,11,5,Yes
+488,Dina,19/10/2021,33,17:18,E,Evening,Gamepark,Bacardi,13,Male,No,Bacardi,20,8,2,1,Yes,Yes,35,4,Yes
+489,Dina,19/10/2021,33,17:20,E,Evening,Gamepark,L'amour,6,Male,Yes,L'amour,10,25,2,3,No,Yes,39,2,Yes
+490,Dina,19/10/2021,33,17:20,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,15,5,1,2,Yes,Yes,16,4,Yes
+491,Dina,20/10/2021,34,17:24,A,Evening,Gamepark,Lukka,14,Female,No,Lukka,20,63,3,7,Yes,Yes,79,7,Yes
+492,Dina,20/10/2021,34,17:25,A,Evening,Gamepark,Leia,13,Female,Yes,Leia,100,150,6,5,No,Yes,308,24,Yes
+493,Dina,20/10/2021,34,17:30,C,Evening,Gamepark,Leia,13,Female,Yes,Leia,66,16,2,6,No,Yes,57,16,Yes
+494,Dina,20/10/2021,34,17:31,C,Evening,Gamepark,Leia,13,Female,Yes,Leia,79,10,1,7,No,Yes,23,19,Yes
+495,Dina,20/10/2021,34,17:31,C,Evening,Gamepark,Longshanks,15,Female,No,Longshanks,4,44,3,2,Yes,Yes,27,5,Yes
+496,Dina,20/10/2021,34,17:32,D,Evening,Gamepark,Pudding,4,Female,Yes,Longshanks,0,38,5,5,Yes,Yes,67,5,Yes
+497,Dina,20/10/2021,34,17:36,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,52,16,1,0,Yes,Yes,110,2,Yes
+498,Dina,22/10/2021,35,16:47,A,Evening,Gamepark,Lukka,14,Female,No,Lukka,10,7,1,2,Yes,Yes,40,2,Yes
+499,Dina,22/10/2021,35,16:48,A,Evening,Gamepark,Lukka,14,Female,No,Lukka,27,40,2,0,Yes,No,87,0,Yes
+500,Dina,22/10/2021,35,16:54,A,Evening,Gamepark,Pudding,4,Female,Yes,None,0,0,0,3,No,Yes,7,1,No
+501,Dina,22/10/2021,35,16:54,A,Evening,Gamepark,Pudding,4,Female,Yes,Pudding,6,7,1,4,Yes,Yes,45,6,Yes
+502,Dina,22/10/2021,35,16:55,A,Evening,Gamepark,Ernst,5,Male,No,Ernst,29,36,2,3,Yes,No,80,0,Yes
+503,Dina,22/10/2021,35,17:03,B,Evening,Gamepark,Unknown,NA,Female,Yes,None,0,0,0,8,NA,Yes,50,11,No
+504,Dina,22/10/2021,35,17:09,C,Evening,Gamepark,Lukka,14,Female,No,Lukka,22,29,3,2,Yes,Yes,135,2,Yes
+505,Dina,22/10/2021,35,17:13,D,Evening,Gamepark,Lukka,14,Female,No,Lukka,37,37,2,6,Yes,Yes,44,2,Yes
+506,Dina,22/10/2021,35,17:15,D,Evening,Gamepark,Birne,7,Male,No,Birne,9,5,1,6,No,No,96,0,Yes
+507,Dina,22/10/2021,35,17:16,D,Evening,Gamepark,Birne,7,Male,No,Birne,31,24,2,7,Yes,Yes,39,11,Yes
+508,Dina,22/10/2021,35,17:17,D,Evening,Gamepark,Tumnus,5,Female,No,Leonidas,0,1,1,1,Yes,Yes,11,2,Yes
+509,Dina,22/10/2021,35,17:21,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,56,1,1,3,No,No,145,0,Yes
+510,Dina,22/10/2021,35,17:24,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,85,22,1,4,Yes,No,140,0,Yes
+511,Dina,22/10/2021,35,17:27,E,Evening,Gamepark,Paso,11,Male,Yes,Paso,41,96,3,3,Yes,Yes,39,5,Yes
+512,Dina,22/10/2021,35,17:28,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,6,10,2,2,No,Yes,5,6,Yes
+513,Dina,23/10/2021,36,11:16,A,Morning,Old KLF,Baptiste,1,Female,No,Joshua,0,71,2,8,Yes,Yes,84,7,Yes
+514,Dina,23/10/2021,36,11:18,A,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,34,15,1,4,Yes,Yes,99,5,Yes
+515,Dina,23/10/2021,36,11:20,A,Morning,Old KLF,Lotta,8,Female,No,Kolibri,0,5,1,1,Yes,Yes,15,4,Yes
+516,Dina,23/10/2021,36,11:21,A,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,15,2,1,1,Yes,Yes,27,2,Yes
+517,Dina,23/10/2021,36,11:21,A,Morning,Old KLF,Hera,4,Male,No,Hera,6,0,0,1,Yes,Yes,53,2,Yes
+518,Dina,23/10/2021,36,11:24,A,Morning,Old KLF,Jurek,8,Male,No,Jurek,21,2,1,3,Yes,Yes,38,3,Yes
+519,Dina,23/10/2021,36,11:25,A,Morning,Old KLF,Lukka,14,Female,No,Lukka,25,12,1,4,Yes,Yes,71,2,Yes
+520,Dina,23/10/2021,36,11:27,B,Morning,Old KLF,Lupin,10,Female,No,None,0,0,0,7,Yes,Yes,181,3,No
+521,Dina,23/10/2021,36,11:29,B,Morning,Old KLF,Sherlock,6,Male,No,Sherlock,1,0,0,4,No,Yes,23,6,Yes
+522,Dina,23/10/2021,36,11:31,B,Morning,Old KLF,Besenstiel,5,Male,No,Besenstiel,14,0,0,4,Yes,No,67,0,Yes
+523,Dina,23/10/2021,36,11:32,B,Morning,Old KLF,Bayou,15,Male,No,Bayou,22,26,1,6,Yes,Yes,34,3,Yes
+524,Dina,23/10/2021,36,11:33,B,Morning,Old KLF,Burglar,10,Male,No,Burglar,5,2,1,2,Yes,Yes,20,4,Yes
+525,Dina,23/10/2021,36,11:34,B,Morning,Old KLF,Bruce Springsteen,12,Male,No,Bruce Springsteen,2,0,0,5,Yes,Yes,10,10,Yes
+526,Dina,23/10/2021,36,11:36,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,11,9,1,2,No,No,80,0,Yes
+527,Dina,23/10/2021,36,11:39,C,Morning,Old KLF,Koarl,3,Male,No,Koarl,23,0,0,4,Yes,Yes,37,3,Yes
+528,Dina,23/10/2021,36,11:40,C,Morning,Old KLF,Dagobert,5,Male,No,Baycox,0,3,1,8,Yes,Yes,36,9,Yes
+529,Dina,23/10/2021,36,11:41,C,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,13,0,0,5,Yes,Yes,18,6,Yes
+530,Dina,23/10/2021,36,11:43,D,Morning,Old KLF,Janosch,5,Male,No,Janosch,7,2,1,0,No,No,60,0,Yes
+531,Dina,23/10/2021,36,11:45,D,Morning,Old KLF,Burglar,10,Male,No,Burglar,10,0,0,1,No,No,60,0,Yes
+532,Dina,23/10/2021,36,11:52,E,Morning,Old KLF,Burglar,10,Male,No,Burglar,22,30,1,3,No,No,107,0,Yes
+533,Dina,23/10/2021,36,11:53,E,Morning,Old KLF,Burglar,10,Male,No,Burglar,40,0,0,5,Yes,Yes,23,3,Yes
+534,Dina,23/10/2021,36,11:54,E,Morning,Old KLF,Janosch,5,Male,No,Janosch,12,0,0,2,Yes,Yes,17,3,Yes
+535,Dina,23/10/2021,36,11:54,E,Morning,Old KLF,Dunja,5,Male,No,None,0,0,0,1,Yes,Yes,27,2,No
+536,Dina,23/10/2021,36,11:55,E,Morning,Old KLF,Allegra,22,Male,No,Allegra,38,5,1,3,Yes,Yes,30,4,Yes
+537,Dina,23/10/2021,36,11:56,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,89,0,0,0,No,No,255,0,Yes
+538,Dina,23/10/2021,36,12:00,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,135,42,1,2,Yes,Yes,163,2,Yes
+539,Dina,23/10/2021,37,17:01,A,Evening,Gamepark,Bacardi,13,Male,No,None,0,0,0,1,No,Yes,11,2,No
+540,Dina,23/10/2021,37,17:07,A,Evening,Gamepark,Unknown,NA,Female,No,None,0,0,0,4,NA,Yes,60,6,No
+541,Dina,23/10/2021,37,17:07,A,Evening,Gamepark,Unknown,NA,Female,Yes,None,0,0,0,5,NA,Yes,10,7,No
+542,Dina,23/10/2021,37,17:15,B,Evening,Gamepark,Unknown,NA,Male,No,Baycox,5,0,0,4,NA,Yes,5,2,Yes
+543,Dina,23/10/2021,37,17:15,B,Evening,Gamepark,Baycox,14,Male,No,Baycox,8,0,0,4,No,Yes,14,10,Yes
+544,Dina,23/10/2021,37,17:16,C,Evening,Gamepark,Unknown,NA,Female,Yes,None,0,0,0,6,NA,Yes,30,7,No
+545,Dina,23/10/2021,37,17:18,C,Evening,Gamepark,Baycox,16,Male,No,Baycox,3,0,0,2,No,No,91,0,Yes
+546,Dina,23/10/2021,37,17:19,C,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,37,28,1,6,Yes,Yes,64,14,Yes
+547,Dina,23/10/2021,37,17:21,C,Evening,Gamepark,Jafar,5,Male,Yes,Jafar,11,0,0,2,Yes,Yes,51,5,Yes
+548,Dina,23/10/2021,37,17:22,C,Evening,Gamepark,Einstein,6,Female,No,Birne,0,11,1,4,Yes,Yes,35,13,Yes
+549,Dina,23/10/2021,37,17:23,D,Evening,Gamepark,Leia,13,Female,Yes,Leia,170,173,5,13,Yes,Yes,308,35,Yes
+550,Dina,23/10/2021,37,17:29,D,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,211,89,3,5,Yes,Yes,242,6,Yes
+551,Dina,23/10/2021,37,17:34,E,Evening,Gamepark,Belmont,15,Male,No,Belmont,8,0,0,1,Yes,No,97,0,Yes
+552,Dina,23/10/2021,37,17:36,E,Evening,Gamepark,Belmont,15,Male,No,Belmont,57,21,1,1,Yes,Yes,114,2,Yes
+553,Dina,24/10/2021,38,10:19,A,Morning,Old KLF,Kendo,10,Female,Yes,Fritz,14,30,3,1,Yes,Yes,13,13,Yes
+554,Dina,24/10/2021,38,10:20,A,Morning,Old KLF,Leia,13,Female,Yes,Leia,52,44,2,4,Yes,Yes,65,7,Yes
+555,Dina,24/10/2021,38,10:23,B,Morning,Old KLF,Bon Jovi,12,Female,No,Koarl,0,4,1,3,Yes,Yes,96,5,Yes
+556,Dina,24/10/2021,38,10:24,B,Morning,Old KLF,Kolibri,11,Male,No,Kolibri,28,0,0,4,Yes,Yes,25,6,Yes
+557,Dina,24/10/2021,38,10:29,D,Morning,Old KLF,Bon Jovi,12,Female,No,Koarl,0,4,1,3,Yes,Yes,96,5,Yes
+558,Dina,24/10/2021,38,10:33,E,Morning,Old KLF,Kolibri,11,Male,No,Kolibri,28,0,0,4,Yes,Yes,25,6,Yes
+559,Dina,24/10/2021,39,16:41,A,Evening,Gamepark,Oberlix,2,Male,No,None,0,0,0,2,Yes,Yes,20,3,No
+560,Dina,24/10/2021,39,17:12,B,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,6,0,0,1,No,No,18,0,Yes
+561,Dina,24/10/2021,39,17:22,C,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,7,0,0,2,No,No,62,0,Yes
+562,Dina,24/10/2021,39,17:23,C,Evening,Gamepark,Fritz,13,Male,Yes,Joshua,142,151,6,7,Yes,Yes,204,4,Yes
+563,Dina,24/10/2021,39,17:27,D,Evening,Gamepark,Unknown,NA,Male,No,NA,20,37,2,5,NA,Yes,34,7,Yes
+564,Dina,24/10/2021,39,17:29,D,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,26,2,1,4,Yes,Yes,31,4,Yes
+565,Dina,24/10/2021,39,17:30,D,Evening,Gamepark,Unknown,NA,Male,No,NA,3,2,1,30,NA,Yes,5,28,Yes
+566,Dina,24/10/2021,39,17:31,D,Evening,Gamepark,Burglar,10,Male,No,NA,26,90,7,15,Yes,Yes,30,21,Yes
+567,Dina,24/10/2021,39,17:32,D,Evening,Gamepark,Ornella,3,Female,No,Leia,0,11,2,9,No,Yes,64,2,Yes
+568,Dina,24/10/2021,39,17:34,D,Evening,Gamepark,Kolibri,11,Male,No,Leia,0,8,1,4,Yes,Yes,12,2,Yes
+569,Dina,24/10/2021,39,17:37,D,Evening,Gamepark,Leia,13,Female,Yes,Leia,147,47,3,20,Yes,Yes,176,12,Yes
+570,Dina,24/10/2021,39,17:38,D,Evening,Gamepark,Bacardi,13,Male,No,None,0,0,0,4,Yes,Yes,15,13,No
+571,Dina,24/10/2021,39,17:39,D,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,10,0,0,2,No,Yes,5,6,Yes
+572,Dina,24/10/2021,39,17:40,D,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,7,0,0,3,No,No,20,0,Yes
+573,Dina,24/10/2021,39,17:42,E,Evening,Gamepark,Fritz,13,Male,Yes,Fritz,48,91,4,4,Yes,Yes,35,4,Yes
+574,Dina,24/10/2021,39,17:43,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,49,17,1,6,No,No,57,0,Yes
+575,Dina,24/10/2021,39,17:46,E,Evening,Gamepark,Pudding,4,Female,Yes,Pudding,25,105,2,7,Yes,Yes,82,3,Yes
+576,Dina,24/10/2021,39,17:47,E,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,33,18,2,10,Yes,Yes,35,6,Yes
+577,Dina,24/10/2021,39,17:47,E,Evening,Gamepark,Bruce Springsteen,12,Male,No,Bruce Springsteen,9,0,0,5,Yes,Yes,8,6,Yes
+578,Dina,24/10/2021,39,17:51,E,Evening,Gamepark,Ginny,16,Female,No,Ginny,4,5,2,2,No,Yes,46,3,Yes
+579,Dina,24/10/2021,39,17:52,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,11,4,1,0,Yes,No,60,0,Yes
+580,Dina,24/10/2021,39,17:54,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,24,19,1,0,Yes,No,35,0,Yes
+581,Dina,24/10/2021,39,17:56,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,16,4,1,1,Yes,Yes,92,2,Yes
+582,Dina,25/10/2021,40,10:18,A,Morning,Old KLF,Burglar,10,Male,No,Burglar,15,6,1,1,Yes,Yes,45,2,Yes
+583,Dina,25/10/2021,40,10:21,A,Morning,Old KLF,Ginny,16,Female,No,Taras,0,25,2,5,Yes,Yes,10,4,Yes
+584,Dina,25/10/2021,40,10:23,A,Morning,Old KLF,Allegra,22,Male,No,Ernst,0,3,1,3,Yes,Yes,30,4,Yes
+585,Dina,25/10/2021,40,10:24,A,Morning,Old KLF,Lindy Hop,11,Male,No,Lindy Hop,3,0,0,3,Yes,Yes,20,2,Yes
+586,Dina,25/10/2021,40,10:27,B,Morning,Old KLF,Luna,14,Female,No,Bayou,5,22,1,2,Yes,Yes,56,2,Yes
+587,Dina,25/10/2021,40,10:29,B,Morning,Old KLF,Dagobert,5,Male,No,Dagobert,15,0,0,1,Yes,Yes,61,2,Yes
+588,Dina,25/10/2021,40,10:41,D,Morning,Old KLF,Lupin,10,Female,No,Bianka,0,3,1,3,Yes,Yes,55,3,Yes
+589,Dina,25/10/2021,40,10:46,E,Morning,Old KLF,Baycox,16,Male,No,Baycox,8,0,0,4,Yes,Yes,52,2,Yes
+590,Dina,25/10/2021,40,10:44,E,Morning,Old KLF,EinStein,6,Female,No,None,0,0,0,3,No,Yes,240,1,No
+591,Dina,25/10/2021,40,10:48,E,Morning,Old KLF,Birne,7,Male,No,Belmont,3,9,2,4,Yes,Yes,43,3,Yes
+592,Dina,25/10/2021,40,10:49,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,25,15,1,2,Yes,Yes,53,2,Yes
+593,Dina,25/10/2021,41,16:40,E,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,27,43,5,8,Yes,Yes,31,14,Yes
+594,Dina,25/10/2021,41,16:42,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,8,13,3,1,Yes,Yes,11,3,Yes
+595,Dina,25/10/2021,41,16:43,E,Evening,Gamepark,Tsitika,22,Male,No,None,0,0,0,1,No,Yes,66,1,No
+596,Dina,26/10/2021,42,10:10,A,Morning,Old KLF,Fritz,13,Male,Yes,Fritz,46,61,3,6,Yes,Yes,49,5,Yes
+597,Dina,26/10/2021,42,10:12,A,Morning,Old KLF,Leia,13,Female,Yes,Leia,38,37,1,5,Yes,Yes,48,6,Yes
+598,Dina,26/10/2021,42,10:13,A,Morning,Old KLF,Joe,9,Male,No,Joe,16,0,0,2,Yes,No,57,0,Yes
+599,Dina,26/10/2021,42,10:15,A,Morning,Old KLF,Joe,9,Male,No,Joe,17,6,2,3,Yes,Yes,17,3,Yes
+600,Dina,26/10/2021,42,10:15,A,Morning,Old KLF,Joe,9,Male,Yes,Joe,3,0,0,11,Yes,Yes,30,12,No
+601,Dina,26/10/2021,42,10:16,A,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,8,12,2,3,No,Yes,26,2,Yes
+602,Dina,26/10/2021,42,10:16,A,Morning,Old KLF,Jafar,5,Male,Yes,Jafar,3,0,0,8,No,Yes,9,13,Yes
+603,Dina,26/10/2021,42,10:17,A,Morning,Old KLF,Die Lisa,3,Female,No,None,0,0,0,1,No,Yes,21,2,No
+604,Dina,26/10/2021,42,10:18,A,Morning,Old KLF,Bon Jovi,12,Female,No,Babaco,3,20,2,3,Yes,Yes,20,2,Yes
+605,Dina,26/10/2021,42,10:18,A,Morning,Old KLF,Babaco,7,Male,Yes,Babaco,33,0,0,6,Yes,Yes,40,5,Yes
+606,Dina,26/10/2021,42,10:19,A,Morning,Old KLF,Sherlock,6,Male,No,None,0,0,0,0,No,No,85,0,No
+607,Dina,26/10/2021,42,10:25,B,Morning,Old KLF,Burglar,10,Male,No,Burglar,22,0,0,1,No,No,87,0,Yes
+608,Dina,26/10/2021,42,10:27,B,Morning,Old KLF,Sherlock,6,Male,No,None,0,0,0,2,No,No,79,0,No
+609,Dina,26/10/2021,42,10:30,B,Morning,Old KLF,Batate,7,Female,No,None,0,0,0,3,Yes,Yes,14,4,No
+610,Dina,26/10/2021,42,10:31,B,Morning,Old KLF,Janosch,5,Male,No,Janosch,25,0,0,7,Yes,Yes,69,3,Yes
+611,Dina,26/10/2021,42,10:33,C,Morning,Old KLF,Birne,7,Male,No,Birne,25,0,0,5,Yes,No,50,0,Yes
+612,Dina,26/10/2021,42,10:36,C,Morning,Old KLF,Lazlo,3,Male,No,None,0,0,0,2,No,Yes,79,2,No
+613,Dina,26/10/2021,42,10:39,C,Morning,Old KLF,Bayou,15,Male,No,Bayou,17,0,0,1,No,No,114,0,Yes
+614,Dina,26/10/2021,42,10:46,D,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,8,3,1,2,Yes,No,105,0,Yes
+615,Dina,26/10/2021,42,10:50,D,Morning,Old KLF,Burglar,10,Male,No,Burglar,143,20,3,4,Yes,Yes,194,4,Yes
+616,Dina,26/10/2021,42,10:53,E,Morning,Old KLF,Karolina,3,Female,No,Bayou,0,15,2,1,Yes,Yes,47,9,Yes
+617,Dina,26/10/2021,42,10:55,E,Morning,Old KLF,Baldrian,16,Male,No,Baldrian,150,15,2,1,Yes,Yes,250,2,Yes
+618,Dina,26/10/2021,42,10:56,E,Morning,Old KLF,Taras,9,Male,No,Karamel,0,7,2,6,Yes,Yes,31,5,Yes
+619,Dina,26/10/2021,42,10:56,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,15,7,1,4,Yes,No,65,0,Yes
+620,Dina,26/10/2021,42,10:57,E,Morning,Old KLF,Allegra,22,Male,No,Allegra,19,5,2,4,No,No,55,0,Yes
+621,Dina,26/10/2021,42,10:59,E,Morning,Old KLF,Bacardi,13,Male,No,Bacardi,33,18,2,4,Yes,Yes,20,4,Yes
+622,Dina,26/10/2021,42,11:11,E,Morning,Old KLF,Allegra,22,Male,No,Allegra,31,2,1,1,Yes,Yes,39,2,Yes
+623,Dina,26/10/2021,42,11:02,E,Morning,Old KLF,Bianka,14,Male,No,Bianka,8,0,0,1,Yes,Yes,20,2,Yes
+624,Dina,26/10/2021,42,11:03,E,Morning,Old KLF,Belmont,15,Male,No,Belmont,42,10,1,1,Yes,Yes,66,2,Yes
+625,Dina,26/10/2021,43,16:32,A,Evening,Gamepark,Luna,14,Female,No,Burglar,0,36,1,9,No,Yes,220,6,Yes
+626,Dina,26/10/2021,43,16:36,B,Evening,Gamepark,Lupin,10,Female,No,None,0,0,0,11,Yes,Yes,148,8,No
+627,Dina,26/10/2021,43,16:38,B,Evening,Gamepark,Birne,7,Male,No,None,0,0,0,3,Yes,Yes,15,22,No
+628,Dina,26/10/2021,43,16:38,B,Evening,Gamepark,Unknown,NA,Male,No,None,0,0,0,9,NA,Yes,56,6,No
+629,Dina,26/10/2021,43,16:39,C,Evening,Gamepark,Baycox,16,Male,No,None,0,0,0,1,Yes,Yes,34,15,No
+630,Dina,26/10/2021,43,16:40,C,Evening,Gamepark,Unknown,NA,Female,No,None,0,0,0,25,NA,Yes,3,19,No
+631,Dina,26/10/2021,43,16:42,D,Evening,Gamepark,Bayou,15,Male,No,Bayou,5,4,1,4,Yes,Yes,15,6,Yes
+632,Dina,26/10/2021,43,16:45,E,Evening,Gamepark,Pudding,4,Female,Yes,Idgie,5,22,6,8,Yes,Yes,42,14,Yes
+633,Dina,26/10/2021,43,16:46,E,Evening,Gamepark,Belmont,15,Male,No,Belmont,12,3,1,5,Yes,Yes,30,6,Yes
+634,Dina,27/10/2021,44,16:53,A,Evening,Gamepark,Oberlix,2,Male,No,Oberlix,3,0,0,4,Yes,Yes,22,5,Yes
+635,Dina,27/10/2021,44,16:54,A,Evening,Gamepark,Unknown,NA,Female,Yes,None,0,0,0,17,NA,Yes,10,13,No
+636,Dina,27/10/2021,44,16:55,A,Evening,Gamepark,Unknown,NA,Male,No,NA,12,0,0,9,NA,Yes,54,11,Yes
+637,Dina,27/10/2021,44,16:55,A,Evening,Gamepark,Disney,6,Female,No,Babaco,0,16,2,3,No,No,82,0,Yes
+638,Dina,27/10/2021,44,16:56,A,Evening,Gamepark,Macchia,4,Female,No,None,0,0,0,1,Yes,Yes,15,2,No
+639,Dina,27/10/2021,44,16:57,A,Evening,Gamepark,Pudding,4,Female,Yes,Pudding,3,12,2,4,No,Yes,31,4,Yes
+640,Dina,27/10/2021,44,16:57,A,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,26,20,3,6,No,Yes,36,4,Yes
+641,Dina,27/10/2021,44,16:58,A,Evening,Gamepark,Joshua,19,Male,Yes,Joshua,51,86,4,9,Yes,Yes,82,12,Yes
+642,Dina,27/10/2021,44,17:00,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,22,11,2,11,No,Yes,28,6,Yes
+643,Dina,27/10/2021,44,17:00,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,9,6,2,5,No,No,50,0,Yes
+644,Dina,27/10/2021,44,17:01,B,Evening,Gamepark,Leia,13,Female,Yes,Leia,66,50,1,12,Yes,Yes,39,13,Yes
+645,Dina,27/10/2021,44,17:02,B,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,4,0,0,2,No,Yes,10,2,Yes
+646,Dina,27/10/2021,44,17:02,B,Evening,Gamepark,Babaco,7,Male,Yes,Babaco,29,35,1,8,Yes,Yes,40,6,Yes
+647,Dina,27/10/2021,44,17:03,B,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,20,0,0,2,No,Yes,46,4,Yes
+648,Dina,27/10/2021,44,17:05,C,Evening,Gamepark,Trevor,8,Female,No,Birne,0,12,2,14,Yes,Yes,95,15,Yes
+649,Dina,27/10/2021,44,17:07,C,Evening,Gamepark,Allegra,22,Male,No,None,0,0,0,2,No,No,30,0,No
+650,Dina,27/10/2021,44,17:09,D,Evening,Gamepark,Idgie,17,Male,Yes,Idgie,29,37,4,7,Yes,Yes,35,8,Yes
+651,Dina,27/10/2021,44,17:17,E,Evening,Gamepark,Bianka,14,Male,No,Bianka,30,7,1,2,Yes,Yes,90,2,Yes

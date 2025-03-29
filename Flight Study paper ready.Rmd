@@ -1,0 +1,3129 @@
+---
+title: "Flight Study"
+author: "Dina"
+date: "2024-10-03"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+Modelling the effects of all variables on the probability of successful
+flight and the probability of recruiting group size of various sizes.
+The models used for the publication are fullA2 for "Success", and fullB2
+for "Group size".
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load libraries
+
+```{r}
+Sys.setlocale( 'LC_ALL','C' ) 
+
+library(ggplot2)
+library(lme4)
+library(car)
+library(dfpk)
+library(tidyverse)
+library(sjPlot)
+library(rempsyc)
+library(dplyr)
+```
+
+#Set work directory and load data
+
+```{r}
+setwd("D:/Flight study")
+Flight <- read.csv(file = 'Flight.csv', header = T, sep = ",", stringsAsFactors = T) 
+str(Flight)
+Flight_master <- read.csv(file = 'Flight_masterfile.csv', header = T, sep = ",", stringsAsFactors = T) 
+```
+
+# create variables table
+
+```{r}
+library(dplyr)
+
+
+Flight_Param <- read.csv(file = 'Flight_Param.csv', header = T, sep = ",", stringsAsFactors = T)
+
+param_table <- select(Flight_Param,Number, Parameter, Description)
+params<- nice_table(param_table,
+           title = c("Table 1", "Model Parameter"),width = 1)
+
+print(params)
+
+library(flextable)
+ft<-flextable(param_table)
+ft<- width(ft, width = 6)
+ft
+ft1 <- autofit(ft)
+ft1
+```
+
+# data checks
+
+```{r}
+# does every subject have one sex
+xx=table(Flight$Focal, Flight$Sex)
+range(apply(X=xx>0, MARGIN=1, FUN=sum))
+
+# range for duration
+range(Flight$DurationSec)
+#range for responder numbers
+range(Flight$RecResNum)
+range(Flight$DepResNum)
+#range for progeny
+yy=table(Flight$Focal, Flight$Sex)
+range(apply(X=yy>0, MARGIN=1, FUN=sum))
+```
+
+# descriptive statistics
+
+```{r}
+#number of females and males
+apply(X=xx>0, MARGIN=2, FUN=sum)
+# check interacting variables for two dimensional distribution
+plot(Flight$DurationSec, Flight$Sex, pch=19,
+     col=grey(level=0.5, alpha=0.5))
+
+plot(Flight$DurationSec, Flight$Segment, pch=19,
+     col=grey(level=0.5, alpha=0.5))
+#distribution of grouping factors
+plot(table(table(Flight$Focal)))
+plot(table(table(Flight$Session)))
+#how many focals per session
+xx=table(Flight$Focal, xdata$Session)
+table(apply(X=xx>0, MARGIN=2, FUN=sum))
+
+
+# categorical predictors
+table(FlightC$Progeny)
+table(FlightC$Sex)
+table(FlightC$AllFamilyRes)
+table(FlightC$DepartureCallsUsed)
+#response
+levels(Flight$Success)
+
+```
+
+#data preparation
+
+```{r cars}
+# check for complete cases
+all(complete.cases(Flight))
+table(complete.cases(Flight))#or
+str(Flight)
+
+##Number of focals
+num_unique <- length(unique(FlightC$Focal))
+print(num_unique)
+
+num_unique_G <- length(unique(FlightG$Focal))
+print(num_unique)
+#
+# Group by Sex and count unique Focal values
+ unique_focals_per_sex <- FlightC %>%
++     group_by(Sex) %>%
++     summarize(unique_focals = n_distinct(Focal))
+ 
+print(unique_focals_per_sex)
+# remove NA to get complete cases
+FlightC=na.omit(Flight)
+View(FlightC)
+table(complete.cases(FlightC))#or
+
+#
+Flight_clean <- Flight %>% drop_na()
+#check for influential cases, do we have outliers
+
+table(FlightC$FocalDepCalls) # yes
+boxplot(Flight$FocalDepCalls)
+table(FlightC$ResDepCalls) # yes
+boxplot(FlightC$ResDepCalls)
+table(FlightC$DepResNum)
+boxplot(FlightC$RecResNum)
+boxplot(FlightC$DurationSec)
+
+#remove outlier in DurationSec
+# Remove the outlier with DurationSec = 1200
+FlightC <- FlightC %>% 
+  filter(DurationSec != 1200)
+
+## subset data to create a reduced dataset for plotting the curve where the number of rec and dep responders is equal to those seen in unsuccessful trials
+
+Flight_red <-  FlightC %>% 
+  filter(RecResNum <= 10)
+
+Flight_red_2<-  FlightC %>% 
+  filter(DepResNum <= 5)
+
+# distribution of predictors - before removing NAs
+
+test.vars=c("FocalDepCalls", "ResDepCalls", "DepResNum", "RecResNum", "DurationSec")
+
+par(mar = c(5, 4, 4, 2) + 0.1) 
+for(i in 1:length(test.vars)){
+  hist(Flight[, test.vars[i]], main=test.vars[i])
+  
+}
+
+# distribution of predictors - after removing NAs
+test.vars=c("FocalDepCalls", "ResDepCalls", "DepResNum", "RecResNum", "DurationSec")
+
+par(mar = c(5, 4, 4, 2) + 0.1) 
+windows()
+for(i in 1:length(test.vars)){
+  hist(FlightC[, test.vars[i]], main=test.vars[i])
+  
+}
+
+```
+
+# check for correlation amongst predictors
+
+```{r}
+Param_corr1<- round(cor(Flight[, test.vars]), 3)
+Param_corr<- round(cor(FlightC[, test.vars]), 3)
+
+Params_corr <-as.data.frame(Param_corr)
+Params_corr <- Params_corr %>% rename("Focal departure calls" = FocalDepCalls, "Responders departure calls" = ResDepCalls, "Departure responders number"= DepResNum, "Recruitment responders number"= RecResNum, "Duration in Seconds"= DurationSec)
+Params_corr <- Params_corr %>%
+  rownames_to_column(var = "Parameter")
+params_corr_table<- nice_table(Params_corr,
+           title = c("Table A-1", "Parameter correlation"),width = 1)
+
+print(params_corr_table)
+# strong correlation between both FocalDepCalls and ResDepCalls on one side, and DepResNum
+```
+
+##random intercepts - focal &session #random slopes #check how many obs
+we have per random intercept, for example here to see if the same
+individual #initiated flight multiple times in the same session, and
+whether there is a different slope involved in each
+
+```{r}
+
+
+
+xx=aggregate(x=1:nrow(Flight), by=Flight[, c("Focal", "Session", "Period", "Segment")],
+             FUN=length)
+head(xx)
+sum(xx$x>1)
+mean(xx$x>1)
+
+
+```
+
+# fitting the model
+
+```{r}
+#random intercepts and slopes exploration
+#source("E:/linear models and their applications in R/material/diagnostic_fcns.r")
+#xx.fe.re=fe.re.tab(fe.model="Success~ DepResNum+ RecResNum + DurationSec*Progeny+ 
+           #  DurationSec*Segment+ Sex+ AllFamilyRes + DepartureCallsUsed", 
+            # re=(1|Focal)+ (1|Session), data=Flight)
+
+# predictors of interest for the response= Success 
+#"z.FocalDepCalls, z.DepResNum, z.RecResNum, z.DurationSec, Progeny, Segment,Sex, AllFamilyRes
+#removing focaldepcalls because of correlation with DepResNum, since Focal is a random intercept anyway
+# Removing ResDepCalls because of strong correlation with DepResNum
+#the quantitiy of calling is expressed by duration for both call types, Departure calls used tells
+#about the effect of departure calls
+#Random intercept "Focal" and "Session"
+#Random Slopes, "DurationSec, FocalDepCalls,RecResNum|Focal" " Segment|Session"
+
+# relative model complexity:  N rarer events b	% 10 B7 k (estimated parameters)
+```
+
+# 
+
+```{r}
+# setting a control term for the model, number of iteration for convergence becasue the default failed to converge
+contr=glmerControl(optimizer="bobyqa",
+                   optCtrl=list(maxfun=100000))
+
+
+```
+
+# Model fitting
+
+#fulla with number of departure calls
+
+```{r}
+# with the number of departure calls
+fulla=glmer(Success~ FocalDepCalls + ResDepCalls + DepResNum+ RecResNum + DurationSec+Progeny+ 
+             Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+             (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, data=FlightC,control=contr)
+```
+
+#fullA without the number of departure calls
+
+```{r}
+# without the number of departure calls
+fullA=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
+              Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+              (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, data=FlightC,control=contr)
+```
+
+model with alternative intercepts and slopes for comparison
+
+```{r}
+fullA2=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
++                 Sex+ AllFamilyRes+ DepartureCallsUsed+ 
++                 (1|Focal)+ (1|Period)+ (1 | Period/Session) + (DurationSec || Period/Session/Segment), family= binomial, data=FlightC,control=contr)
+```
+
+# trial model with the reduced dataset for curve investigation when the higher responder number is eliminated
+
+```{r}
+fullA_red=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
+              Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+              (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, data=Flight_red,control=contr)
+
+
+fullA_red_2=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
+              Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+              (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, data=Flight_red_2,control=contr)
+```
+
+#check assumptions
+
+```{r}
+
+#check for independt residuals
+setwd("D:/Linear models and their applications in R/Material")
+source("diagnostic_fcns.r") 
+ranef(fullA)
+names(ranef(fullA))
+
+
+ranef.diagn.plot(fullA) 
+
+
+head(ranef(fullA)[["Focal"]])
+head(ranef(fullA)[["Segment"]])
+head(ranef(fullA)[["Session"]])
+head(ranef(fullA)[["Period"]])
+
+
+```
+
+#check for colinearity #Variance Inflation factor VIF
+
+```{r}
+library(car)
+vif(fulla)
+vif(fullA)
+vif(fullA2)
+```
+
+##check for model stability
+
+```{r}
+
+setwd("D:/Linear models and their applications in R/Material")
+source("D:/Linear models and their applications in R/Material/glmm_stability.r")
+
+
+fullA.stab=glmm.model.stab(model.res=fullA, data=FlightC,
+                          contr=contrB)
+
+
+## checking for convergence issues or warnings
+
+table(fullA.stab$detailed$lme4.warnings) 
+
+table(fullA.stab$detailed$opt.warnings)
+
+#
+head(fullA.stab$detailed, 4) # what the estimates dataframe looks like
+
+FAST<-round(fullA.stab$summary[, -1], 3) #-an absolute value > ca. 2 is a reason to worry
+
+##Print model stability results table
+
+FAST <- data.frame(
+  Parameter = rownames(FAST),
+  `Original` = FAST[,1],
+  `Minimum` = FAST[,2],
+  `Maximum`= FAST [,3]
+  
+)
+print(FAST)
+library(rempsyc)
+nice_table(FAST, width = 1, highlight = TRUE)
+
+#determine which row the random effects are
+is.re=grepl(x=rownames(fullA.stab$summary), pattern="@")
+is.re # view
+
+#plotting model stability 
+m.stab.plot(fullA.stab$summary [,-1])
+m.stab.plot(fullA.stab$summary[!is.re, -1]) # fixed effects, large std for some estimates.(DCU, Progeny, DepResNum)
+m.stab.plot(fullA.stab$summary[is.re, -1]) #random effects, plot shows some estimates are 0 and others
+
+#with large std, which is not very stable.
+```
+
+
+# modelA results and summary
+
+```{r}
+
+summary(fullA)
+summary(fullA)$varcor # random effects
+round(summary(fullA)$coefficients,3) # fixed effects
+fixef(fullA) # estimates only, fixed effects
+
+
+#further info
+summary(fullA)$AICtab["AIC"] # AIC
+logLik(fullA) # log likelihood
+summary(fullA)$ngrps # number of levels per grouping factor
+
+
+#relative model complexity - how many data points per estimated effect
+length(residuals(fullA))/
+  (length(fixef(fullA))+
+     nrow(as.data.frame(summary(fullA)$varcor)))
+
+```
+
+#inferences about fixed effects #R2 values for fixed effects and fullA
+model
+
+fullA
+
+```{r}
+#full- null model comparison - remove all fixed effects of interest
+
+nullA=glmer(Success~ 
+              (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, 
+            data=FlightC,control=contr)
+# compare
+
+nullAcomp = as.data.frame(anova(nullA, fullA, test="Chisq"))
+NullAcomp <-round(nullAcomp,3)
+NullAcomp
+
+# one at a time
+
+testsA=as.data.frame(drop1(fullA, test="Chisq", control=contr))
+TestsA<-round(testsA,3)
+
+library(pbkrtest)
+
+#PBmodcomp(fullA, nullA, nsim = 10000, ref = NULL, cl = NULL, details = 0) # does not work
+
+#effect size for whole model R2 # works
+library(MuMIn)
+
+
+r.squaredGLMM(fullA) 
+
+
+#R2m all fixed effects only, R2c both fixed and random effects
+
+#effect size for individual fixed effects
+library(r2glmm)
+r2beta(model=fullA, partial=TRUE, method="sgv")
+# OR
+library(partR2)
+#R2_fulla <- partR2(fulla, partvars = c("z.DepResNum", "z.RecResNum", "z.DurationSec","Progeny","Sex","AllFamilyRes","DepartureCallsUsed"),data = FlightC, R2_type = "marginal", nboot = 100)
+#R2_fullA <- partR2(fullA, partvars = c("DepResNum", #"RecResNum","DurationSec","Progeny","Sex","AllFamilyRes","DepartureCallsUsed"),data = FlightC, #R2_type = "marginal", nboot = 100000)
+#R2_fullA # failed to converge
+
+#another way to get effect sizes for the full model - works
+library(performance)
+model_performance(fullA)
+
+
+#####contribution of each term to the model, add sum of squares to get the value for the whole model, and calculate proportion of each term of the sum to get R2 like measure
+
+anova (fullA)
+
+```
+
+
+
+##Confidence intervals
+
+```{r}
+setwd("D:/Linear models and their applications in R/Material")
+source("boot_glmm.r")
+
+
+fullA.boot=boot.glmm.pred(model.res=fullA, excl.warnings=F,
+                          nboots=1000, para=F, resol=1000, level=0.95, use=NULL)
+FAB<- round(fullA.boot$ci.estimates, 4) # extract the bootstrap estimates
+FAB <- data.frame(
+  Parameter = rownames(FAB),
+  `Original` = FAB[,1],
+  `X2.5` = FAB[,2],
+  `X97.5`= FAB [,3]
+)
+print(FAB)
+library(rempsyc)
+nice_table(FAB, width = 1, highlight = TRUE)
+
+
+m.stab.plot(fullA.boot$ci.estimates) # plot the CI
+
+
+```
+## transform estimates from link to response space
+
+```{r}
+xx=fixef(fullA)["(Intercept)"]
+exp(xx)/(1+exp(fixef(fullA)["(Intercept)"])) # transform the intercept, all predictors being average, the probability of success is
+
+
+xx2=fixef(fullA)["(Intercept)"]+
+  fixef(fullA)["RecResNum"]*(-1:1)
+round(exp(xx2)/(1+exp(xx2)), 2) # The estimated probability of success when we move away from the average of RecResNum
+```
+
+### Results tables and plotting fullA
+
+## Results tables attempts 1
+
+```{r}
+library(sjPlot)
+library(gtsummary)
+tbl_A<- tbl_regression(fullA, exponentiate = TRUE)
+tbl_B<-tbl_regression(fullB, exponentiate = TRUE) 
+library(report)
+report(fullA)
+report_table(fullA)
+```
+
+### Results table 2 \### the one I used
+
+fullA
+
+```{r}
+#create results table - fullA - fixed effects
+
+# get the model summary
+model_summary_A<- summary(fullA)
+
+# extract coefficients
+
+coefficients_A <- data.frame(model_summary_A$coefficients)
+coefficients_A <- round(coefficients_A ,4)
+
+rows<-rownames(coefficients_A) <- c("Intercept","Departure responders number","Recruitment responders number","Duration in sec.","Progeny","Sex","All family responded","Departure calls used")
+
+
+
+# extract standard errors
+std_errors_A <- coefficients_A[,2]
+
+# extract confidence intervals
+conf_int_A <- round(fullA.boot$ci.estimates,4)
+
+# extract max and min estimates
+max_estimate_A <- max(coefficients_A[,1])
+min_estimate_A <- min(coefficients_A[,1])
+# extract x2 and df
+x2A <- nullAcomp[,6]
+dfA  <- nullAcomp[,7]
+LRTA <- TestsA [,3]
+ChiA <- TestsA [,4]
+
+library(flextable)
+
+
+# combine results into a data frame
+results_table_A <- data.frame(
+  Parameter = rows,
+  Estimate = coefficients_A[,1],
+  `Std. Error` = std_errors_A,
+  `p`= coefficients_A[,4],
+  `95% CI Lower` = round(conf_int_A[,2],4),
+  `95% CI Upper` = round(conf_int_A[,3],4),
+   LRT_X2 = TestsA[,3]  # Using a simpler name for now
+  #`p`= TestsA [,4]
+
+)
+
+names(results_table_A)[names(results_table_A) == "LRT/X^2"] <- expression(LRT/X^2)
+
+#results_table_A <-rbind(results_table_A, Null_model=c(NA,NA,NA,NA,NA,NA,NA,NA,0) ) 
+results_table_A [ , 'R²m'] = c(0.348,NA,NA,NA,NA,NA,NA,NA)
+results_table_A [ , 'R²c'] = c(0.389,NA,NA,NA,NA,NA,NA,NA)
+
+table_plot_a <- nice_table(results_table_A, width = 1, highlight = TRUE)
+
+table_plot_A <- set_header_labels(
+  table_plot_a,
+  LRT_X2 = "LRT/X²",  # Correct label with superscript
+  `R²m` = "R²m",     # Proper superscript
+  `R²c` = "R²c"      # Proper superscript
+)
+
+table_plot_A
+
+#`Chi-sq`=x2A,
+#`df`=dfA,
+#`Min Estimate` = min_estimate_A, # removed, keep for reference
+#`Max Estimate` = max_estimate_A # removed, kept for reference
+
+# print the final table
+print(results_table_A)
+library(rempsyc)
+nice_table(results_table_A, width = 1, highlight = TRUE)
+
+
+# print random effects table
+# extract random effects estimates
+fullA_RE<-summary(fullA)$varcor
+ print(VarCorr(fullA), comp=c("Variance","Std.Dev."),3)
+```
+
+# \## Plotting fullA
+
+#load the libraries
+
+```{r}
+library(ggplot2)
+library(sjPlot)
+```
+
+#using sjplot
+
+```{r}
+
+#estimtates/coefficients
+plot_model(fullA, type = "est", show.values = TRUE,show.data =TRUE, width=0.1,show.p = TRUE)
+#standardised beta values
+plot_model(fullA, type = "std", show.values = TRUE, width=0.1, show.p = TRUE)
+#or standardisation calculated by dividing by 2sd/no difference in outcome
+#plot_model(fullA, type = "std2", show.values = TRUE, width=0.1)
+
+#Predicted values (marginal effects) for specific model terms. discrete predictors are held constant
+#at their reference levels using ggpredict
+
+plot_fullA<- plot_model(fullA, type = "pred",show.values = TRUE,show.data =TRUE, 
+                        width=0.1, scale_color_sjplot("simply"))
+
+# Predicted values (marginal effects) for specific model terms. discrete predictors are held constant
+#at their proportion using ggeffect
+
+plot_model(fullA, type = "eff", show.values = TRUE, width=0.1)
+#random effects - type "re" does not work for models with the || notation
+# plot_model(fullA, type = "re", show.values = TRUE, width=0.1,   facet.grid=TRUE)
+
+#expanded plot for each model term
+# DepResNum
+plot_fullA_DepResNum<- plot_model(fullA, type = "pred",terms = c("DepResNum [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                            axis.title  =c ("Number of departure call responders ","Proability of success"),
+                            show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                            spacing = 0.4,show.data =TRUE, transform = logit,ci.lvl = 0.95)
+plot_fullA_DepResNum
+
+# RecResNum
+plot_fullA_RecResNum<- plot_model(fullA, type = "pred",terms = c("RecResNum [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                                  axis.title  =c ("Number of recruitment call responders ","Proability of success"),
+                                  show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                  spacing = 0.4,show.data =TRUE, transform = logit,ci.lvl = 0.95)
+plot_fullA_RecResNum
+
+# Duration
+plot_fullA_Dur<- plot_model(fullA, type = "pred",terms = c("DurationSec [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+           axis.title  =c ("Trial duration in seconds","Proability of success"),
+           show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+           spacing = 0.4,show.data =TRUE, transform = logit,ci.lvl = 0.95)
+plot_fullA_Dur
+
+## AllFamilyRes
+plot_fullA_AllFamilyRes<- plot_model(fullA, type = "pred",terms = c("AllFamilyRes [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                            axis.title  =c ("All family responded vocally","Proability of success"),
+                            show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                            spacing = 0.4,show.data =TRUE, transform = logit,ci.lvl = 0.95)
+plot_fullA_AllFamilyRes
+
+
+## DepartureCallsUsed
+plot_fullA_DepartureCallsUsed<- plot_model(fullA, type = "pred",terms = c("DepartureCallsUsed [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                                     axis.title  =c ("Whether Departure call was used","Proability of success"),
+                                     show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                     spacing = 0.4,show.data =TRUE, transform = logit,ci.lvl = 0.95)
+plot_fullA_DepartureCallsUsed
+library(gtsummary)
+# change colour with scaling 
+
+sjplot_pal(circus)
+
+ADepResNum <- plot_fullA_DepResNum + scale_color_sjplot("circus")
+ARecResNum <- plot_fullA_RecResNum + scale_color_sjplot("circus")
+ADur <- plot_fullA_Dur + scale_color_sjplot("circus")
+AAllFam <- plot_fullA_AllFamilyRes + scale_color_sjplot("circus")
+ADepCallU <- plot_fullA_DepartureCallsUsed + scale_color_sjplot("circus")
+
+library(ggpubr)
+figureA <- ggarrange(ADepResNum, ARecResNum,ADur,AAllFam + font("x.text", size = 10),
+                    ncol = 2, nrow = 2, labels = c("A","B", "C","D"), heights = c(1, 1))
+figureA
+figureC <- ggarrange(ADepResNum, ARecResNum,ADur,AAllFam + font("x.text", size = 10),
+                     ncol = 2, nrow = 2, labels = c("A","B", "C","D"), heights = c(1, 1))
+```
+
+#Flight_red plot
+
+```{r}
+plot_fullA_red_2_DepResNum<- plot_model(fullA_red_2, type = "pred",terms = c("DepResNum [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                                  axis.title  =c ("Number of departure call responders ","Proability of success"),
+                                  show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                  spacing = 0.4,show.data =TRUE, transform = logit,ci.lvl = 0.95)
+plot_fullA_red_2_DepResNum
+
+
+plot_fullA_red_RecResNum<- plot_model(fullA_red, type = "pred",terms = c("RecResNum [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                                  axis.title  =c ("Number of recruitment call responders ","Proability of success"),
+                                  show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                  spacing = 0.4,show.data =TRUE, transform = logit,ci.lvl = 0.95)
+plot_fullA_red_RecResNum
+
+```
+
+# Trying ggplot
+
+#calculate success proportions
+
+```{r}
+# Load the tidyverse package
+library(tidyverse)
+
+
+
+# Function to calculate proportions
+calculate_proportions <- function(df, group_var, count_vars) {
+  df %>%
+    pivot_longer(cols = all_of(count_vars), names_to = "Count_Variable", values_to = "Count_Value") %>%
+    group_by(!!sym(group_var), Count_Variable, Count_Value, Success) %>%
+    summarise(Count = n(), .groups = 'drop') %>%
+    group_by(!!sym(group_var), Count_Variable, Count_Value) %>%
+    mutate(Proportion = Count / sum(Count)) %>%
+    pivot_wider(names_from = Success, values_from = Proportion, names_prefix = "Success_")
+}
+
+# List of count variables
+count_vars <- c("DepResNum", "RecResNum", "DurationSec")
+
+# Calculate proportions classified by Progeny
+progeny_proportions <- calculate_proportions(FlightC, "Progeny", count_vars)
+
+# Calculate proportions classified by All_family_response
+family_response_proportions <- calculate_proportions(FlightC, "AllFamilyRes", count_vars)
+
+# Print the results
+print(progeny_proportions)
+print(family_response_proportions)
+write.csv(progeny_proportions,"D:/Flight study/Progeny_proportions.csv")
+
+```
+
+# 
+
+fullA2
+#check for colinearity #Variance Inflation factor VIF
+
+```{r}
+library(car)
+vif(fullA2)
+```
+
+
+stability
+mundry method is not working, use the chatgpt one
+
+##check for model stability
+cross validation
+```{r}
+# Load required libraries
+library(lme4)   # For glmer model fitting
+library(pROC)   # For AUC calculation
+
+# Define your data and model formula
+data_A2 <- FlightC  # Replace with your dataset
+model_formula_A2 <- Success ~ DepResNum + RecResNum + DurationSec + Progeny + 
+                Sex + AllFamilyRes + DepartureCallsUsed + 
+                (1 | Focal) + (1 | Period) + (1 | Period/Session) + 
+                (DurationSec || Period/Session/Segment)
+
+# Set up k-fold cross-validation
+set.seed(123)  # For reproducibility
+k <- 10  # Number of folds
+fold_indices <- sample(rep(1:k, length.out = nrow(data_A2)))
+
+# Initialize an empty list to store model results
+cv_results_A2 <- list()
+
+# Perform k-fold cross-validation
+for (i in 1:k) {
+  # Split the data into training and validation sets
+  train_data_A2 <- data_A2[fold_indices != i, ]
+  test_data_A2 <- data_A2[fold_indices == i, ]
+
+  # Fit the model on the training data
+  model_A2 <- glmer(model_formula_A2, data = train_data_A2, family = binomial, control = contr)
+
+  # Predict on the validation set
+  predictions_A2 <- predict(model_A2, newdata = test_data_A2, type = "response", allow.new.levels = TRUE)
+
+  # Calculate performance metrics (e.g., AUC, accuracy, etc.)
+  auc_A2 <- roc(response = test_data_A2$Success, predictor = predictions_A2)$auc  # AUC from pROC package
+
+  # Store the results
+  cv_results_A2[[i]] <- list(model = model_A2, auc = auc_A2)
+}
+
+# Extract AUC values from cross-validation
+auc_values_A2 <- sapply(cv_results_A2, function(x) x$auc)
+
+# Summarize results
+mean_auc_A2 <- mean(auc_values_A2)
+std_auc_A2 <- sd(auc_values_A2)
+
+# Print summary
+cat("Mean AUC across folds:", mean_auc, "\n")
+cat("Standard Deviation of AUC:", std_auc, "\n")
+
+# Optional: Inspect models or individual fold results
+cv_results_A2
+cv_results_fullA2 <- cv_results_A2
+
+```
+
+
+
+```{r}
+
+#full- null model comparison - remove all fixed effects of interest
+
+nullA2=glmer(Success~ 
+              (1|Focal)+ (1|Period)+(1 | Period/Session) + (DurationSec || Period/Session/Segment), family= binomial, 
+            data=FlightC,control=contr)
+# compare
+
+nullA2comp = as.data.frame(anova(nullA2, fullA2, test="Chisq"))
+NullA2comp <-round(nullA2comp,3)
+NullA2comp
+
+# one at a time
+
+testsA2=as.data.frame(drop1(fullA2, test="Chisq", control=contr))
+TestsA2<-round(testsA2,4)
+
+library(pbkrtest)
+
+#PBmodcomp(fullA, nullA, nsim = 10000, ref = NULL, cl = NULL, details = 0) # does not work
+
+#effect size for whole model R2 # works
+library(MuMIn)
+
+
+r.squaredGLMM(fullA2) 
+
+
+#R2m all fixed effects only, R2c both fixed and random effects
+
+#effect size for individual fixed effects
+library(r2glmm)
+r2beta(model=fullA2, partial=TRUE, method="sgv")
+# OR
+library(partR2)
+#R2_fulla <- partR2(fulla, partvars = c("z.DepResNum", "z.RecResNum", "z.DurationSec","Progeny","Sex","AllFamilyRes","DepartureCallsUsed"),data = FlightC, R2_type = "marginal", nboot = 100)
+#R2_fullA <- partR2(fullA, partvars = c("DepResNum", #"RecResNum","DurationSec","Progeny","Sex","AllFamilyRes","DepartureCallsUsed"),data = FlightC, #R2_type = "marginal", nboot = 100000)
+#R2_fullA # failed to converge
+
+#another way to get effect sizes for the full model - works
+library(performance)
+model_performance(fullA2)
+
+
+#####contribution of each term to the model, add sum of squares to get the value for the whole model, and calculate proportion of each term of the sum to get R2 like measure
+
+anova (fullA2)
+```
+
+full null model comparison using bootstrap - failed to converge -discarded
+
+```{r}
+library(pbkrtest)
+pb_fullA2 <- PBmodcomp(fullA2, nullA2, nsim = 100)  # Specify the number of simulations
+summary(pb_fullA2)
+
+```
+
+fullA2 confidence intervals
+
+```{r}
+setwd("D:/Linear models and their applications in R/Material")
+source("boot_glmm.r")
+
+
+fullA2.boot=boot.glmm.pred(model.res=fullA2, excl.warnings=F,
+                          nboots=1000, para=F, resol=1000, level=0.95, use=NULL)
+FAB2<- round(fullA2.boot$ci.estimates, 4) # extract the bootstrap estimates
+FAB2 <- data.frame(
+  Parameter = rownames(FAB2),
+  `Original` = FAB2[,1],
+  `X2.5` = FAB2[,2],
+  `X97.5`= FAB2 [,3]
+)
+print(FAB2)
+library(rempsyc)
+nice_table(FAB2, width = 1, highlight = TRUE)
+
+
+m.stab.plot(fullA2.boot$ci.estimates) # plot the CI
+
+```
+
+
+fullA2 - results table
+
+```{r}
+
+# get the model summary
+model_summary_A2<- summary(fullA2)
+
+# extract coefficients
+
+coefficients_A2 <- data.frame(model_summary_A$coefficients)
+coefficients_A2 <- round(coefficients_A2 ,4)
+
+rows<-rownames(coefficients_A2) <- c("Intercept","Departure responders number","Recruitment responders number","Duration in sec.","Progeny","Sex","All family responded","Departure calls used")
+
+
+# extract standard errors
+std_errors_A2 <- coefficients_A2[,2]
+
+# extract confidence intervals
+conf_int_A2 <- round(fullA2.boot$ci.estimates,4)
+
+# extract max and min estimates
+max_estimate_A2 <- max(coefficients_A2[,1])
+min_estimate_A2 <- min(coefficients_A2[,1])
+# extract x2 and df
+x2A2 <- nullA2comp[,6]
+dfA2  <- nullA2comp[,7]
+LRTA2 <- TestsA2 [,3]
+ChiA2 <- TestsA2 [,4]
+
+library(flextable)
+
+
+# combine results into a data frame
+results_table_A2 <- data.frame(
+  Parameter = rows,
+  Estimate = coefficients_A2[,1],
+  `Std. Error` = std_errors_A2,
+  `p`= coefficients_A2[,4],
+  `95% CI Lower` = round(conf_int_A2[,2],4),
+  `95% CI Upper` = round(conf_int_A2[,3],4),
+   LRT_X2 = TestsA2[,3]  # Using a simpler name for now
+  #`p`= TestsA [,4]
+
+)
+
+names(results_table_A2)[names(results_table_A2) == "LRT/X^2"] <- expression(LRT/X^2)
+
+#results_table_A <-rbind(results_table_A, Null_model=c(NA,NA,NA,NA,NA,NA,NA,NA,0) ) 
+results_table_A2 [ , 'R²m'] = c(0.348,NA,NA,NA,NA,NA,NA,NA)
+results_table_A2 [ , 'R²c'] = c(0.389,NA,NA,NA,NA,NA,NA,NA)
+
+table_plot_a2 <- nice_table(results_table_A2, width = 1, highlight = TRUE)
+
+table_plot_A2 <- set_header_labels(
+  table_plot_a2,
+  LRT_X2 = "LRT/X²",  # Correct label with superscript
+  `R²m` = "R²m",     # Proper superscript
+  `R²c` = "R²c"      # Proper superscript
+)
+
+table_plot_A2
+
+#`Chi-sq`=x2A,
+#`df`=dfA,
+#`Min Estimate` = min_estimate_A, # removed, keep for reference
+#`Max Estimate` = max_estimate_A # removed, kept for reference
+
+# print the final table
+print(results_table_A2)
+library(rempsyc)
+nice_table(results_table_A2, width = 1, highlight = TRUE)
+
+
+# print random effects table
+# extract random effects estimates
+fullA2_RE<-summary(fullA2)$varcor
+ print(VarCorr(fullA2), comp=c("Variance","Std.Dev."),3)
+
+```
+
+## Restults table 3
+
+```{r}
+library(rempsyc)
+# Gather summary statistics
+stats.table_A <- as.data.frame(summary(fullA)$coefficients)
+# Get the confidence interval (CI) of the regression coefficient
+CI_A <- fullA.boot$ci.estimates
+
+# Add a row to join the variables names and CI to the stat
+stats.table_A <- cbind(row.names(stats.table_A), stats.table_A, CI_A)
+# Rename the columns appropriately
+names(stats.table_A) <- c("Term", "Estimate", "SE", "t", "p", "Orig","CI_lower", "CI_upper")
+
+stats.table_A
+nice_table(stats.table_A, width = 1, highlight = TRUE)
+```
+
+
+
+#Nico's way of plotting #regenerate FlightC
+
+```{r}
+setwd("D:/Flight study")
+Flight <- read.csv(file = 'Flight.csv', header = T, sep = ",", stringsAsFactors = T) 
+# remove NA to get complete cases
+FlightC_2=na.omit(Flight)
+View(FlightC_2)
+table(complete.cases(FlightC_2))#or
+```
+
+#Simulaton
+
+```{r}
+library(blmeco)
+library(arm)
+
+
+# Sim for plots, statistical tables , CrI and conclusions
+nsim<-10000
+bsim.mod_prob<-sim(fullA2, n.sim=nsim)
+apply(bsim.mod_prob@fixef, 2, mean)
+apply(bsim.mod_prob@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+plogis(apply(bsim.mod_prob@fixef, 2, mean))
+plogis(apply(bsim.mod_prob@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+```
+
+#The plotting
+
+```{r}
+library(ggplot2)
+##### DepResNum
+#fullA=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
+            #  Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+             # (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, #data=FlightC,control=contr)
+
+FlightC_2$Progeny <- as.numeric(FlightC_2$Progeny)
+FlightC_2$Sex <- as.numeric(FlightC_2$Sex)
+FlightC_2$DepartureCallsUsed <- as.numeric(FlightC_2$DepartureCallsUsed)
+FlightC_2$AllFamilyRes <- as.numeric(FlightC_2$AllFamilyRes)
+#FlightC_2$AllFamilyRes <- as.numeric(FlightC_2$AllFamilyRes)
+#FlightC_2$AllFamilyRes <- factor(FlightC_2$AllFamilyRes, levels = c(1, 2), labels = c("No", "Yes"))
+FlightC_2$Success <- as.numeric(FlightC_2$Success)
+FlightC_2$Success[which(FlightC_2$Success==1)] <- 0
+FlightC_2$Success[which(FlightC_2$Success==2)] <- 1
+
+newdat.mod_prob_dep<-expand.grid(DepResNum = seq(min(FlightC_2$DepResNum),
+                                        max(FlightC_2$DepResNum),l=1000),
+                             RecResNum = mean(FlightC_2$RecResNum),
+                             DurationSec = mean(FlightC_2$DurationSec),
+                             Sex = mean(FlightC_2$Progeny),
+                             Progeny = mean(FlightC_2$Sex),
+                             AllFamilyRes = mean(FlightC_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightC_2$DepartureCallsUsed))
+                           
+
+Xmat.mod_prob_dep<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_dep)
+head(Xmat.mod_prob_dep)
+fitmat.mod.mod_prob_dep<-matrix(ncol=nsim, nrow=nrow(newdat.mod_prob_dep))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim) fitmat.mod.mod_prob_dep[,i]<-plogis(Xmat.mod_prob_dep%*%bsim.mod_prob@fixef[i,])
+
+newdat.mod_prob_dep$lower<-apply(fitmat.mod.mod_prob_dep, 1, quantile, prob=0.025)
+newdat.mod_prob_dep$upper<-apply(fitmat.mod.mod_prob_dep, 1, quantile, prob=0.975)
+newdat.mod_prob_dep$fit<- plogis(Xmat.mod_prob_dep%*%fixef(fullA2))
+
+plot1_DepResNum <- ggplot(data = newdat.mod_prob_dep, aes(x = DepResNum, y=fit))+
+ geom_jitter(data = FlightC_2, aes(x = DepResNum, y = Success, color = AllFamilyRes), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_path(data = newdat.mod_prob_dep, aes(x = DepResNum, y= fit), linewidth = 1)+
+  geom_ribbon(data = newdat.mod_prob_dep, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = '# Departure responders number') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()
+
+plot1_DepResNum_w_RAW_2 <- ggplot(data = newdat.mod_prob_dep, aes(x = DepResNum, y=fit))+
+  geom_jitter(data = FlightC_2, aes(x = DepResNum, y = Success),
+              height = 0.05, width = 0.1,alpha=0.1, size=0.7)+
+  geom_path(data = newdat.mod_prob_dep, aes(x = DepResNum, y= fit), linewidth= 1)+
+  geom_ribbon(data = newdat.mod_prob_dep, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = '# Departure responders number') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()+
+ # scale_y_continuous(
+  #  breaks = c(0, 1),  # Define the positions on the y-axis
+  #  labels = c("No", "Yes")  # Custom labels for the defined breaks
+  #) +
+ # facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  #scale_color_gradient(low = "blue", high = "red") +  # Color gradient for numeric values
+   ggtitle("Effect of departure responders number on success")+  
+  theme(
+    plot.title = element_text(size = 10, face = "bold"),  
+    strip.text.x = element_text(size = 9, face = "italic"), # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7)  # Legend title font size  # Set font size and style here
+  )
+
+plot1_DepResNum_w_RAW 
+plot1_DepResNum_w_RAW_2 
+```
+
+########### RecResNum
+
+```{r}
+
+newdat.mod_prob_res<-expand.grid(DepResNum =mean(FlightC_2$DepResNum),
+                             RecResNum = seq(min(FlightC_2$RecResNum),
+                                                max(FlightC_2$RecResNum),l=1000),
+                             DurationSec = mean(FlightC_2$DurationSec),
+                             Sex = mean(FlightC_2$Progeny),
+                             Progeny = mean(FlightC_2$Sex),
+                             AllFamilyRes = mean(FlightC_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightC_2$DepartureCallsUsed))
+
+Xmat.mod_prob_res<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_res)
+head(Xmat.mod_prob_res)
+fitmat.mod.mod_prob_res<-matrix(ncol=nsim, nrow=nrow(newdat.mod_prob_res))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim) fitmat.mod.mod_prob_res[,i]<-plogis(Xmat.mod_prob_res%*%bsim.mod_prob@fixef[i,])
+
+newdat.mod_prob_res$lower<-apply(fitmat.mod.mod_prob_res, 1, quantile, prob=0.025)
+newdat.mod_prob_res$upper<-apply(fitmat.mod.mod_prob_res, 1, quantile, prob=0.975)
+newdat.mod_prob_res$fit<- plogis(Xmat.mod_prob_res%*%fixef(fullA2))
+
+plot2_RecResNum<- ggplot(data = newdat.mod_prob_res, aes(x = RecResNum, y=fit))+
+  # geom_jitter(data = FlightC_2, aes(x = RecResNum, y = Success), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_path(data = newdat.mod_prob_res, aes(x = RecResNum, y= fit), size= 1)+
+  geom_ribbon(data = newdat.mod_prob_res, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = '# Recruitment responders number') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()
+
+plot2_RecResNum_w_RAW_2 <- ggplot(data = newdat.mod_prob_res, aes(x = RecResNum, y=fit))+
+  geom_jitter(data = FlightC_2, aes(x = RecResNum, y = Success),
+              height = 0.05, width = 0.1,alpha=0.1, size=0.7)+
+  geom_path(data = newdat.mod_prob_res, aes(x = RecResNum, y= fit), size= 1)+
+  geom_ribbon(data = newdat.mod_prob_res, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = '# Recruitment responders number') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()+
+ # scale_y_continuous(
+  #  breaks = c(0, 1),  # Define the positions on the y-axis
+  #  labels = c("No", "Yes")  # Custom labels for the defined breaks
+  #) +
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  #scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Effect of recruitment responders number on success")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),  
+    strip.text.x = element_text(size = 9, face = "italic"), # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7)  # Legend title font size  # Set font size and style here
+  )
+plot2_RecResNum_w_RAW 
+plot2_RecResNum_w_RAW_2
+```
+
+########### DurationSec
+
+```{r}
+library(tidyverse)
+FlightC_2 <- FlightC_2 %>% 
+  filter(DurationSec < 400)
+newdat.mod_prob_dur<-expand.grid(DepResNum =mean(FlightC_2$DepResNum),
+                             RecResNum = mean(FlightC_2$RecResNum),
+                             DurationSec = seq(min(FlightC_2$DurationSec),
+                                              max(FlightC_2$DurationSec),l=10000),
+                             Sex = mean(FlightC_2$Progeny),
+                             Progeny = mean(FlightC_2$Sex),
+                             AllFamilyRes = mean(FlightC_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightC_2$DepartureCallsUsed))
+
+Xmat.mod_prob_dur<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_dur)
+head(Xmat.mod_prob_dur)
+fitmat.mod.mod_prob_dur<-matrix(ncol=nsim, nrow=nrow(newdat.mod_prob_dur))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim) fitmat.mod.mod_prob_dur[,i]<-plogis(Xmat.mod_prob_dur%*%bsim.mod_prob@fixef[i,])
+
+newdat.mod_prob_dur$lower<-apply(fitmat.mod.mod_prob_dur, 1, quantile, prob=0.025)
+newdat.mod_prob_dur$upper<-apply(fitmat.mod.mod_prob_dur, 1, quantile, prob=0.975)
+newdat.mod_prob_dur$fit<- plogis(Xmat.mod_prob_dur%*%fixef(fullA2))
+
+plot3_DurationSec <- ggplot(data = newdat.mod_prob_dur, aes(x = DurationSec, y=fit))+
+  # geom_jitter(data = FlightC_2, aes(x = DurationSecS, y = Success), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_path(data = newdat.mod_prob_dur, aes(x = DurationSec, y= fit), linewidth = 1)+
+  geom_ribbon(data = newdat.mod_prob_dur, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Duration in seconds') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()
+
+plot3_DurationSec_w_RAW_2 <- ggplot(data = newdat.mod_prob_dur, aes(x = DurationSec, y=fit))+
+  geom_jitter(data = FlightC_2, aes(x = DurationSec, y = Success), 
+              height = 0.05, width = 0.1,alpha=0.1, size=0.7)+
+  geom_path(data = newdat.mod_prob_dur, aes(x = DurationSec, y= fit), linewidth = 1)+
+  geom_ribbon(data = newdat.mod_prob_dur, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Duration in seconds') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()+
+  scale_y_continuous(
+    breaks = c(0, 1),  # Define the positions on the y-axis
+    labels = c("No", "Yes")  # Custom labels for the defined breaks
+  ) +
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  #scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Effect of duration  on success")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+     strip.text.x = element_text(size = 9, face = "italic"),# Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7)  # Legend title font size
+  )
+
+plot3_DurationSec_w_RAW
+plot3_DurationSec_w_RAW_2
+```
+
+All family response 
+```{r}
+########### SEX
+# For This, I will treat sex as categorical in the model, for simplicity as nothing changes regarding the output
+FlightC_2$AllFamilyRes <- as.factor(FlightC_2$AllFamilyRes)
+levels(FlightC_2$AllFamilyRes)[1] <- 'No'
+levels(FlightC_2$AllFamilyRes)[2] <- 'Yes'
+
+#fullA=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
+            #  Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+             # (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, #data=FlightC,control=contr)
+
+
+nsim<-10000
+bsim.mod_prob_AFR<-sim(fullA2, n.sim=nsim)
+apply(bsim.mod_prob_AFR@fixef, 2, mean)
+apply(bsim.mod_prob_AFR@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+plogis(apply(bsim.mod_prob_AFR@fixef, 2, mean))
+plogis(apply(bsim.mod_prob_AFR@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+newdat.mod_prob_AFR<-expand.grid(DepResNum =mean(FlightC_2$DepResNum),
+                             RecResNum = mean(FlightC_2$RecResNum),
+                             DurationSec = mean(FlightC_2$DurationSec),
+                             Sex = mean(FlightC_2$Sex),
+                             Progeny = mean(FlightC_2$Progeny),
+                             AllFamilyRes = levels(FlightC_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightC_2$DepartureCallsUsed))
+
+Xmat.mod_prob_AFR<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_AFR)
+head(Xmat.mod_prob_AFR)
+fitmat.mod.mod_prob_AFR<-matrix(ncol=nsim, nrow=nrow(newdat.mod_prob_AFR))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim) fitmat.mod.mod_prob_AFR[,i]<-plogis(Xmat.mod_prob_AFR%*%bsim.mod_prob_AFR@fixef[i,])
+
+newdat.mod_prob_AFR$lower<-apply(fitmat.mod.mod_prob_AFR, 1, quantile, prob=0.025)
+newdat.mod_prob_AFR$upper<-apply(fitmat.mod.mod_prob_AFR, 1, quantile, prob=0.975)
+newdat.mod_prob_AFR$fit<- plogis(Xmat.mod_prob_AFR%*%fixef(fullA2))
+
+plot4_AFR <- ggplot(data = newdat.mod_prob_AFR, aes(x = AllFamilyRes, y=fit))+
+  # geom_jitter(data = FlightC_2, aes(x = Sex, y = Success), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_point(data = newdat.mod_prob_AFR, aes(x = AllFamilyRes, y= fit),linewidth = 1)+
+  geom_errorbar(data = newdat.mod_prob_AFR, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'All Family vocal response') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()
+
+plot4_AFR_w_RAW_2 <- ggplot(data = newdat.mod_prob_AFR, aes(x = AllFamilyRes, y=fit))+
+  geom_jitter(data = FlightC_2, aes(x = AllFamilyRes, y = Success, color=AllFamilyRes),show.legend = FALSE,
+              height = 0.1, width = 0.2,alpha=0.3, size=0.7)+
+  geom_errorbar(data = newdat.mod_prob_AFR, aes(ymax=upper, ymin=lower), 
+                alpha=0.95, width=0.1)+
+  geom_point(data = newdat.mod_prob_AFR, aes(x = AllFamilyRes, y= fit),show.legend = FALSE, size= 3)+
+  xlab(label = 'All Family vocal response') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()+
+   #scale_y_continuous(
+   # breaks = c(0, 1),  # Define the positions on the y-axis
+   # labels = c("No", "Yes")  # Custom labels for the defined breaks
+ # ) +
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Absence vs. Presence of All family vocal response")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),# Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7)  # Legend title font size
+  )  # Set font size and style here
+
+
+plot4_AFR_w_RAW
+plot4_AFR_w_RAW_2
+```
+
+Progeny
+```{r}
+########### PROGENY
+# For This, SAME RATIONALE AS IN PREVIOUS, I will treat PROGENY as categorical in the model, for simplicity as nothing changes regarding the output
+FlightC_2$AllFamilyRes <-as.numeric(FlightC_2$AllFamilyRes)
+
+FlightC$Progeny <- as.factor(FlightC$Progeny)
+levels(FlightC$Progeny)[1] <- 'No'
+levels(FlightC$Progeny)[2] <- 'Yes'
+
+#fullA=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
+            #  Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+             # (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, #data=FlightC,control=contr)
+
+nsim<-10000
+bsim.mod_prob_prog<-sim(fullA2, n.sim=nsim)
+apply(bsim.mod_prob_prog@fixef, 2, mean)
+apply(bsim.mod_prob_prog@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+plogis(apply(bsim.mod_prob_prog@fixef, 2, mean))
+plogis(apply(bsim.mod_prob_prog@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+newdat.mod_prob_prog<-expand.grid(DepResNum =mean(FlightC_2$DepResNum),
+                             RecResNum = mean(FlightC_2$RecResNum),
+                             DurationSec = mean(FlightC_2$DurationSec),
+                             Sex = mean(FlightC_2$Sex),
+                             Progeny = levels(FlightC_2$Progeny),
+                             AllFamilyRes = mean(FlightC_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightC_2$DepartureCallsUsed))
+
+Xmat.mod_prob_prog<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_prog)
+head(Xmat.mod_prob_prog)
+fitmat.mod.mod_prob_prog<-matrix(ncol=nsim, nrow=nrow(newdat.mod_prob_prog))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim) fitmat.mod.mod_prob_prog[,i]<-plogis(Xmat.mod_prob_prog%*%bsim.mod_prob_prog@fixef[i,])
+
+newdat.mod_prob_prog$lower<-apply(fitmat.mod.mod_prob_prog, 1, quantile, prob=0.025)
+newdat.mod_prob_prog$upper<-apply(fitmat.mod.mod_prob_prog, 1, quantile, prob=0.975)
+newdat.mod_prob_prog$fit<- plogis(Xmat.mod_prob_prog%*%fixef(fullA2))
+
+plot4_Progeny <- ggplot(data = newdat.mod_prob_prog, aes(x = Progeny, y=fit))+
+  # geom_jitter(data = FlightC_2, aes(x = Sex, y = Success), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_point(data = newdat.mod_prob_prog, aes(x = Progeny, y= fit), size= 1)+
+  geom_errorbar(data = newdat.mod_prob_prog, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Progeny') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()
+
+plot4_Progeny_w_RAW <- ggplot(data = newdat.mod_prob_prog, aes(x = Progeny, y=fit))+
+  geom_jitter(data = FlightC_2, aes(x = Progeny, y = Success),show.legend = FALSE,
+              height = 0.1, width = 0.2,alpha=0.3, size=0.7)+
+  geom_errorbar(data = newdat.mod_prob_prog, aes(ymax=upper, ymin=lower), 
+                alpha=0.95, width=0.1)+
+  geom_point(data = newdat.mod_prob_prog, aes(x = Progeny, y= fit),show.legend = FALSE, size= 3)+
+  xlab(label = 'Progeny') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()+
+  scale_y_continuous(
+    breaks = c(0, 1),  # Define the positions on the y-axis
+    labels = c("No", "Yes")  # Custom labels for the defined breaks
+  ) +
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  #scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Absence vs. Presence of dependent progeny")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7)  # Legend title font size
+  )  # Set font size and style here
+
+
+plot4_Progeny_w_RAW
+```
+
+Departure calls used
+```{r}
+# DepartureCallsUsed 
+
+FlightC_2$Progeny <- as.numeric(FlightC_2$Progeny)
+levels(FlightC_2$Progeny)[1] <- 'No'
+levels(FlightC_2$Progeny)[2] <- 'Yes'
+
+FlightC_2$DepartureCallsUsed  <- as.factor(FlightC_2$DepartureCallsUsed )
+
+levels(FlightC_2$DepartureCallsUsed )[1] <- 'No'
+levels(FlightC_2$DepartureCallsUsed )[2] <- 'Yes'
+
+
+
+#fullA=glmer(Success~ DepResNum+ RecResNum + DurationSec+Progeny+ 
+            #  Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+             # (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= binomial, #data=FlightC,control=contr)
+
+nsim<-10000
+bsim.mod_prob_dcu<-sim(fullA2, n.sim=nsim)
+apply(bsim.mod_prob_dcu@fixef, 2, mean)
+apply(bsim.mod_prob_dcu@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+plogis(apply(bsim.mod_prob_dcu@fixef, 2, mean))
+plogis(apply(bsim.mod_prob_dcu@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+newdat.mod_prob_dcu<-expand.grid(DepResNum =mean(FlightC_2$DepResNum),
+                             RecResNum = mean(FlightC_2$RecResNum),
+                             DurationSec = mean(FlightC_2$DurationSec),
+                             Sex = mean(FlightC_2$Sex),
+                             Progeny = mean(FlightC_2$Progeny),
+                             AllFamilyRes = mean(FlightC_2$AllFamilyRes),
+                             DepartureCallsUsed = levels(FlightC_2$DepartureCallsUsed))
+
+Xmat.mod_prob_dcu<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_dcu)
+head(Xmat.mod_prob_dcu)
+fitmat.mod.mod_prob_dcu<-matrix(ncol=nsim, nrow=nrow(newdat.mod_prob_dcu))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim) fitmat.mod.mod_prob_dcu[,i]<-plogis(Xmat.mod_prob_dcu%*%bsim.mod_prob_dcu@fixef[i,])
+
+newdat.mod_prob_dcu$lower<-apply(fitmat.mod.mod_prob_dcu, 1, quantile, prob=0.025)
+newdat.mod_prob_dcu$upper<-apply(fitmat.mod.mod_prob_dcu, 1, quantile, prob=0.975)
+newdat.mod_prob_dcu$fit<- plogis(Xmat.mod_prob_dcu%*%fixef(fullA2))
+
+plot5_DepartureCallsUsed <- ggplot(data = newdat.mod_prob_dcu, aes(x = DepartureCallsUsed, y=fit))+
+  # geom_jitter(data = FlightC_2, aes(x = Sex, y = Success), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_point(data = newdat.mod_prob_dcu, aes(x = DepartureCallsUsed, y= fit), size= 1)+
+  geom_errorbar(data = newdat.mod_prob_dcu, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Departure calls were used') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()
+
+plot5_DepartureCallsUsed_w_RAW <- ggplot(data = newdat.mod_prob_dcu, aes(x = DepartureCallsUsed, y=fit))+
+  geom_jitter(data = FlightC_2, aes(x = DepartureCallsUsed, y = Success),show.legend = FALSE,
+              height = 0.1, width = 0.2,alpha=0.3, size=0.7)+
+  geom_errorbar(data = newdat.mod_prob_dcu, aes(ymax=upper, ymin=lower), 
+                alpha=0.95, width=0.1)+
+  geom_point(data = newdat.mod_prob_dcu, aes(x = DepartureCallsUsed, y= fit, color=AllFamilyRes),show.legend = FALSE, size= 3)+
+  xlab(label = 'Departurecalls were used') +
+  ylab(label = "(P) of Departure")+
+  theme_classic()+
+  
+  scale_y_continuous(
+    breaks = c(0, 1),  # Define the positions on the y-axis
+    labels = c("No", "Yes")  # Custom labels for the defined breaks
+  ) +
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  #scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle(" Use of the departure call")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7)  # Legend title font size
+  ) # Set font size and style here
+
+
+plot5_DepartureCallsUsed_w_RAW
+
+
+
+```
+
+#combining sig plots
+
+```{r}
+require(ggpubr)
+#ggarrange(
+#  plot1_DepResNum_w_RAW_2, 
+#  plot2_RecResNum_w_RAW_2, 
+#  plot3_DurationSec_w_RAW_2, 
+#  plot4_AFR_w_RAW_2,
+#  ncol = 2, 
+#  nrow = 2, 
+#  labels = c("A", "B", "C", "D"), 
+#  label.args = list(size = 5)  # Adjust size as needed
+#)
+
+
+library(gridExtra)
+library(ggplot2)
+library(patchwork)
+
+# Create the combined plot
+FigureAA <- (plot1_DepResNum_w_RAW_2 + ggtitle("A")) + 
+                 (plot2_RecResNum_w_RAW_2 + ggtitle("B")) + 
+                 (plot3_DurationSec_w_RAW_2 + ggtitle("C")) + 
+                 (plot4_AFR_w_RAW_2 + ggtitle("D")) + 
+                 plot_layout(ncol = 2, nrow = 2)
+
+# Save as PNG
+ggsave("FigureAA.png", FigureAA, width = 10, height = 8, dpi = 300)
+
+```
+
+additional post hoc models 
+# modelling the number of attempts before successful flight per focal
+
+```{r}
+library(dplyr)
+setwd("D:/Flight study")
+Flight <- read.csv(file = 'Flight.csv', header = T, sep = ",", stringsAsFactors = T) 
+FlightC=na.omit(Flight)
+
+# Step 1: Arrange data by Focal, Session, and Progeny, and sort by Success to get the order of "No" and "Yes"
+Flight_attempts <- FlightC %>%
+  group_by(Focal, Session,Segment, Progeny) %>%                # Group by Focal, Session, and Progeny
+  arrange(Focal, Session,Segment, Progeny, Success) %>%        # Ensure sorted order within each group
+  mutate(obs_no_before_success = ifelse(Success == "Yes", 
+                                        row_number() - 1, 
+                                        NA)) %>%       # Count "No" before the first "Yes" per group
+  filter(Success == "Yes") %>%                         # Keep only rows with Success == "Yes"
+  ungroup()
+
+
+# Step 2: Summarize data to include Progeny, Session, and count of 'No' before first 'Yes'
+Flight_attempts_2 <- Flight_attempts %>%
+  group_by(Focal, Session,Segment, Progeny) %>%
+  summarize(no_before_success = first(obs_no_before_success)) %>%
+  ungroup()
+
+# Now your `summary_data` is ready for further modeling with glm()
+
+# Example GLM model: predicting the number of 'No' before 'Yes' based on Progeny - incorrect random effects
+#Attempts_model <- glmer(no_before_success ~ Progeny +Segment+(1|Focal), family = poisson, data = #Flight_attempts_2)
+#summary(Attempts_model)
+
+
+#poisson distribution, discard because it is not stable and 0 is over represented in the response, suggesting zero inflation
+#Attempts_model2 <- glmer(no_before_success ~ Progeny+ (1|Focal) + (1|Session/Segment), family = #poisson, data = Flight_attempts_2)
+#summary(Attempts_model2)
+
+# refitting using glmmTMB because the data is zero inflated and this will fit a zero inflated poisson model. best fit. use
+library(glmmTMB)
+
+Attempts_model2 <- glmmTMB(
+  no_before_success ~ Progeny + (1|Focal) + (1|Session/Segment),  # Main model
+  ziformula = ~ 1,                              # Zero-inflation model
+  data = Flight_attempts_2,
+  family = poisson(link = "log")
+)
+summary(Attempts_model2)
+
+# zero inflated with binomial distribution for overdispersion, same results but less stable. discard
+#Attempts_model2 <- glmmTMB(
+#  no_before_success ~ Progeny + (1|Focal) + (1|Session/Segment),  # Main model
+ # ziformula = ~ 1,                              # Zero-inflation model
+ # data = Flight_attempts_2,
+#  family = nbinom2(link = "log")
+#)
+#summary(Attempts_model2)
+
+```
+
+#effect of progeny and others on duration of signalling
+
+```{r}
+#data not normally distributed. discard
+#full_dur <- glmer(DurationSec ~ DepResNum+RecResNum+Progeny +Segment+(1|Focal), family = gaussian, #data = FlightG)
+#summary(full_dur)
+
+# corrected random effects. data is not normally distributed. discard
+#full_dur2 <- glmer(DurationSec ~ DepResNum+RecResNum+Progeny +(1|Focal) + #(1|Period/Session/Segment), family = gaussian, data = FlightG)
+#summary(full_dur2)
+
+# correct random effects and distribution. use
+library(glmmTMB)
+full_dur3 <- glmmTMB(DurationSec +1 ~ DepResNum+RecResNum+Progeny +(1|Focal) + (1|Period/Session/Segment), family = Gamma(link = "log"), data = FlightG)
+summary(full_dur3)
+
+```
+
+
+Model checks for attempts and duration models
+
+#check assumptions
+attempts
+
+```{r}
+
+#check for independt residuals
+setwd("D:/Linear models and their applications in R/Material")
+source("diagnostic_fcns.r") 
+ranef(Attempts_model2)
+names(ranef(Attempts_model2))
+
+
+ranef.diagn.plot(Attempts_model2) 
+
+
+head(ranef(Attempts_model2)[["Focal"]])
+head(ranef(Attempts_model2)[["Segment"]])
+head(ranef(Attempts_model2)[["Session"]])
+head(ranef(Attempts_model2)[["Period"]])
+
+
+```
+
+#check for colinearity #Variance Inflation factor VIF
+not applicable because the model has less than 2 terms
+```{r}
+library(car)
+vif(Attempts_model2)
+```
+
+##check for model stability - attempts
+
+```{r}
+library(glmmTMB)
+library(boot)
+
+# Define a function to extract fixed effects
+get_fixef <- function(model) {
+  as.numeric(fixef(model)$cond)  # Extract fixed effects for count component
+}
+
+# Custom bootstrap function
+bootstrap_glmmTMB <- function(data, indices) {
+  # Resample data
+  resampled_data <- data[indices, ]
+  
+  # Refit the model with resampled data
+  refitted_attempts <- update(Attempts_model2, data = resampled_data)
+  
+  # Extract fixed effects
+  get_fixef(refitted_attempts)
+}
+
+# Run the bootstrap
+bootstrap_attempts <- boot(
+  data = Flight_attempts_2,
+  statistic = bootstrap_glmmTMB,
+  R = 1000  # Number of bootstrap replicates
+)
+
+# Summarize bootstrap results
+summary(bootstrap_attempts)
+
+```
+
+```{r}
+bootstrap_attempts_res <- data.frame(
+  Parameter = names(fixef(Attempts_model2)$cond),
+  Original = get_fixef(Attempts_model2),
+  BootMean = apply(bootstrap_attempts$t, 2, mean),
+  BootSE = apply(bootstrap_attempts$t, 2, sd)
+)
+bootstrap_attempts_res$Relative_Bias <- abs(bootstrap_attempts_res$BootMean - bootstrap_attempts_res$Original) / abs(bootstrap_attempts_res$Original) * 1000
+
+
+bootstrap_attempts_res$CI_Lower <- apply(bootstrap_attempts$t, 2, quantile, probs = 0.025)
+bootstrap_attempts_res$CI_Upper <- apply(bootstrap_attempts$t, 2, quantile, probs = 0.975)
+
+
+bootstrap_attempts_res$Median_Diff <- abs(apply(bootstrap_attempts$t, 2, median) - bootstrap_attempts_res$Original)
+
+print(bootstrap_attempts_res)
+```
+
+
+
+
+
+# attempts model results and summary
+
+```{r}
+
+summary(Attempts_model2)
+summary(Attempts_model2)$varcor # random effects
+round(summary(Attempts_model2)$coefficients,3) # fixed effects
+fixef(Attempts_model2) # estimates only, fixed effects
+
+
+#further info
+summary(Attempts_model2)$AICtab["AIC"] # AIC
+logLik(Attempts_model2) # log likelihood
+summary(Attempts_model2)$ngrps # number of levels per grouping factor
+
+
+#relative model complexity - how many data points per estimated effect
+# Number of residuals (observations)
+num_resid_att <- length(residuals(Attempts_model2))
+
+# Number of fixed effects parameters
+num_fixef_att <- length(fixef(Attempts_model2)$cond)
+
+# Number of random effects parameters
+num_ranef_att <- sum(sapply(VarCorr(Attempts_model2)$cond, function(x) length(x)))
+
+# Total number of parameters
+total_params_att <- num_fixef_att + num_ranef_att
+
+# Observations-per-parameter ratio
+opr_att <- num_resid_att / total_params_att
+print(opr_att)
+
+```
+
+#inferences about fixed effects #R2 values for fixed effects and Attempts model 2
+model
+
+
+
+```{r}
+#full- null model comparison - remove all fixed effects of interest
+
+#Attempts_model2 <- glmer(no_before_success ~ Progeny+ (1|Focal) + (1|Session/Segment), family = #poisson, data = Flight_attempts_2)
+
+nullAtt2<- glmer(no_before_success ~ (1|Focal) + (1|Session/Segment), family = poisson, data = Flight_attempts_2)
+
+# compare
+
+nullAtt2_comp = as.data.frame(anova(nullAtt2, Attempts_model2, test="Chisq"))
+nullAtt2_comp <-round(nullAtt2_comp,3)
+nullAtt2_comp
+
+# one at a time
+
+testsAtt2=as.data.frame(drop1(Attempts_model2, test="Chisq", control=contr))
+TestsAatt2<-round(testsAtt2,3)
+
+library(pbkrtest)
+
+#PBmodcomp(fullA, nullA, nsim = 10000, ref = NULL, cl = NULL, details = 0) # does not work
+
+#effect size for whole model R2 # works
+library(MuMIn)
+
+
+r.squaredGLMM(Attempts_model2) 
+
+#effect size for individual fixed effects
+library(r2glmm)
+r2beta(model=Attempts_model2, partial=TRUE, method="sgv")
+
+#another way to get effect sizes for the full model - works
+library(performance)
+model_performance(Attempts_model2)
+
+
+#####contribution of each term to the model, add sum of squares to get the value for the whole model, and calculate proportion of each term of the sum to get R2 like measure
+
+anova (Attempts_model2)
+
+```
+
+duration model
+
+
+```{r}
+
+#check for independt residuals
+setwd("D:/Linear models and their applications in R/Material")
+source("diagnostic_fcns.r") 
+ranef(full_dur3)
+names(ranef(full_dur3))
+
+
+ranef.diagn.plot(full_dur3) 
+
+
+head(ranef(full_dur3)[["Focal"]])
+head(ranef(full_dur3)[["Segment"]])
+head(ranef(full_dur3)[["Session"]])
+head(ranef(full_dur3)[["Period"]])
+
+
+```
+
+#check for colinearity #Variance Inflation factor VIF
+
+```{r}
+library(car)
+
+
+# Extract the fixed-effects design matrix
+fixef_dur3 <- model.matrix(full_dur3)
+
+# Fit a linear model using the fixed-effects design matrix
+lm_dur3 <- lm(fixef_dur3)
+
+# Calculate VIF for the linear model
+ vif(lm_dur3)
+
+```
+
+##check for model stability
+
+```{r}
+library(glmmTMB)
+library(boot)
+
+# Define a function to extract fixed effects
+get_fixef <- function(model) {
+  as.numeric(fixef(model)$cond)  # Extract fixed effects for count component
+}
+
+# Custom bootstrap function
+bootstrap_glmmTMB <- function(data, indices) {
+  # Resample data
+  resampled_data <- data[indices, ]
+  
+  # Refit the model with resampled data
+  refitted_model_dur <- update(full_dur3, data = resampled_data)
+  
+  # Extract fixed effects
+  get_fixef(refitted_model_dur)
+}
+
+# Run the bootstrap
+bootstrap_dur3 <- boot(
+  data = FlightG,
+  statistic = bootstrap_glmmTMB,
+  R = 1000  # Number of bootstrap replicates
+)
+
+# Summarize bootstrap results
+summary(bootstrap_dur3)
+
+```
+
+```{r}
+bootstrap_dur3_results <- data.frame(
+  Parameter = names(fixef(full_dur3)$cond),
+  Original = get_fixef(full_dur3),
+  BootMean = apply(bootstrap_dur3$t, 2, mean),
+  BootSE = apply(bootstrap_dur3$t, 2, sd)
+)
+bootstrap_dur3_results$Relative_Bias <- abs(bootstrap_dur3_results$BootMean - bootstrap_dur3_results$Original) / abs(bootstrap_dur3_results$Original) * 1000
+
+
+bootstrap_dur3_results$CI_Lower <- apply(bootstrap_dur3$t, 2, quantile, probs = 0.025)
+bootstrap_dur3_results$CI_Upper <- apply(bootstrap_dur3$t, 2, quantile, probs = 0.975)
+
+
+bootstrap_dur3_results$Median_Diff <- abs(apply(bootstrap_dur3$t, 2, median) - bootstrap_dur3_results$Original)
+
+print(bootstrap_dur3_results)
+```
+
+
+# duration model results and summary
+
+```{r}
+
+summary(full_dur3)
+summary(full_dur3)$varcor # random effects
+round(summary(full_dur3)$coefficients,3) # fixed effects
+fixef(full_dur3) # estimates only, fixed effects
+
+
+#further info
+summary(full_dur3)$AICtab["AIC"] # AIC
+logLik(full_dur3) # log likelihood
+summary(full_dur3)$ngrps # number of levels per grouping factor
+
+
+#relative model complexity - how many data points per estimated effect
+# Number of residuals (observations)
+num_resid_dur3 <- length(residuals(full_dur3))
+
+# Number of fixed effects parameters
+num_fixef_dur3 <- length(fixef(full_dur3)$cond)
+
+# Number of random effects parameters
+num_ranef_dur3 <- sum(sapply(VarCorr(full_dur3)$cond, function(x) length(x)))
+
+# Total number of parameters
+total_params_dur3 <- num_fixef_dur3 + num_ranef_dur3
+
+# Observations-per-parameter ratio
+opr_dur3 <- num_resid_dur3 / total_params_dur3
+print(opr_dur3)
+
+
+```
+
+#inferences about fixed effects #R2 values for fixed effects and Attempts model 2
+model
+
+
+
+```{r}
+#full- null model comparison - remove all fixed effects of interest
+
+#full_dur3 <- glmmTMB(DurationSec +1 ~ DepResNum+RecResNum+Progeny +(1|Focal) + (1|Period/Session/Segment), family = Gamma(link = "log"), data = FlightG)
+
+nulldur3<- glmmTMB(DurationSec +1 ~ (1|Focal) + (1|Period/Session/Segment), family = Gamma(link = "log"), data = FlightG)
+
+# compare
+
+nulldur3_comp = as.data.frame(anova(nulldur3, full_dur3, test="Chisq"))
+nulldur3_comp <-round(nulldur3_comp,3)
+nulldur3_comp
+
+# one at a time
+
+testsdur3=as.data.frame(drop1(full_dur3, test="Chisq", control=contr))
+testsdur3<-round(testsdur3,3)
+
+library(pbkrtest)
+
+#PBmodcomp(fullA, nullA, nsim = 10000, ref = NULL, cl = NULL, details = 0) # does not work
+
+#effect size for whole model R2 # works
+library(MuMIn)
+
+
+r.squaredGLMM(full_dur3) 
+
+#effect size for individual fixed effects
+library(r2glmm)
+r2beta(model=full_dur3, partial=TRUE, method="sgv")
+
+#another way to get effect sizes for the full model - works
+library(performance)
+model_performance(full_dur3)
+
+
+#####contribution of each term to the model, add sum of squares to get the value for the whole model, and calculate proportion of each term of the sum to get R2 like measure
+
+anova (full_dur3)
+
+```
+
+
+summary for attempts made by progeny yes and no focals
+```{r}
+# Load the dplyr package
+library(dplyr)
+
+# Summarise the data
+summary_stats_attempts <- FlightG %>%
+  group_by(Progeny) %>%
+  summarise(
+    Mean_GroupSize = mean(GroupSize, na.rm = TRUE),
+    SD_GroupSize   = sd(GroupSize, na.rm = TRUE)/ sqrt(n()),
+    Min_GroupSize  = min(GroupSize, na.rm = TRUE),
+    Max_GroupSize  = max(GroupSize, na.rm = TRUE)
+  ) %>%
+  mutate(Range_GroupSize = Max_GroupSize - Min_GroupSize)
+
+# Print the summary
+print(summary_stats_attempts)
+
+```
+
+test significance of difference between progeny yes and no group size number
+```{r}
+# Two-sample t-test comparing GroupSize between Progeny groups
+t_test_result_groupsize <- t.test(GroupSize ~ Progeny, data = FlightG)
+print(t_test_result_groupsize)
+
+```
+
+
+#### 
+
+# Model B
+
+```{r}
+#subset the data to exclude aborted attempts with group size = 0
+FlightG<- subset(FlightC, GroupSize> 0)
+```
+
+#fitting the model
+
+```{r}
+
+contrB=glmerControl(optimizer="bobyqa",
+                   optCtrl=list(maxfun=100000))
+# with number of departure calls
+fullb=glmer(GroupSize ~ FocalDepCalls + ResDepCalls+DepResNum+ RecResNum + DurationSec +Progeny+ 
+              Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+              (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= poisson, data=FlightG,control=contrB)
+
+#without the number of departure calls
+
+fullB=glmer(GroupSize ~ DepResNum+ RecResNum + DurationSec +Progeny+ 
+              Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+              (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= poisson, data=FlightG,control=contrB)
+```
+
+Alternative model with alternative random effects structure - i used this one
+
+```{r}
+fullB2=glmer(GroupSize~ DepResNum+ RecResNum + DurationSec+Progeny+ 
++                 Sex+ AllFamilyRes+ DepartureCallsUsed+ 
++                 (1|Focal)+ (1|Period)+ (1 | Period/Session) + (DurationSec || Period/Session/Segment), family= poisson, data=FlightG,control=contrB)
+```
+
+#check for independt residuals
+
+```{r}
+setwd("D:/Linear models and their applications in R/Material")
+source("diagnostic_fcns.r")
+names(ranef(fullB))
+ranef(fullB)
+ranef.diagn.plot(fullB)
+
+head(ranef(fullB)[["Focal"]])
+head(ranef(fullB)[["Segment"]])
+head(ranef(fullB)[["Session"]])
+head(ranef(fullB)[["Period"]])
+```
+
+#check for colinearity
+
+```{r}
+library(car)
+vif(fullb)
+vif(fullB)
+vif(fullB2)
+```
+
+#check for model stability
+
+fullB
+
+```{r}
+setwd("D:/Linear models and their applications in R/Material")
+source("glmm_stability.r")
+
+#fullb.stab=glmm.model.stab(model.res=fullb, data=FlightG,
+          #                 contr=contr)
+
+
+
+fullB.stab=glmm.model.stab(model.res=fullB, data=FlightG,
+                           contr=contrB)
+```
+
+# checking for convergence issues or warnings
+
+```{r}
+
+table(fullB.stab$detailed$lme4.warnings)
+
+table(fullB.stab$detailed$opt.warnings)
+
+#
+head(fullB.stab$detailed, 4) # what the estimates dataframe looks like
+
+FBST<-round(fullB.stab$summary[, -1], 3) #-an absolute value > ca. 2 is a reason to worry
+
+###print model stability resutls table
+FBST <- data.frame(
+  Parameter = rownames(FBST),
+  `Original` = FBST[,1],
+  `Minimum` = FBST[,2],
+  `Maximum`= FBST [,3]
+  
+)
+print(FBST)
+library(rempsyc)
+nice_table(FBST, width = 1, highlight = TRUE)
+
+#determine which row the random effects are so we can specify them in the stability plot @ preceds random effects
+is.reb=grepl(x=rownames(fullB.stab$summary), pattern="@")
+is.reb # view
+
+#plotting model stability 
+m.stab.plot(fullB.stab$summary[!is.reb, -1]) # fixed effects, large std for some estimates.(DCU, Progeny, DepResNum)
+m.stab.plot(fullB.stab$summary[is.reb, -1]) #random effects, plot shows some estimates are 0 and others
+#with large std, which is not very stable.
+```
+
+# modelB results and summary
+
+```{r}
+#summary
+summary(fullB)
+summary(fullB)$varcor # random effects
+summary(fullB)$coefficients # fixed effects
+fixef(fullB) # estimates only, fixed effects
+
+#further info
+summary(fullB)$AICtab["AIC"] # AIC
+logLik(fullB) # log likelihood
+summary(fullB)$ngrps # number of levels per grouping factor
+
+
+#relative model complexity - how many data points per estimated effect
+length(residuals(fullB))/
+  (length(fixef(fullB))+
+     nrow(as.data.frame(summary(fullB)$varcor)))
+
+```
+
+#inferences about fixed effects #R2 values for fixed effects and fullB
+model
+
+fullB
+
+```{r}
+#full- null model comparison - remove all fixed effects of interest
+
+nullB=glmer(GroupSize~ 
+              (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= poisson, 
+            data=FlightG,control=contr)
+# compare
+
+nullBcomp = as.data.frame(anova(nullB, fullB, test="Chisq"))
+NullBcomp<-round(nullBcomp,3)
+NullBcomp
+
+# one at a time
+
+testsB=as.data.frame(drop1(fullB, test="Chisq"))
+TestsB<-round(testsB,3)
+
+
+#effect sizes
+library(MuMIn)
+
+
+r.squaredGLMM(fullB)
+
+#effect size for individual fixed effects
+
+library(r2glmm)
+r2beta(model=fullB, partial=TRUE, method="sgv") # does not coverge
+# OR
+library(partR2)
+#R2_fullb <- partR2(fullb, partvars = c("z.DepResNum", "z.RecResNum"),data = FlightG, R2_type = "marginal", nboot = 10)
+R2_fullB  <- partR2(fullB, partvars = c("DepResNum", "RecResNum","DurationSec","Progeny","Sex","AllFamilyRes","DepartureCallsUsed"),data = FlightC, R2_type = "marginal", nboot = 1000)
+R2_fullB
+
+#another way to get effect sizes for the full model
+library(performance)
+model_performance(fullB)
+
+
+####### contribution of each term to the model, sum and calculate proportion of the sum to get R2 like measure
+anova(fullB)
+```
+
+#confidence intervals
+fullB
+
+```{r}
+#Confidence intervals
+setwd("E:/Linear models and their applications in R/Material")
+source("boot_glmm.r")
+
+
+fullB.boot=boot.glmm.pred(model.res=fullB, excl.warnings=F,
+                          nboots=1000, para=F, resol=1000, level=0.95, use=NULL)
+
+
+FBB<- round(fullB.boot$ci.estimates, 4) # extract the bootstrap estimates ### store in an object for plotting
+FBB <- data.frame(
+  Parameter = rownames(FBB),
+  `Original` = FBB[,1],
+  `X2.5` = FBB[,2],
+  `X97.5`= FBB [,3]
+)
+print(FBB)
+library(rempsyc)
+nice_table(FBB, width = 1, highlight = TRUE)
+
+m.stab.plot(fullB.boot$ci.estimates) # plot the CI
+
+
+
+```
+
+# transform estimates from link to response space
+
+```{r}
+
+exp(fixef(fullB)["(Intercept)"])
+```
+
+### Results tables and plotting fullB
+
+## Results tables attempts 1 \# the one i used
+
+fullB
+
+```{r}
+#create results table - fullB - fixed effects
+# get the model summary
+model_summary_B<- summary(fullB )
+
+# extract coefficients
+coefficients_B <- model_summary_B$coefficients
+rownames(coefficients_B) <- c("Intercept","Departure responders number","Recruitment responders number","Duration in sec.","Progeny","Sex","All family responded","Departure calls used")
+# extract standard errors
+std_errors_B <- coefficients_B[,2]
+
+# extract confidence intervals
+conf_int_B <- fullB.boot$ci.estimates
+
+# extract max and min estimates
+max_estimate_B <- max(coefficients_B[,1])
+min_estimate_B <- min(coefficients_B[,1])
+
+# extract x2 and df
+x2B <- nullBcomp[,6]
+dfB  <- nullBcomp[,7]
+
+x2B2 <- testsB[,4]
+
+library(flextable)
+
+# combine results into a data frame
+results_table_B <- data.frame(
+  Parameter = rows,
+  Estimate = coefficients_B[,1],
+  `Std. Error` = std_errors_B,
+  `p`= coefficients_B[,4],
+  `95% CI Lower` = conf_int_B[,2],
+  `95% CI Upper` = conf_int_B[,3],
+ 
+   `LRT_X2` = TestsB[,3]  # Using a simpler name for now
+ # `p`= TestsB [,4]
+)
+
+#`Chi-sq`=x2B2,
+#`df`=dfB,
+#`Min Estimate` = min_estimate_B, # removed, keep for reference
+#`Max Estimate` = max_estimate_B # removed, kept for reference
+results_table_B [ , 'R²m'] = c(0.268,NA,NA,NA,NA,NA,NA,NA)
+results_table_B [ , 'R²c'] = c(0.754,NA,NA,NA,NA,NA,NA,NA)
+
+table_plot_b <- nice_table(results_table_B, width = 1, highlight = TRUE)
+
+table_plot_B<- set_header_labels(
+  table_plot_b,
+  LRT_X2 = "LRT/X²",  # Correct label with superscript
+  `R²m` = "R²m",     # Proper superscript
+  `R²c` = "R²c"      # Proper superscript
+)
+
+table_plot_B
+
+
+# print the final table
+print(results_table_B)
+library(rempsyc)
+nice_table(results_table_B, width = 1, highlight = TRUE)
+
+
+# print random effects table
+# extract random effects estimates
+fullB_RE<-summary(fullB)$varcor
+print(VarCorr(fullB), comp=c("Variance","Std.Dev."),3)
+
+
+
+```
+
+# \### Plotting fullB
+
+#load the libraries
+
+```{r}
+library(ggplot2)
+library(sjPlot)
+```
+
+#using sjplot
+
+```{r}
+#Predicted values (marginal effects) for specific model terms. discrete predictors are held constant
+#at their reference levels using ggpredict
+
+plot_model(fullB, type = "pred",show.values = TRUE, width=0.1)
+
+# Predicted values (marginal effects) for specific model terms. discrete predictors are held constant
+#at their proportion using ggeffect
+
+plot_model(fullB, type = "eff", show.values = TRUE, width=0.1)
+#random effects - type "re" does not work for models with the || notation
+# plot_model(fullB, type = "re", show.values = TRUE, width=0.1,   facet.grid=TRUE)
+
+#expanded plot for each model term - not working for fullB, check
+
+#DepResNum
+plot_fullB_DepResNum<- plot_model(fullB, type = "pred",terms = c("DepResNum [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                                  axis.title  =c ("Number of departure call responders ","Flight group size"),
+                                  show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                  spacing = 0.4,show.data =TRUE, transform = log,ci.lvl = 0.95)
+plot_fullB_DepResNum
+
+# RecResNum
+plot_fullB_RecResNum<- plot_model(fullB, type = "pred",terms = c("RecResNum [all]","Sex","Progeny"), title = "Predicted marginal effects", 
+                                  axis.title  =c ("Number of recruitment call responders ","Flight group size"),
+                                  show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                  spacing = 0.4,show.data =TRUE, transform = log,ci.lvl = 0.95)
+plot_fullB_RecResNum
+
+#Duratoin
+plot_fullB_Dur<- plot_model(fullB, type = "pred",terms = c("DurationSec [all]","Sex","Progeny"), title = "Predicted marginal effects", 
+                            axis.title  =c ("Trial duration in seconds","Flight group size"),
+                            show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                            spacing = 0.4,show.data =TRUE, transform = log,ci.lvl = 0.95)
+plot_fullB_Dur
+
+## AllFamilyRes
+plot_fullB_AllFamilyRes<- plot_model(fullB, type = "pred",terms = c("AllFamilyRes [all]","Sex","Progeny"), title = "Predicted marginal effects", 
+                                     axis.title  =c ("All family responded vocally","Flight group size"),
+                                     show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                     spacing = 0.4,show.data =TRUE, transform = log,ci.lvl = 0.95)
+plot_fullB_AllFamilyRes
+
+
+## DepartureCallsUsed
+plot_fullB_DepartureCallsUsed<- plot_model(fullB, type = "pred",terms = c("DepartureCallsUsed [all]","Sex","Progeny"), title = "Predicted marginal effects ", 
+                                           axis.title  =c ("Whether Departure call was used","Flight group size"),
+                                           show.values = TRUE, width=0.1,colors = "gs",dot.size = 1.0,
+                                           spacing = 0.4,show.data =TRUE, transform = log,ci.lvl = 0.95)
+plot_fullB_DepartureCallsUsed
+library(gtsummary)
+# change colour with scaling 
+
+
+BDepResNum <-plot_fullB_DepResNum + scale_color_sjplot("circus")
+BRecResNum <-plot_fullB_RecResNum + scale_color_sjplot("circus")
+BDur <-plot_fullB_Dur + scale_color_sjplot("circus")
+BAllFam <- plot_fullB_AllFamilyRes + scale_color_sjplot("circus")
+BDepCallU <-plot_fullB_DepartureCallsUsed + scale_color_sjplot("circus")
+
+figureB <- ggarrange(BDepResNum, BRecResNum,BAllFam + font("x.text", size = 10),
+                     ncol = 2, nrow = 2, labels = c("A","B", "C","D"), heights = c(1, 1))
+figureB
+
+figureD <- ggarrange(BDur, BDepCallU + font("x.text", size = 10),
+                     ncol = 1, nrow = 2, labels = c("A","B"), heights = c(1, 1))
+figureD
+library(gtsummary)
+# change theme
+plot_fullB + theme()
+```
+
+# trying ggplot
+
+```{r}
+
+```
+
+fullB2
+
+#check for independt residuals
+
+```{r}
+setwd("D:/Linear models and their applications in R/Material")
+source("diagnostic_fcns.r")
+names(ranef(fullB2))
+ranef(fullB2)
+ranef.diagn.plot(fullB2)
+
+head(ranef(fullB2)[["Focal"]])
+head(ranef(fullB2)[["Segment"]])
+head(ranef(fullB2)[["Session"]])
+head(ranef(fullB2)[["Period"]])
+```
+
+#check for colinearity
+
+```{r}
+library(car)
+vif(fullB2)
+```
+
+#check for model stability - mundry not working, check the chatgpt one
+
+##check for model stability
+cross validation
+```{r}
+# Load required libraries
+library(lme4)   # For glmer model fitting
+library(pROC)   # For AUC calculation
+
+# Define your data and model formula
+data_B2 <- FlightG  # Replace with your dataset
+model_formula_B2 <- GroupSize ~ DepResNum + RecResNum + DurationSec + Progeny + 
+                    Sex + AllFamilyRes + DepartureCallsUsed + 
+                    (1 | Focal) + (1 | Period) + (1 | Period/Session) + (DurationSec || Period/Session/Segment)
+
+# Set up k-fold cross-validation
+set.seed(123)  # For reproducibility
+k <- 10  # Number of folds
+fold_indices <- sample(rep(1:k, length.out = nrow(data_B2)))
+
+# Initialize an empty list to store model results
+cv_results_B2 <- list()
+
+# Perform k-fold cross-validation
+for (i in 1:k) {
+  # Split the data into training and validation sets
+  train_data_B2 <- data_B2[fold_indices != i, ]
+  test_data_B2 <- data_B2[fold_indices == i, ]
+
+  # Fit the model on the training data
+  model_B2 <- glmer(model_formula_B2, data = train_data_B2, family = poisson, control = contrB)
+
+  # Predict on the validation set
+  predictions_B2 <- predict(model_B2, newdata = test_data_B2, type = "response", allow.new.levels = TRUE)
+
+  # Ensure that response variable 'GroupSize' is treated as a factor for multiclass AUC
+  if (length(unique(test_data_B2$GroupSize)) > 2) {
+    # Handle multiclass AUC using multiclass.roc
+    auc_B2 <- multiclass.roc(response = test_data_B2$GroupSize, predictor = predictions_B2)$auc
+  } else {
+    # Handle binary AUC using roc
+    auc_B2 <- roc(response = test_data_B2$GroupSize, predictor = predictions_B2)$auc
+  }
+
+  # Store the results
+  cv_results_B2[[i]] <- list(model = model_B2, auc = auc_B2)
+}
+
+# Extract AUC values from cross-validation
+auc_values_B2 <- sapply(cv_results_B2, function(x) x$auc)
+
+# Summarize results
+mean_auc_B2 <- mean(auc_values_B2)
+std_auc_B2 <- sd(auc_values_B2)
+
+# Print summary
+cat("Mean AUC across folds:", mean_auc_B2, "\n")
+cat("Standard Deviation of AUC:", std_auc_B2, "\n")
+
+# Optional: Inspect models or individual fold results
+cv_results_B2
+cv_results_fullB2 <- cv_results_B2
+
+```
+
+# modelB2 results and summary
+
+```{r}
+#summary
+summary(fullB2)
+summary(fullB2)$varcor # random effects
+summary(fullB2)$coefficients # fixed effects
+fixef(fullB2) # estimates only, fixed effects
+
+#further info
+summary(fullB2)$AICtab["AIC"] # AIC
+logLik(fullB2) # log likelihood
+summary(fullB2)$ngrps # number of levels per grouping factor
+
+
+#relative model complexity - how many data points per estimated effect
+length(residuals(fullB2))/
+  (length(fixef(fullB2))+
+     nrow(as.data.frame(summary(fullB2)$varcor)))
+
+```
+
+
+```{r}
+
+
+
+#full- null model comparison - remove all fixed effects of interest
+
+nullB2=glmer(GroupSize~ 
+              (1|Focal)+ (1|Period)+ (1 | Period/Session) + (DurationSec || Period/Session/Segment), family= poisson, data=FlightG,control=contrB)
+# compare
+
+nullB2comp = as.data.frame(anova(nullB2, fullB2, test="Chisq"))
+NullB2comp<-round(nullB2comp,4)
+NullB2comp
+
+# one at a time
+
+testsB2=as.data.frame(drop1(fullB2, test="Chisq"))
+TestsB2<-round(testsB2,4)
+
+
+#effect sizes
+library(MuMIn)
+
+
+r.squaredGLMM(fullB2)
+
+#effect size for individual fixed effects
+
+library(r2glmm)
+r2beta(model=fullB2, partial=TRUE, method="sgv") # does not coverge
+# OR
+library(partR2)
+#R2_fullb <- partR2(fullb, partvars = c("z.DepResNum", "z.RecResNum"),data = FlightG, R2_type = "marginal", nboot = 10)
+R2_fullB2  <- partR2(fullB2, partvars = c("DepResNum", "RecResNum","DurationSec","Progeny","Sex","AllFamilyRes","DepartureCallsUsed"),data = FlightC, R2_type = "marginal", nboot = 1000)
+R2_fullB
+
+#another way to get effect sizes for the full model
+library(performance)
+model_performance(fullB2)
+
+
+####### contribution of each term to the model, sum and calculate proportion of the sum to get R2 like measure
+anova(fullB2)
+```
+
+#confidence intervals
+
+fullB2
+
+```{r}
+#Confidence intervals
+setwd("E:/Linear models and their applications in R/Material")
+source("boot_glmm.r")
+
+
+fullB2.boot=boot.glmm.pred(model.res=fullB2, excl.warnings=F,
+                          nboots=1000, para=F, resol=1000, level=0.95, use=NULL)
+
+
+FBB2<- round(fullB2.boot$ci.estimates, 4) # extract the bootstrap estimates ### store in an object for plotting
+FBB2 <- data.frame(
+  Parameter = rownames(FBB2),
+  `Original` = FBB2[,1],
+  `X2.5` = FBB2[,2],
+  `X97.5`= FBB2 [,3]
+)
+print(FBB2)
+library(rempsyc)
+nice_table(FBB2, width = 1, highlight = TRUE)
+
+m.stab.plot(fullB2.boot$ci.estimates) # plot the CI
+
+
+```
+
+fullB2 results table
+
+```{r}
+#create results table - fullB - fixed effects
+# get the model summary
+model_summary_B2<- summary(fullB2 )
+
+# extract coefficients
+coefficients_B2 <- model_summary_B2$coefficients
+rownames(coefficients_B2) <- c("Intercept","Departure responders number","Recruitment responders number","Duration in sec.","Progeny","Sex","All family responded","Departure calls used")
+# extract standard errors
+std_errors_B2 <- coefficients_B2[,2]
+
+# extract confidence intervals
+conf_int_B2 <- fullB2.boot$ci.estimates
+
+# extract max and min estimates
+max_estimate_B2 <- max(coefficients_B2[,1])
+min_estimate_B2 <- min(coefficients_B2[,1])
+
+# extract x2 and df
+x2B2 <- nullB2comp[,6]
+dfB2  <- nullB2comp[,7]
+
+x2B2 <- testsB2[,4]
+
+library(flextable)
+
+# combine results into a data frame
+results_table_B2 <- data.frame(
+  Parameter = rows,
+  Estimate = coefficients_B2[,1],
+  `Std. Error` = std_errors_B2,
+  `p`= coefficients_B2[,4],
+  `95% CI Lower` = conf_int_B2[,2],
+  `95% CI Upper` = conf_int_B2[,3],
+ 
+   `LRT_X2` = TestsB2[,3]  # Using a simpler name for now
+ # `p`= TestsB [,4]
+)
+
+#`Chi-sq`=x2B2,
+#`df`=dfB,
+#`Min Estimate` = min_estimate_B, # removed, keep for reference
+#`Max Estimate` = max_estimate_B # removed, kept for reference
+results_table_B2 [ , 'R²m'] = c(0.268,NA,NA,NA,NA,NA,NA,NA)
+results_table_B2 [ , 'R²c'] = c(0.754,NA,NA,NA,NA,NA,NA,NA)
+
+table_plot_b2 <- nice_table(results_table_B2, width = 1, highlight = TRUE)
+
+table_plot_B2<- set_header_labels(
+  table_plot_b2,
+  LRT_X2 = "LRT/X²",  # Correct label with superscript
+  `R²m` = "R²m",     # Proper superscript
+  `R²c` = "R²c"      # Proper superscript
+)
+
+table_plot_B2
+
+
+# print the final table
+print(results_table_B2)
+library(rempsyc)
+nice_table(results_table_B2, width = 1, highlight = TRUE)
+
+
+# print random effects table
+# extract random effects estimates
+fullB2_RE<-summary(fullB2)$varcor
+print(VarCorr(fullB2), comp=c("Variance","Std.Dev."),3)
+
+
+```
+
+# Results table attempt 2
+
+```{r}
+
+library(rempsyc)
+# Gather summary statistics
+stats.table_B <- as.data.frame(summary(fullB)$coefficients)
+# Get the confidence interval (CI) of the regression coefficient
+CI_B <- fullB.boot$ci.estimates
+
+# Add a row to join the variables names and CI to the stat
+stats.table_B <- cbind(row.names(stats.table_B), stats.table_B, CI_B)
+# Rename the columns appropriately
+names(stats.table_B) <- c("Term", "Estimate", "SE", "t", "p", "Orig","CI_lower", "CI_upper")
+
+stats.table_B
+nice_table(stats.table__B, width = 1, highlight = TRUE)
+
+
+```
+
+
+#################################################################################################### 
+
+### Nico's
+
+#Nico's way of plotting #Regenerate the data
+
+```{r}
+setwd("D:/Flight study")
+Flight <- read.csv(file = 'Flight.csv', header = T, sep = ",", stringsAsFactors = T) 
+FlightC_2=na.omit(Flight)
+#subset the data to exclude aborted attempts with group size = 0
+FlightG_2<- subset(FlightC_2, GroupSize> 0)
+```
+
+#simulation
+
+```{r}
+library(blmeco)
+library(arm)
+
+
+# Sim for plots, statistical tables , CrI and conclusions
+nsim_B<-10000
+bsim.mod_prob_B<-sim(fullB2, n.sim=nsim_B)
+apply(bsim.mod_prob_B@fixef, 2, mean)
+apply(bsim.mod_prob_B@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+#plogis(apply(bsim.mod_prob_B@fixef, 2, mean))
+#plogis(apply(bsim.mod_prob_B@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+```
+
+#The plotting
+
+```{r}
+##### DepResNum
+#fullB=glmer(GroupSize ~ DepResNum+ RecResNum + DurationSec +Progeny+ 
+      #        Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+       #       (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= poisson, #data=FlightG,control=contrB)
+
+FlightG_2$Progeny <- as.numeric(FlightG_2$Progeny)
+FlightG_2$Sex <- as.numeric(FlightG_2$Sex)
+FlightG_2$AllFamilyRes <- as.numeric(FlightG_2$AllFamilyRes)
+FlightG_2$DepartureCallsUsed <- as.numeric(FlightG_2$DepartureCallsUsed)
+#FlightG$AllFamilyRes <- as.numeric(FlightC$AllFamilyRes)
+
+
+
+newdat.mod_prob_dep_g<-expand.grid(DepResNum = seq(min(FlightG_2$DepResNum),
+                                        max(FlightG_2$DepResNum),l=10000),
+                             RecResNum = mean(FlightG_2$RecResNum),
+                             DurationSec = mean(FlightG_2$DurationSec),
+                             Sex = mean(FlightG_2$Progeny),
+                             Progeny = mean(FlightG_2$Sex),
+                             AllFamilyRes = mean(FlightG_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightG_2$DepartureCallsUsed))
+                           
+
+Xmat.mod_prob_dep_g<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_dep_g)
+head(Xmat.mod_prob_dep_g)
+fitmat.mod.mod_prob_dep_g<-matrix(ncol=nsim_B, nrow=nrow(newdat.mod_prob_dep_g))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+# Simulate predictions for each row in new data
+for(i in 1:nsim_B) {
+    fitmat.mod.mod_prob_dep_g[,i] <- Xmat.mod_prob_dep_g %*% bsim.mod_prob_B@fixef[i, ]
+}
+
+# Transform and assign quantiles for credible intervals
+newdat.mod_prob_dep_g$lower <- apply(fitmat.mod.mod_prob_dep_g, 1, function(x) quantile(exp(x), prob = 0.025))
+newdat.mod_prob_dep_g$upper <- apply(fitmat.mod.mod_prob_dep_g, 1, function(x) quantile(exp(x), prob = 0.975))
+
+# Expected counts from the mean coefficients
+newdat.mod_prob_dep_g$fit <- exp(Xmat.mod_prob_dep_g %*% fixef(fullB2))
+
+
+plot6_DepResNum <- ggplot(data = newdat.mod_prob_dep_g, aes(x = DepResNum, y=fit))+
+ geom_jitter(data = FlightG_2, aes(x = DepResNum, y = GroupSize), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_path(data = newdat.mod_prob_dep_g, aes(x = DepResNum, y= fit), linewidth = 1)+
+  geom_ribbon(data = newdat.mod_prob_dep_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = ' Departure responders number') +
+  ylab(label = "Flight group size")+
+  theme_classic()
+
+plot6_DepResNum_w_RAW_2 <- ggplot(data = newdat.mod_prob_dep_g, aes(x = DepResNum, y=fit))+
+  geom_jitter(data = FlightG, aes(x = DepResNum, y = GroupSize),
+              height = 0.05, width = 0.1,alpha=0.1, size=0.7)+
+  geom_path(data = newdat.mod_prob_dep_g, aes(x = DepResNum, y= fit), linewidth= 1)+
+  geom_ribbon(data = newdat.mod_prob_dep_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Departure responders number') +
+  ylab(label = "Flight group size")+
+  theme_classic()+
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  #scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Effect of departure responders number on group size")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7) ) # Legend title font size
+
+plot6_DepResNum_w_RAW 
+plot6_DepResNum_w_RAW_2
+```
+
+########### RecResNum
+
+```{r}
+
+newdat.mod_prob_Rec_g<-expand.grid(DepResNum = mean(FlightG_2$DepResNum),
+                             RecResNum = seq(min(FlightG_2$RecResNum),
+                                        max(FlightG_2$RecResNum),l=10000),
+                             DurationSec = mean(FlightG_2$DurationSec),
+                             Sex = mean(FlightG_2$Progeny),
+                             Progeny = mean(FlightG_2$Sex),
+                             AllFamilyRes = mean(FlightG_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightG_2$DepartureCallsUsed))
+                           
+
+Xmat.mod_prob_Rec_g<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_Rec_g)
+head(Xmat.mod_prob_Rec_g)
+fitmat.mod.mod_prob_Rec_g<-matrix(ncol=nsim_B, nrow=nrow(newdat.mod_prob_Rec_g))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+# Simulate predictions for each row in new data
+for(i in 1:nsim_B) {
+    fitmat.mod.mod_prob_Rec_g[,i] <- Xmat.mod_prob_Rec_g %*% bsim.mod_prob_B@fixef[i, ]
+}
+
+# Transform and assign quantiles for credible intervals
+newdat.mod_prob_Rec_g$lower <- apply(fitmat.mod.mod_prob_Rec_g, 1, function(x) quantile(exp(x), prob = 0.025))
+newdat.mod_prob_Rec_g$upper <- apply(fitmat.mod.mod_prob_Rec_g, 1, function(x) quantile(exp(x), prob = 0.975))
+
+# Expected counts from the mean coefficients
+newdat.mod_prob_Rec_g$fit <- exp(Xmat.mod_prob_Rec_g %*% fixef(fullB2))
+
+
+plot7_RecResNum <- ggplot(data = newdat.mod_prob_Rec_g, aes(x = RecResNum, y=fit))+
+ geom_jitter(data = FlightG_2, aes(x =RecResNum, y = GroupSize), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_path(data = newdat.mod_prob_Rec_g, aes(x = RecResNum, y= fit), linewidth = 1)+
+  geom_ribbon(data = newdat.mod_prob_Rec_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Recruitment responders number') +
+  ylab(label = "Flight group size")+
+  theme_classic()
+
+plot7_RecResNum_w_RAW_2 <- ggplot(data = newdat.mod_prob_Rec_g, aes(x = RecResNum, y=fit))+
+  geom_jitter(data = FlightG_2, aes(x = RecResNum, y = GroupSize),
+              height = 0.05, width = 0.1,alpha=0.1, size=0.7)+
+  geom_path(data = newdat.mod_prob_Rec_g, aes(x = RecResNum, y= fit), linewidth= 1)+
+  geom_ribbon(data = newdat.mod_prob_Rec_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Recruitment responders number') +
+  ylab(label = "Flight group size")+
+  theme_classic()+
+ # facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  #scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Effect of the number of recruitment responders on group size")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7) )
+
+plot7_RecResNum_w_RAW 
+plot7_RecResNum_w_RAW_2
+```
+
+########### DurationSec
+
+```{r}
+library(tidyverse)
+FlightG_2 <- FlightG_2 %>% 
+  filter(DurationSec < 400)
+newdat.mod_prob_Dur_g<-expand.grid(DepResNum = mean(FlightG_2$DepResNum),
+                             RecResNum = mean(FlightG_2$RecResNum),
+                             DurationSec = seq(min(FlightG_2$DurationSec),
+                                        max(FlightG_2$DurationSec),l=10000),
+                             Sex = mean(FlightG_2$Progeny),
+                             Progeny = mean(FlightG_2$Sex),
+                             AllFamilyRes = levels(FlightG_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightG_2$DepartureCallsUsed))
+
+Xmat.mod_prob_Dur_g<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_Dur_g)
+head(Xmat.mod_prob_Dur_g)
+fitmat.mod.mod_prob_Dur_g<-matrix(ncol=nsim_B, nrow=nrow(newdat.mod_prob_Dur_g))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim_B) {
+    fitmat.mod.mod_prob_Dur_g[,i] <- Xmat.mod_prob_Dur_g %*% bsim.mod_prob_B@fixef[i, ]
+}
+
+# Transform and assign quantiles for credible intervals
+newdat.mod_prob_Dur_g$lower <- apply(fitmat.mod.mod_prob_Dur_g, 1, function(x) quantile(exp(x), prob = 0.025))
+newdat.mod_prob_Dur_g$upper <- apply(fitmat.mod.mod_prob_Dur_g, 1, function(x) quantile(exp(x), prob = 0.975))
+
+# Expected counts from the mean coefficients
+newdat.mod_prob_Dur_g$fit <- exp(Xmat.mod_prob_Dur_g %*% fixef(fullB2))
+
+plot8_Duration <- ggplot(data = newdat.mod_prob__Dur_g, aes(x = DurationSec, y=fit))+
+ geom_jitter(data = FlightG_2, aes(x =DurationSec, y = GroupSize, color = AllFamilyRes), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_path(data = newdat.mod_prob_Dur_g, aes(x = DurationSec, y= fit), linewidth = 1)+
+  geom_ribbon(data = newdat.mod_prob_Dur_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Duration in seconds') +
+  ylab(label = "Flight group size")+
+  theme_classic()
+
+plot8_Druation_w_RAW_2 <- ggplot(data = newdat.mod_prob_Dur_g, aes(x = DurationSec, y=fit))+
+  geom_jitter(data = FlightG_2, aes(x = DurationSec, y = GroupSize, colour = AllFamilyRes),
+              height = 0.05, width = 0.1,alpha=0.1, size=0.7)+
+  geom_path(data = newdat.mod_prob_Dur_g, aes(x = DurationSec, y= fit), linewidth= 1)+
+  geom_ribbon(data = newdat.mod_prob_Dur_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Duration in seconds') +
+  ylab(label = "Flight group size")+
+  theme_classic()+
+  facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Absence vs. Presence of All family vocal response")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7) )
+plot8_Druation_w_RAW
+```
+
+All Family Res
+```{r}
+########### 
+# For This, I will treat AFR as categorical in the model, for simplicity as nothing changes regarding the output
+FlightG_2$AllFamilyRes <- as.factor(FlightG_2$AllFamilyRes)
+levels(FlightG_2$AllFamilyRes)[1] <- 'No'
+levels(FlightG_2$AllFamilyRes)[2] <- 'Yes'
+
+#fullB=glmer(GroupSize ~ DepResNum+ RecResNum + DurationSec +Progeny+ 
+      #        Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+       #       (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= poisson, #data=FlightG,control=contrB)
+
+
+nsim_AFR_g<-10000
+bsim.mod_prob_AFR_g<-sim(fullB2, n.sim=nsim_AFR_g)
+apply(bsim.mod_prob_AFR_g@fixef, 2, mean)
+apply(bsim.mod_prob_AFR_g@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+#plogis(apply(bsim.mod_prob_AFR_g@fixef, 2, mean))
+#plogis(apply(bsim.mod_prob_AFR_g@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+newdat.mod_prob_AFR_g<-expand.grid(DepResNum =mean(FlightG_2$DepResNum),
+                             RecResNum = mean(FlightG_2$RecResNum),
+                             DurationSec = mean(FlightG_2$DurationSec),
+                             Sex = mean(FlightG_2$Sex),
+                             Progeny = mean(FlightG_2$Progeny),
+                             AllFamilyRes = levels(FlightG_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightG_2$DepartureCallsUsed))
+
+Xmat.mod_prob_AFR_g<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_AFR_g)
+head(Xmat.mod_prob_AFR_g)
+fitmat.mod.mod_prob_AFR_g<-matrix(ncol=nsim_AFR_g, nrow=nrow(newdat.mod_prob_AFR_g))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim_AFR_g) {
+    fitmat.mod.mod_prob_AFR_g[,i] <- Xmat.mod_prob_AFR_g %*% bsim.mod_prob_AFR_g@fixef[i, ]
+}
+
+# Transform and assign quantiles for credible intervals
+newdat.mod_prob_AFR_g$lower <- apply(fitmat.mod.mod_prob_AFR_g, 1, function(x) quantile(exp(x), prob = 0.025))
+newdat.mod_prob_AFR_g$upper <- apply(fitmat.mod.mod_prob_AFR_g, 1, function(x) quantile(exp(x), prob = 0.975))
+
+# Expected counts from the mean coefficients
+newdat.mod_prob_AFR_g$fit <- exp(Xmat.mod_prob_AFR_g %*% fixef(fullB2))
+
+plot9_AFR <- ggplot(data = newdat.mod_prob_AFR_g, aes(x = AllFamilyRes, y=fit))+
+  # geom_jitter(data = FlightG_2, aes(x = AllFamilyRes, y = GroupSize), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_point(data = newdat.mod_prob_AFR_g, aes(x = AllFamilyRes, y= fit),linewidth = 1)+
+  geom_errorbar(data = newdat.mod_prob_AFR_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'All family vocal response') +
+  ylab(label = "Flight group size")+
+  theme_classic()
+
+plot9_AFR_w_RAW_2 <- ggplot(data = newdat.mod_prob_AFR_g, aes(x = AllFamilyRes, y=fit))+
+  geom_jitter(data = FlightG_2, aes(x = AllFamilyRes, y = GroupSize, color=AllFamilyRes),show.legend = FALSE,
+              height = 0.1, width = 0.2,alpha=0.3, size=0.7)+
+  geom_errorbar(data = newdat.mod_prob_AFR_g, aes(ymax=upper, ymin=lower), 
+                alpha=0.95, width=0.1)+
+  geom_point(data = newdat.mod_prob_AFR_g, aes(x = AllFamilyRes, y= fit),show.legend = FALSE, size= 3)+
+  xlab(label = 'All family vocal response') +
+  ylab(label = "Flight group size")+
+  theme_classic()+
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Absence vs. Presence of All family vocal response")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7) )
+
+plot9_AFR_w_RAW
+plot9_AFR_w_RAW_2
+```
+
+Progeny
+
+```{r}
+########### PROGENY
+# For This, SAME RATIONALE AS IN PREVIOUS, I will treat PROGENY as categorical in the model, for simplicity as nothing changes regarding the output
+FlightG_2$AllFamilyRes <- as.numeric(FlightG_2$AllFamilyRes)
+levels(FlightG_2$AllFamilyRes)['No'] <- 1
+levels(FlightG_2$AllFamilyRes)['Yes'] <- 2
+FlightG_2$Progeny <- as.factor(FlightG_2$Progeny)
+levels(FlightG_2$Progeny)[1] <- 'No'
+levels(FlightG_2$Progeny)[2] <- 'Yes'
+
+#fullB=glmer(GroupSize ~ DepResNum+ RecResNum + DurationSec +Progeny+ 
+      #        Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+       #       (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= poisson, #data=FlightG,control=contrB)
+
+nsim_prog_g<-10000
+bsim.mod_prob_prog_g<-sim(fullB2, n.sim=nsim_prog_g)
+apply(bsim.mod_prob_prog_g@fixef, 2, mean)
+apply(bsim.mod_prob_prog_g@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+#plogis(apply(bsim.mod_prob_prog_g@fixef, 2, mean))
+#plogis(apply(bsim.mod_prob_prog_g@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+newdat.mod_prob_prog_g<-expand.grid(DepResNum =mean(FlightG_2$DepResNum),
+                             RecResNum = mean(FlightG_2$RecResNum),
+                             DurationSec = mean(FlightG_2$DurationSec),
+                             Sex = mean(FlightG_2$Sex),
+                             Progeny = levels(FlightG_2$Progeny),
+                             AllFamilyRes = mean(FlightG_2$AllFamilyRes),
+                             DepartureCallsUsed = mean(FlightG_2$DepartureCallsUsed))
+
+Xmat.mod_prob_prog_g<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_prog_g)
+head(Xmat.mod_prob_prog_g)
+fitmat.mod.mod_prob_prog_g<-matrix(ncol=nsim_prog_g, nrow=nrow(newdat.mod_prob_prog_g))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim_prog_g) {
+    fitmat.mod.mod_prob_prog_g[,i] <- Xmat.mod_prob_prog_g %*% bsim.mod_prob_prog_g@fixef[i, ]
+}
+
+# Transform and assign quantiles for credible intervals
+newdat.mod_prob_prog_g$lower <- apply(fitmat.mod.mod_prob_prog_g, 1, function(x) quantile(exp(x), prob = 0.025))
+newdat.mod_prob_prog_g$upper <- apply(fitmat.mod.mod_prob_prog_g, 1, function(x) quantile(exp(x), prob = 0.975))
+
+# Expected counts from the mean coefficients
+newdat.mod_prob_prog_g$fit <- exp(Xmat.mod_prob_prog_g %*% fixef(fullB2))
+
+plot10_Progeny <- ggplot(data = newdat.mod_prob_prog_g, aes(x = Progeny, y=fit))+
+  # geom_jitter(data = FlightG_2, aes(x = Sex, y = Groupsize), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_point(data = newdat.mod_prob_prog_g, aes(x = Progeny, y= fit), size= 1)+
+  geom_errorbar(data = newdat.mod_prob_prog_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Progeny') +
+  ylab(label = "Flight group size")+
+  theme_classic()
+
+plot10_Progeny_w_RAW_2 <- ggplot(data = newdat.mod_prob_prog_g, aes(x = Progeny, y=fit))+
+  geom_jitter(data = FlightG_2, aes(x = Progeny, y = GroupSize, color=Progeny),show.legend = FALSE,
+              height = 0.1, width = 0.2,alpha=0.3, size=0.7)+
+  geom_errorbar(data = newdat.mod_prob_prog_g, aes(ymax=upper, ymin=lower), 
+                alpha=0.95, width=0.1)+
+  geom_point(data = newdat.mod_prob_prog_g, aes(x = Progeny),show.legend = FALSE, size= 3)+
+  xlab(label = 'Progeny') +
+  ylab(label = "Flight group size")+
+  theme_classic()+
+  #facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Absence vs. Presence of dependent Progeny")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7) )
+plot10_Progeny_w_RAW 
+plot10_Progeny_w_RAW_2
+```
+
+Departure calls used
+```{r}
+# DepartureCallsUsed 
+
+FlightG$Progeny <- as.numeric(FlightG$Progeny)
+levels(FlightG$Progeny)[1] <- 'No'
+levels(FlightG$Sex)[2] <- 'Yes'
+
+FlightG$DepartureCallsUsed  <- as.factor(FlightG$DepartureCallsUsed )
+
+levels(FlightG$DepartureCallsUsed )[1] <- 'No'
+levels(FlightG$DepartureCallsUsed )[2] <- 'Yes'
+
+
+
+#fullB=glmer(GroupSize ~ DepResNum+ RecResNum + DurationSec +Progeny+ 
+      #        Sex+ AllFamilyRes+ DepartureCallsUsed+ 
+       #       (1|Focal)+ (1|Session)+(1|Period)+(1+DurationSec||Segment), family= poisson, #data=FlightG,control=contrB)
+
+nsim_dcu_g<-10000
+bsim.mod_prob_dcu_g<-sim(fullB2, n.sim=nsim_dcu_g)
+apply(bsim.mod_prob_dcu_g@fixef, 2, mean)
+apply(bsim.mod_prob_dcu_g@fixef, 2, quantile, prob=c(0.025, 0.975))
+
+#plogis(apply(bsim.mod_prob_dcu_g@fixef, 2, mean))
+#plogis(apply(bsim.mod_prob_dcu_g@fixef, 2, quantile, prob=c(0.025, 0.975)))
+
+
+newdat.mod_prob_dcu_g<-expand.grid(DepResNum =mean(FlightG$DepResNum),
+                             RecResNum = mean(FlightG$RecResNum),
+                             DurationSec = mean(FlightG$DurationSec),
+                             Sex = mean(FlightG$Sex),
+                             Progeny = mean(FlightG$Progeny),
+                             AllFamilyRes = levels(FlightG$AllFamilyRes),
+                             DepartureCallsUsed = levels(FlightG$DepartureCallsUsed))
+
+Xmat.mod_prob_dcu_g<-model.matrix(~  DepResNum+ RecResNum + DurationSec+Progeny+Sex+AllFamilyRes+DepartureCallsUsed,
+                            data=newdat.mod_prob_dcu_g)
+head(Xmat.mod_prob_dcu_g)
+fitmat.mod.mod_prob_dcu_g<-matrix(ncol=nsim_dcu_g, nrow=nrow(newdat.mod_prob_dcu_g))
+
+# I NEED TO APPLY THE EXP FUNCTION TO BACKTRANSFORM THE DATA
+for(i in 1:nsim_dcu_g) {
+    fitmat.mod.mod_prob_dcu_g[,i] <- Xmat.mod_prob_dcu_g %*% bsim.mod_prob_dcu_g@fixef[i, ]
+}
+
+# Transform and assign quantiles for credible intervals
+newdat.mod_prob_dcu_g$lower <- apply(fitmat.mod.mod_prob_dcu_g, 1, function(x) quantile(exp(x), prob = 0.025))
+newdat.mod_prob_dcu_g$upper <- apply(fitmat.mod.mod_prob_dcu_g, 1, function(x) quantile(exp(x), prob = 0.975))
+
+# Expected counts from the mean coefficients
+newdat.mod_prob_dcu_g$fit <- exp(Xmat.mod_prob_dcu_g %*% fixef(fullB2))
+
+plot11_DepartureCallsUsed <-  ggplot(data = newdat.mod_prob_dcu_g, aes(x = DepartureCallsUsed, y=fit))+
+  # geom_jitter(data = Flight, aes(x = DepartureCallsUsed, y = Groupsize), height = 0.02, width = 0.01,alpha=0.3)+
+  geom_point(data = newdat.mod_prob_dcu_g, aes(x = DepartureCallsUsed, y= fit), size= 1)+
+  geom_errorbar(data = newdat.mod_prob_dcu_g, aes(ymax=upper, ymin=lower), alpha=0.25)+
+  xlab(label = 'Departure calls were used') +
+  ylab(label = "Flight group size")+
+  theme_classic()
+
+plot11_DepartureCallsUsed_w_RAW <- ggplot(data = newdat.mod_prob_dcu_g, aes(x = DepartureCallsUsed, y=fit,color=AllFamilyRes))+
+  geom_jitter(data = FlightG, aes(x = DepartureCallsUsed, y = GroupSize, color=AllFamilyRes),show.legend = FALSE,
+              height = 0.1, width = 0.2,alpha=0.3, size=0.7)+
+  geom_errorbar(data = newdat.mod_prob_dcu_g, aes(ymax=upper, ymin=lower), 
+                alpha=0.95, width=0.1)+
+  geom_point(data = newdat.mod_prob_dcu_g, aes(x = DepartureCallsUsed, y= fit, color=AllFamilyRes),show.legend = FALSE, size= 3)+
+  xlab(label = 'Departure calls were used') +
+  ylab(label = "Flight group size")+
+  theme_classic()+
+  facet_wrap(~ AllFamilyRes, labeller = labeller(AllFamilyRes = c("No" = "No", "Yes" = "Yes"))) +  # Panel titles
+  scale_color_manual(values = c("No" = "red", "Yes" = "blue"))+# Jitter colors
+   ggtitle("Absence vs. Presence of All family vocal response")+  theme(
+    plot.title = element_text(size = 10, face = "bold"),
+    strip.text.x = element_text(size = 9, face = "italic"),  # Facet label font size and style
+    legend.text = element_text(size = 7),  # Legend text font size
+    legend.title = element_text(size = 7) )
+
+
+plot11_DepartureCallsUsed_w_RAW
+```
+
+#combining sig plots
+
+```{r}
+require(ggpubr)
+#ggarrange(
+#  plot6_DepResNum_w_RAW, 
+ # plot7_RecResNum_w_RAW, 
+ # plot9_AFR_w_RAW,
+ # plot10_Progeny_w_RAW, 
+  
+ # ncol = 2, 
+ # nrow = 2, 
+ # labels = c("A", "B", "C"), 
+#  label.args = list(size = 5)  # Adjust size as needed
+#)
+ 
+
+library(gridExtra)
+library(ggplot2)
+library(patchwork)
+
+# Create the combined plot
+FigureBB<- (plot6_DepResNum_w_RAW_2 + ggtitle("A")) + 
+                 (plot7_RecResNum_w_RAW_2 + ggtitle("B")) + 
+                 (plot10_Progeny_w_RAW_2 + ggtitle("C")) + 
+                 (plot9_AFR_w_RAW_2 + ggtitle("D")) + 
+                 plot_layout(ncol = 2, nrow = 2)
+
+# Save as PNG
+ggsave("FigureBB.png", FigureBB, width = 10, height = 8, dpi = 300)
+
+ 
+
+```
+
+##### saving the workspace
+
+```{r}
+
+save.image("D:/Flight study/Flight Study R Project/FlightStudy_Paper_ready_markdown.RData")
+```
+
+###################################################################################### 
+
+# cite packages
+
+```{r}
+library(dplyr)
+report::cite_packages()
+citation("<package name>")
+packageVersion("<package name>")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to
+prevent printing of the R code that generated the plot.
